@@ -8,6 +8,39 @@
 
 ; Replace with your application code
 
+;cw7
+LDI R20, 1
+LDI R21, 2
+SBC R20, R21
+
+;cw6
+;LDI R20, $2c
+;LDI R21, $1
+;LDI R22, $90
+;LDI R23, $1
+;ADC R20, R22
+;ADC R21, R23
+
+;cw5
+;LDI R20,100
+;LDI R21,200
+;ADC R20,R21
+;LDI R21,0
+;ADC R21,R21
+
+;cw4
+;LDI R16, 100
+;LDI R17, 200
+;ADD R16, R17
+;SUB R17, R16
+;zapala flagê
+
+;cw3
+;LDI R16, 100
+;LDI R17, 200
+;ADD R16, R17
+;jest to reszta z dzielenia
+
 ;cw2
 ;LDI R16, 3
 ;LDI R17, 1
