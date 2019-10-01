@@ -8,10 +8,39 @@
 
 ; Replace with your application code
 
+;cw11
+LDI R20, $5
+LDI R21, $1
+Loop: SUB R20, R21
+RJMP Loop
+
+;cw10
+;LDI R20, $5
+;LDI R21, $1
+;SUB R20, R21
+;RJMP 2
+
+;cw9
+;NOP
+;NOP
+;RJMP 4
+;NOP
+;NOP
+;NOP
+;0 ffd - 1 ffe - 2 fff - 3 000 - 4 001
+
+;cw8
+;NOP
+;NOP
+;RJMP 1
+;NOP
+;NOP
+;NOP
+
 ;cw7
-LDI R20, 1
-LDI R21, 2
-SBC R20, R21
+;LDI R20, 1
+;LDI R21, 2
+;SBC R20, R21
 
 ;cw6
 ;LDI R20, $2c

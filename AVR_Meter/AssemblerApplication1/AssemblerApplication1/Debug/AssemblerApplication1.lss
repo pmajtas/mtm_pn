@@ -1,6 +1,7 @@
 
-AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AssemblerApplication1\AssemblerApplication1\main.asm Tue Oct 01 22:49:15 2019
+AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AssemblerApplication1\AssemblerApplication1\main.asm Tue Oct 01 23:29:32 2019
 
+[builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\avrasm\inc\tn2313def.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\avrasm\inc\tn2313def.inc'
                                  
                                  ;
@@ -674,10 +675,39 @@ AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AssemblerAp
                                  
                                  ; Replace with your application code
                                  
+                                 ;cw11
+000000 e045                      LDI R20, $5
+000001 e051                      LDI R21, $1
+000002 1b45                      Loop: SUB R20, R21
+000003 cffe                      RJMP Loop
+                                 
+                                 ;cw10
+                                 ;LDI R20, $5
+                                 ;LDI R21, $1
+                                 ;SUB R20, R21
+                                 ;RJMP 2
+                                 
+                                 ;cw9
+                                 ;NOP
+                                 ;NOP
+                                 ;RJMP 4
+                                 ;NOP
+                                 ;NOP
+                                 ;NOP
+                                 ;0 ffd - 1 ffe - 2 fff - 3 000 - 4 001
+                                 
+                                 ;cw8
+                                 ;NOP
+                                 ;NOP
+                                 ;RJMP 1
+                                 ;NOP
+                                 ;NOP
+                                 ;NOP
+                                 
                                  ;cw7
-000000 e041                      LDI R20, 1
-000001 e052                      LDI R21, 2
-000002 0b45                      SBC R20, R21
+                                 ;LDI R20, 1
+                                 ;LDI R21, 2
+                                 ;SBC R20, R21
                                  
                                  ;cw6
                                  ;LDI R20, $2c
@@ -758,18 +788,18 @@ cpse  :   0 dec   :   0 eor   :   0 icall :   0 ijmp  :   0 in    :   0
 inc   :   0 ld    :   0 ldd   :   0 ldi   :   2 lds   :   0 lpm   :   0 
 lsl   :   0 lsr   :   0 mov   :   0 movw  :   0 neg   :   0 nop   :   0 
 or    :   0 ori   :   0 out   :   0 pop   :   0 push  :   0 rcall :   0 
-ret   :   0 reti  :   0 rjmp  :   0 rol   :   0 ror   :   0 sbc   :   1 
+ret   :   0 reti  :   0 rjmp  :   1 rol   :   0 ror   :   0 sbc   :   0 
 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 sbiw  :   0 sbr   :   0 
 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 sei   :   0 sen   :   0 
 ser   :   0 ses   :   0 set   :   0 sev   :   0 sez   :   0 sleep :   0 
-spm   :   0 st    :   0 std   :   0 sts   :   0 sub   :   0 subi  :   0 
+spm   :   0 st    :   0 std   :   0 sts   :   0 sub   :   1 subi  :   0 
 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 2 out of 105 (1.9%)
+Instructions used: 3 out of 105 (2.9%)
 
 "ATtiny2313" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000006      6      0      6    2048   0.3%
+[.cseg] 0x000000 0x000008      8      0      8    2048   0.4%
 [.dseg] 0x000060 0x000060      0      0      0     128   0.0%
 [.eseg] 0x000000 0x000000      0      0      0     128   0.0%
 
