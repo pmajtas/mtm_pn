@@ -22,7 +22,9 @@
   <FILE>AssemblerApplication1.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <Loop><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>13</LINE></Loop>
-  <End><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>17</LINE></End>
+  <Loop1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>14</LINE></Loop1>
+  <End><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>21</LINE></End>
+  <Loop2><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>16</LINE></Loop2>
+  <Jump1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AssemblerApplication1\AssemblerApplication1\main.asm</FILE><LINE>20</LINE></Jump1>
  </LABELS>
 </ASSEMBLER_INFO>

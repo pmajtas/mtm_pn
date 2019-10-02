@@ -8,14 +8,57 @@
 
 ; Replace with your application code
 
-;cw13
-LDI R20, $7
-Loop: DEC R20
+;cw15
+LDI R20, 119
+LDI R21, 16
+Loop1: DEC R20
+BRBS 1, End
+Loop2: DEC R21
 NOP
-BRBS 1,End
-RJMP Loop
-End: RJMP 0
-;20 cykli potrzebuje, Cycles = R20*4
+BRBS 1, Jump1
+RJMP Loop2
+Jump1: RJMP 1
+End:NOP
+;Cycles = 5*R20*R21 + 4*R20 + 3
+
+;cw15
+;LDI R20, 119
+;LDI R21, 16
+;Loop1: DEC R20
+;BRBS 1, End
+;Loop2: DEC R21
+;NOP
+;BRBS 1, Jump1
+;RJMP Loop2
+;Jump1: RJMP 1
+;End:NOP
+;Cycles = 5*R20*R21 + 4*R20 + 3
+
+;cw14
+;LDI R20, 50
+;LDI R21, 10
+;Loop1: DEC R20
+;BRBS 1, End
+;Loop2: DEC R21
+;NOP
+;BRBS 1, Jump1
+;RJMP Loop2
+;Jump1: RJMP 1
+;End:
+
+;cw13
+;NOP
+;NOP
+;NOP
+;NOP
+;NOP
+;LDI R20, 5
+;Loop: DEC R20
+;NOP
+;BRBS 1,End
+;RJMP Loop
+;End: RJMP 0
+;20 cykli potrzebuje, Cycles = R20*4, 
 
 ;cw12
 ;LDI R20, $5
