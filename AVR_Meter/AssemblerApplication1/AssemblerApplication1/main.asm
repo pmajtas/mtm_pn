@@ -8,11 +8,27 @@
 
 ; Replace with your application code
 
-;cw11
-LDI R20, $5
-LDI R21, $1
-Loop: SUB R20, R21
+;cw13
+LDI R20, $7
+Loop: DEC R20
+NOP
+BRBS 1,End
 RJMP Loop
+End: RJMP 0
+;20 cykli potrzebuje, Cycles = R20*4
+
+;cw12
+;LDI R20, $5
+;Loop: DEC R20
+;BRBS 1,End
+;RJMP Loop
+;End: NOP
+
+;cw11
+;LDI R20, $5
+;LDI R21, $1
+;Loop: SUB R20, R21
+;RJMP Loop
 
 ;cw10
 ;LDI R20, $5
