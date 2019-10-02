@@ -11,18 +11,61 @@
 ; Created: 2019-10-01 20:15:00
 ; Author : Moj
 
+;cw18
+;LDI R22, 2
+;LDI R20, 3
+;LDI R21, 2
+;Timer: DEC R22
+;BRBS 1, End
+;Loop1: DEC R20
+;BRBS 1, Jump1
+;Loop2: DEC R21
+;NOP
+;BRBS 1, Jump2
+;RJMP Loop2
+;Jump2: LDI R21, 2
+;RJMP Loop1
+;Jump1: LDI R20, 3
+;LDI R21, 2
+;RJMP Timer
+;End:NOP
 
-;cw16
-LDI R20, 99
+;cw17
+LDI R22, 1
+LDI R20, 97
 LDI R21, 16
+
+;Timer:
+
 Loop1: DEC R20
-BRBS 1, End
+BRBS 1, Jump1
+
 Loop2: DEC R21
 NOP
-BRBS 1, Jump1
+BRBS 1, Jump2
 RJMP Loop2
-Jump1: RJMP 1
+
+Jump2: LDI R21, 16
+RJMP Loop1
+Jump1: LDI R20, 97
+LDI R21, 16
+DEC R22
+BRBS 1, End
+
+;RJMP Timer
 End:NOP
+
+;cw16
+;LDI R20, 96
+;LDI R21, 16
+;Loop1: DEC R20
+;BRBS 1, End
+;Loop2: DEC R21
+;NOP
+;BRBS 1, Jump1
+;RJMP Loop2
+;Jump1: RJMP 1
+;End:NOP
 ;Cycles = 5*R20*R21 + 4*R20 + 3
 
 ;cw15

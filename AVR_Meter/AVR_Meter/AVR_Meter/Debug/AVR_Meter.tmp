@@ -21,9 +21,10 @@
   <FILE>AVR_Meter.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <Loop1><FILE>C:\Users\student\Desktop\pm\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>18</LINE></Loop1>
-  <End><FILE>C:\Users\student\Desktop\pm\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>25</LINE></End>
-  <Loop2><FILE>C:\Users\student\Desktop\pm\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>20</LINE></Loop2>
-  <Jump1><FILE>C:\Users\student\Desktop\pm\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>24</LINE></Jump1>
+  <Loop1><FILE>C:\Users\student\Desktop\pm\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>40</LINE></Loop1>
+  <Jump1><FILE>C:\Users\student\Desktop\pm\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>50</LINE></Jump1>
+  <Loop2><FILE>C:\Users\student\Desktop\pm\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>43</LINE></Loop2>
+  <Jump2><FILE>C:\Users\student\Desktop\pm\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>48</LINE></Jump2>
+  <End><FILE>C:\Users\student\Desktop\pm\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>56</LINE></End>
  </LABELS>
 </ASSEMBLER_INFO>
