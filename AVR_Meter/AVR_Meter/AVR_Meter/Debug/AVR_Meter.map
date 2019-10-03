@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm Thu Oct 03 11:20:18 2019
+AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm Thu Oct 03 22:40:44 2019
 
 
 EQU  SIGNATURE_000 0000001e
@@ -448,7 +448,8 @@ EQU  USI_OVFaddr  00000010
 EQU  ERDYaddr     00000011
 EQU  WDTaddr      00000012
 EQU  INT_VECTORS_SIZE 00000013
-CSEG Loop1        00000004
-CSEG Loop2        00000008
-CSEG Timer        0000000b
+CSEG DelayInMs    00000003
+CSEG DelayOneMs   00000007
+CSEG Loop1        00000007
+CSEG Loop2        0000000b
 CSEG End          0000000e

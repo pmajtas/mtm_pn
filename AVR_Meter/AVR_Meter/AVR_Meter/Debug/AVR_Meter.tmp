@@ -22,9 +22,10 @@
   <FILE>AVR_Meter.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <Loop1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>21</LINE></Loop1>
-  <Loop2><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>26</LINE></Loop2>
-  <Timer><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>30</LINE></Timer>
-  <End><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>34</LINE></End>
+  <DelayInMs><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>19</LINE></DelayInMs>
+  <DelayOneMs><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>25</LINE></DelayOneMs>
+  <Loop1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>27</LINE></Loop1>
+  <Loop2><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>32</LINE></Loop2>
+  <End><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>40</LINE></End>
  </LABELS>
 </ASSEMBLER_INFO>

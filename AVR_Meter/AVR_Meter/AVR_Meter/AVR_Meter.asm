@@ -11,6 +11,139 @@
 ; Created: 2019-10-01 20:15:00
 ; Author : Moj
 
+;cw24
+RCALL DelayInMs 
+NOP
+RJMP 0
+
+DelayInMs:
+	LDI R20, $39
+	LDI R21, $7
+
+	RCALL DelayOneMs 
+RET
+	DelayOneMs:
+		;LDI R22, 1 ; ms delay
+		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+		NOP
+		BRBS 1, Loop2
+		RJMP Loop1
+
+		Loop2: DEC R21
+		BRBS 1, End ; Timer
+		RJMP Loop1
+
+		;Timer: DEC R22
+		;BRBS 1, End
+		;RJMP Loop1
+
+		End: RET
+
+;cw23
+;LDI R22, 1 ; ms delay
+;RCALL DelayInMs 
+;RJMP 0
+
+;DelayInMs:
+;LDI R20, $39
+;LDI R21, $c
+;LDI R23, 1
+
+;RCALL DelayOneMs 
+;RET
+
+;	DelayOneMs:
+;	LDI R22, 1
+;	Loop1: SBC R20,R23
+;	NOP
+;	BRBS 0, Loop2
+;	RJMP Loop1
+;
+;	Loop2: SBC R21,R23
+;	BRBS 0, Timer
+;	RJMP Loop1
+;
+;	Timer: DEC R22
+;	BRBS 1, End
+;	RJMP Loop1
+;
+;	End: RET
+
+;cw22
+;LDI R22, 1 ; ms delay
+;LDI R20, $39
+;LDI R21, $c
+;RCALL DelayInMs 
+;RJMP 0
+
+;DelayInMs:
+
+;LDI R23, 1
+
+;Loop1: SBC R20,R23
+;NOP
+;BRBS 0, Loop2
+;RJMP Loop1
+
+;Loop2: SBC R21,R23
+;BRBS 0, Timer
+;RJMP Loop1
+
+;Timer: DEC R22
+;BRBS 1, End
+;RJMP Loop1
+
+;End: RET
+
+;cw21
+
+;Start:
+;LDI R20,5
+;RCALL Loop 
+;RJMP Start
+
+;Loop: 
+;DEC R20
+;BRBS 1,End
+;RJMP Loop
+;End: RET
+
+
+;cw20
+
+;MainLoop:
+;RCALL DelayNCycles ;
+;RJMP MainLoop
+
+;DelayNCycles: ;zwyk³a etykieta
+;NOP
+;NOP
+;NOP
+;RET ;powrót do miejsca wywo³ania
+;1 cykl - 12.5 us ; czas podprogramu - 10 cykli
+
+;cw19
+
+;LDI R22, 1
+;LDI R20, $39
+;LDI R21, $c
+;LDI R23, 1
+
+;Loop1: SBC R20,R23
+;NOP
+;BRBS 0, Loop2
+;RJMP Loop1
+
+;Loop2: SBC R21,R23
+;BRBS 0, Timer
+;RJMP Loop1
+
+;Timer: DEC R22
+;BRBS 1, End
+;RJMP Loop1
+
+;End: NOP
+;StopWatch = 1ms *R22 - (999,63us)
 
 
 ;cw18
@@ -115,7 +248,7 @@
 ;BRBS 1,End
 ;RJMP Loop
 ;End: RJMP 0
-;20 cykli potrzebuje, Cycles = R20*4, 
+;b)c)20 cykli potrzebuje, Cycles = R20*4, 
 
 ;cw12
 ;LDI R20, $5
