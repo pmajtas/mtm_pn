@@ -11,49 +11,59 @@
 ; Created: 2019-10-01 20:15:00
 ; Author : Moj
 
+
+
 ;cw18
-;LDI R22, 2
-;LDI R20, 3
-;LDI R21, 2
+
+;LDI R22, 1
+;LDI R20, $c6
+;LDI R21, $f3
+;LDI R23, 1
+
+;Loop1: ADC R20,R23
+;NOP
+;BRBS 0, Loop2
+;RJMP Loop1
+
+;Loop2: ADC R21,R23
+;BRBS 0, Timer
+;RJMP Loop1
+
 ;Timer: DEC R22
 ;BRBS 1, End
+;RJMP Loop1
+
+;End: NOP
+;StopWatch = 1ms *R22 - (999,63us)
+
+;cw17
+;LDI R22, 2
+;LDI R20, 96
+;LDI R21, 16
+
+;Timer:
+
 ;Loop1: DEC R20
 ;BRBS 1, Jump1
+
 ;Loop2: DEC R21
 ;NOP
 ;BRBS 1, Jump2
 ;RJMP Loop2
-;Jump2: LDI R21, 2
+
+;Jump2: LDI R21, 16
 ;RJMP Loop1
-;Jump1: LDI R20, 3
-;LDI R21, 2
-;RJMP Timer
-;End:NOP
-
-;cw17
-LDI R22, 1
-LDI R20, 97
-LDI R21, 16
-
-;Timer:
-
-Loop1: DEC R20
-BRBS 1, Jump1
-
-Loop2: DEC R21
-NOP
-BRBS 1, Jump2
-RJMP Loop2
-
-Jump2: LDI R21, 16
-RJMP Loop1
-Jump1: LDI R20, 97
-LDI R21, 16
-DEC R22
-BRBS 1, End
+;Jump1: LDI R20, 96
+;LDI R21, 16
+;DEC R21
+;LDI R21, 16
+;DEC R22
+;BRBS 1, End
+;RJMP Loop1
 
 ;RJMP Timer
-End:NOP
+;End: NOP
+;StopWatch = 1ms *R22 - (999us)
 
 ;cw16
 ;LDI R20, 96
