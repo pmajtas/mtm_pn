@@ -11,51 +11,61 @@
 ; Created: 2019-10-01 20:15:00
 ; Author : Moj
 
+;cw28
+
+
 ;cw27b
-LDI R20, $2;36
-LDI R21, $0;6
-LDI R16, 1
-LDI R17, 0
-LDI R18, 1
-RCALL DelayInMs 
-NOP
-RJMP 0
+;LDI R20, $35
+;LDI R21, $6
+;LDI R16, 1
+;LDI R17, 0
+;LDI R18, 1
+;RCALL DelayInMs 
+;NOP
+;RJMP 0
+;
+;DelayInMs:
+;	RCALL DelayOneMs 
+;
+;	PUSH R17
+;	PUSH R16
+;
+;	Timer: CLN 
+;	POP R16
+;	POP R17
+;	SUB R16,R18
+;	BRBS 1, OldTimer
+;	BRBS 0, OldTimer
+;	RJMP DelayInMs
+;
+;	OldTimer: CLN 
+;	SUB R17,R18
+;	BRBS 2, DelayEnd
+;	RJMP Timer
+;
+;
+;DelayEnd: RET
+;
+;	DelayOneMs:
+;		PUSH R21
+;		PUSH R20
+;
+;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+;		NOP
+;		BRBS 1, Loop2
+;		RJMP Loop1
+;
+;		Loop2: DEC R21
+;		BRBS 2, End 
+;		RJMP Loop1
+;
+;		End: 
+;		POP R20
+;		POP R21
+;		CLN
+;		RET
+;1ms ~~ 999.63 us
 
-DelayInMs:
-	RCALL DelayOneMs 
-
-	Timer: CLN 
-	SUB R16,R18
-	BRBS 1, OldTimer
-	;BRBS 0, OldTimer
-	RJMP DelayInMs
-
-	OldTimer: CLN 
-	SUB R17,R18
-	BRBS 2, DelayEnd
-	RJMP Timer
-
-DelayEnd: RET
-
-	DelayOneMs:
-		PUSH R21
-		PUSH R20
-
-		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
-		NOP
-		BRBS 1, Loop2
-		RJMP Loop1
-
-		Loop2: DEC R21
-		BRBS 2, End 
-		RJMP Loop1
-
-		End: 
-		POP R20
-		POP R21
-		CLN
-		RET
-;	 1ms ~~ 999.63 us
 ;cw27a
 ;LDI R20, $37
 ;LDI R21, $7

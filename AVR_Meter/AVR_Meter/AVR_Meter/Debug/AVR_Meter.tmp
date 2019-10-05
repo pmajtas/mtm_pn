@@ -22,13 +22,13 @@
   <FILE>AVR_Meter.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <DelayInMs><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>24</LINE></DelayInMs>
-  <DelayOneMs><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>40</LINE></DelayOneMs>
-  <Timer><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>27</LINE></Timer>
-  <OldTimer><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>33</LINE></OldTimer>
-  <DelayEnd><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>38</LINE></DelayEnd>
-  <Loop1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>44</LINE></Loop1>
-  <Loop2><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>49</LINE></Loop2>
-  <End><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>53</LINE></End>
+  <DelayInMs><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>27</LINE></DelayInMs>
+  <DelayOneMs><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>49</LINE></DelayOneMs>
+  <Timer><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>33</LINE></Timer>
+  <OldTimer><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>41</LINE></OldTimer>
+  <DelayEnd><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>47</LINE></DelayEnd>
+  <Loop1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>53</LINE></Loop1>
+  <Loop2><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>58</LINE></Loop2>
+  <End><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>62</LINE></End>
  </LABELS>
 </ASSEMBLER_INFO>
