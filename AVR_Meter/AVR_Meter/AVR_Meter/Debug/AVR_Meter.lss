@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm Thu Oct 03 22:40:44 2019
+AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm Sat Oct 05 17:12:51 2019
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\avrasm\inc\tn2313def.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\avrasm\inc\tn2313def.inc'
@@ -678,33 +678,183 @@ AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\A
                                  ; Created: 2019-10-01 20:15:00
                                  ; Author : Moj
                                  
-                                 ;cw24
-000000 d002                      RCALL DelayInMs 
-000001 0000                      NOP
-000002 cffd                      RJMP 0
+                                 ;cw27b
+000000 e042                      LDI R20, $2;36
+000001 e050                      LDI R21, $0;6
+000002 e001                      LDI R16, 1
+000003 e010                      LDI R17, 0
+000004 e021                      LDI R18, 1
+000005 d002                      RCALL DelayInMs 
+000006 0000                      NOP
+000007 cff8                      RJMP 0
                                  
                                  DelayInMs:
-000003 e349                      	LDI R20, $39
-000004 e057                      	LDI R21, $7
+000008 d009                      	RCALL DelayOneMs 
                                  
-000005 d001                      	RCALL DelayOneMs 
-000006 9508                      RET
+000009 94a8                      	Timer: CLN 
+00000a 1b02                      	SUB R16,R18
+00000b f009                      	BRBS 1, OldTimer
+                                 	;BRBS 0, OldTimer
+00000c cffb                      	RJMP DelayInMs
+                                 
+00000d 94a8                      	OldTimer: CLN 
+00000e 1b12                      	SUB R17,R18
+00000f f00a                      	BRBS 2, DelayEnd
+000010 cff8                      	RJMP Timer
+                                 
+000011 9508                      DelayEnd: RET
+                                 
                                  	DelayOneMs:
-                                 		;LDI R22, 1 ; ms delay
-000007 954a                      		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
-000008 0000                      		NOP
-000009 f009                      		BRBS 1, Loop2
-00000a cffc                      		RJMP Loop1
+000012 935f                      		PUSH R21
+000013 934f                      		PUSH R20
                                  
-00000b 955a                      		Loop2: DEC R21
-00000c f009                      		BRBS 1, End ; Timer
-00000d cff9                      		RJMP Loop1
+000014 954a                      		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+000015 0000                      		NOP
+000016 f009                      		BRBS 1, Loop2
+000017 cffc                      		RJMP Loop1
                                  
-                                 		;Timer: DEC R22
-                                 		;BRBS 1, End
-                                 		;RJMP Loop1
+000018 955a                      		Loop2: DEC R21
+000019 f00a                      		BRBS 2, End 
+00001a cff9                      		RJMP Loop1
                                  
-00000e 9508                      		End: RET
+                                 		End: 
+00001b 914f                      		POP R20
+00001c 915f                      		POP R21
+00001d 94a8                      		CLN
+00001e 9508                      		RET
+                                 ;	 1ms ~~ 999.63 us
+                                 ;cw27a
+                                 ;LDI R20, $37
+                                 ;LDI R21, $7
+                                 ;LDI R22, 2
+                                 ;RCALL DelayInMs 
+                                 ;NOP
+                                 ;RJMP 0
+                                 ;
+                                 ;DelayInMs:
+                                 ;	RCALL DelayOneMs 
+                                 ;
+                                 ;	Timer: DEC R22
+                                 ;	BRBS 1, DelayEnd
+                                 ;	RJMP DelayInMs
+                                 ;
+                                 ;DelayEnd: RET
+                                 ;
+                                 ;	DelayOneMs:
+                                 ;		PUSH R21
+                                 ;		PUSH R20
+                                 ;
+                                 ;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                                 ;		NOP
+                                 ;		BRBS 1, Loop2
+                                 ;		RJMP Loop1
+                                 ;
+                                 ;		Loop2: DEC R21
+                                 ;		BRBS 1, End 
+                                 ;		RJMP Loop1
+                                 ;
+                                 ;		End: 
+                                 ;		POP R20
+                                 ;		POP R21
+                                 ;		RET
+                                 ; 1ms ~~ 999.63 us
+                                 
+                                 
+                                 ;cw26
+                                 ;LDI R20, $37
+                                 ;LDI R21, $7
+                                 ;STS 0x60, R20
+                                 ;STS 0x61, R21
+                                 ;RCALL DelayInMs 
+                                 ;NOP
+                                 ;RJMP 0
+                                 ;
+                                 ;DelayInMs:
+                                 ;	RCALL DelayOneMs 
+                                 ;
+                                 ;	LDI R20, 1
+                                 ;	Timer: DEC R20
+                                 ;	BRBS 1, DelayEnd
+                                 ;	;STS 0x60, R20
+                                 ;	RJMP DelayInMs
+                                 ;
+                                 ;DelayEnd: RET
+                                 ;
+                                 ;	DelayOneMs:
+                                 ;		LDS R20 , 0x60
+                                 ;		LDS R21 , 0x61
+                                 ;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                                 ;		NOP
+                                 ;		BRBS 1, Loop2
+                                 ;		RJMP Loop1
+                                 ;
+                                 ;		Loop2: DEC R21
+                                 ;		BRBS 1, End 
+                                 ;		RJMP Loop1
+                                 ;
+                                 ;		End: RET
+                                 ; 1ms ~~ 999.63 us
+                                 
+                                 ;cw25
+                                 ;LDI R20, 1
+                                 ;STS 0x60, R20
+                                 ;RCALL DelayInMs 
+                                 ;NOP
+                                 ;RJMP 0
+                                 ;
+                                 ;DelayInMs:
+                                 ;	LDI R20, $37
+                                 ;	LDI R21, $7
+                                 ;	RCALL DelayOneMs 
+                                 ;
+                                 ;	LDS R20, 0x60
+                                 ;	Timer: DEC R20
+                                 ;	BRBS 1, DelayEnd
+                                 ;	STS 0x60, R20
+                                 ;	RJMP DelayInMs
+                                 ;
+                                 ;DelayEnd: RET
+                                 ;	DelayOneMs:
+                                 ;
+                                 ;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                                 ;		NOP
+                                 ;		BRBS 1, Loop2
+                                 ;		RJMP Loop1
+                                 ;
+                                 ;		Loop2: DEC R21
+                                 ;		BRBS 1, End 
+                                 ;		RJMP Loop1
+                                 ;
+                                 ;		End: RET
+                                 ; 1ms ~~ 999.88 us
+                                 
+                                 ;cw24
+                                 ;RCALL DelayInMs 
+                                 ;NOP
+                                 ;RJMP 0
+                                 ;
+                                 ;DelayInMs:
+                                 ;	LDI R20, $39
+                                 ;	LDI R21, $7
+                                 ;
+                                 ;	RCALL DelayOneMs 
+                                 ;RET
+                                 ;	DelayOneMs:
+                                 ;		;LDI R22, 1 ; ms delay
+                                 ;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                                 ;		NOP
+                                 ;		BRBS 1, Loop2
+                                 ;		RJMP Loop1
+                                 ;
+                                 ;		Loop2: DEC R21
+                                 ;		BRBS 1, End ; Timer
+                                 ;		RJMP Loop1
+                                 ;
+                                 ;		;Timer: DEC R22
+                                 ;		;BRBS 1, End
+                                 ;		;RJMP Loop1
+                                 ;
+                                 ;		End: RET
                                  
                                  ;cw23
                                  ;LDI R22, 1 ; ms delay
@@ -819,16 +969,16 @@ AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\A
                                  ;LDI R20, $c6
                                  ;LDI R21, $f3
                                  ;LDI R23, 1
-                                 
+                                 ;
                                  ;Loop1: ADC R20,R23
                                  ;NOP
                                  ;BRBS 0, Loop2
                                  ;RJMP Loop1
-                                 
+                                 ;
                                  ;Loop2: ADC R21,R23
                                  ;BRBS 0, Timer
                                  ;RJMP Loop1
-                                 
+                                 ;
                                  ;Timer: DEC R22
                                  ;BRBS 1, End
                                  ;RJMP Loop1
@@ -882,6 +1032,7 @@ AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\A
                                  ;LDI R20, 119
                                  ;LDI R21, 16
                                  ;Loop1: DEC R20
+                                 ;NOP
                                  ;BRBS 1, End
                                  ;Loop2: DEC R21
                                  ;NOP
@@ -1020,36 +1171,36 @@ counted separately from r26..r31 here.
 "ATtiny2313" register use summary:
 x  :   0 y  :   0 z  :   0 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:   0 r17:   0 r18:   0 r19:   0 r20:   2 
-r21:   2 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
+r13:   0 r14:   0 r15:   0 r16:   2 r17:   2 r18:   3 r19:   0 r20:   4 
+r21:   4 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
 r29:   0 r30:   0 r31:   0 
-Registers used: 2 out of 35 (5.7%)
+Registers used: 5 out of 35 (14.3%)
 
 "ATtiny2313" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 
-andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   2 
+andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   4 
 brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
 brne  :   0 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
 brvs  :   0 bset  :   0 bst   :   0 cbi   :   0 cbr   :   0 clc   :   0 
-clh   :   0 cli   :   0 cln   :   0 clr   :   0 cls   :   0 clt   :   0 
+clh   :   0 cli   :   0 cln   :   3 clr   :   0 cls   :   0 clt   :   0 
 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 cpi   :   0 
 cpse  :   0 dec   :   2 eor   :   0 icall :   0 ijmp  :   0 in    :   0 
-inc   :   0 ld    :   0 ldd   :   0 ldi   :   2 lds   :   0 lpm   :   0 
+inc   :   0 ld    :   0 ldd   :   0 ldi   :   5 lds   :   0 lpm   :   0 
 lsl   :   0 lsr   :   0 mov   :   0 movw  :   0 neg   :   0 nop   :   2 
-or    :   0 ori   :   0 out   :   0 pop   :   0 push  :   0 rcall :   2 
-ret   :   2 reti  :   0 rjmp  :   3 rol   :   0 ror   :   0 sbc   :   0 
+or    :   0 ori   :   0 out   :   0 pop   :   2 push  :   2 rcall :   2 
+ret   :   2 reti  :   0 rjmp  :   5 rol   :   0 ror   :   0 sbc   :   0 
 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 sbiw  :   0 sbr   :   0 
 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 sei   :   0 sen   :   0 
 ser   :   0 ses   :   0 set   :   0 sev   :   0 sez   :   0 sleep :   0 
-spm   :   0 st    :   0 std   :   0 sts   :   0 sub   :   0 subi  :   0 
+spm   :   0 st    :   0 std   :   0 sts   :   0 sub   :   2 subi  :   0 
 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 7 out of 105 (6.7%)
+Instructions used: 11 out of 105 (10.5%)
 
 "ATtiny2313" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x00001e     30      0     30    2048   1.5%
+[.cseg] 0x000000 0x00003e     62      0     62    2048   3.0%
 [.dseg] 0x000060 0x000060      0      0      0     128   0.0%
 [.eseg] 0x000000 0x000000      0      0      0     128   0.0%
 
