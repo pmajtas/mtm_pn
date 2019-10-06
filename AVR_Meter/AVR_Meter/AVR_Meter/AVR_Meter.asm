@@ -11,7 +11,7 @@
 ; Created: 2019-10-01 20:15:00
 ; Author : Moj 
 
-;cw32
+;cw33
 .MACRO LOAD_CONST  
 LDI @0, LOW(@2)
 LDI @1, HIGH(@2)
@@ -23,44 +23,55 @@ LDI @1, HIGH(@2)
 LDI R20, $35
 LDI R21, $6
 LDI R18, 1
-LOAD_CONST R16,R17, 5
+LOAD_CONST R16,R17, 250
 STS 0x60, R16
 STS 0x61, R17
 LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie
-LDI R24, 0x3f ;"0"
-LDI R25, 0x10 ;4cyfra
-LDI R26, 0x1e
+;LDI R16, 0b1001111 ;cyfra "3"
+;LDI R17, 0x10 ;4cyfra
+LDI R26, 0x1e ; otworzenie pinów 1-4
 
 OUT DDRD, R23
 OUT DDRB, R26
 
-Zero: OUT Segments_P, R24
-	OUT Digits_P, R25
-	LDI R25, 0x8 ;3cyfra
+Zero: OUT Segments_P, R16
+	OUT Digits_P, R17
+	LDI R16, 0b1011011 ; cyfra "2"
+	LDI R17, 0x8 ;3cyfra
 	RCALL DelayInMs 
-	OUT Segments_P, R24
-	OUT Digits_P, R25
-	LDI R25, 0x4 ;2 cyfra
+
+	OUT Segments_P, R16
+	OUT Digits_P, R17
+	LDI R16, 0b110 ;cyfra "1"
+	LDI R17, 0x4 ;2 cyfra
 	RCALL DelayInMs 
-	OUT Segments_P, R24
-	OUT Digits_P, R25
-	LDI R25, 0x2 ; 1 cyfra
+
+	OUT Segments_P, R16
+	OUT Digits_P, R17
+	LDI R16 , 0b111111 ;cyfra "0"
+	LDI R17, 0x2 ; 1 cyfra
 	RCALL DelayInMs
-	OUT Segments_P, R24
-	OUT Digits_P, R25
-	LDI R25, 0x10 ;4cyfra
+
+	OUT Segments_P, R16
+	OUT Digits_P, R17
+	LDI R16, 0x4f ;cyfra "3"
+	LDI R17, 0x10 ;4cyfra
 	RCALL DelayInMs
+
 RJMP Zero
 
 DelayInMs:
-	RCALL DelayOneMs 
+	LDS R16, 0x60
+	LDS R17, 0x61
+
+	OneMs: RCALL DelayOneMs 
 	
 	Timer: CLN 
 	CLC
 	SBC R16,R18
 	BRBS 1, OldTimer
 	BRBS 0, OldTimer
-	RJMP DelayInMs
+	RJMP OneMs
 
 	OldTimer: CLN 
 	SUB R17,R18
@@ -69,8 +80,8 @@ DelayInMs:
 
 
 DelayEnd: 
-	LDS R16, 0x60
-	LDS R17, 0x61
+	;LDS R16, 0x60
+	;LDS R17, 0x61
 	RET
 
 		DelayOneMs:
@@ -93,6 +104,89 @@ DelayEnd:
 			RET
 
 
+
+;;cw32
+;.MACRO LOAD_CONST  
+;LDI @0, LOW(@2)
+;LDI @1, HIGH(@2)
+;.ENDMACRO
+;
+;.equ Digits_P = PORTB  ; .equ is like #define in C:
+;.equ Segments_P = PORTD
+;
+;LDI R20, $35
+;LDI R21, $6
+;LDI R18, 1
+;LOAD_CONST R16,R17, 5
+;STS 0x60, R16
+;STS 0x61, R17
+;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie
+;LDI R24, 0x3f ;"0"
+;LDI R25, 0x10 ;4cyfra
+;LDI R26, 0x1e
+;
+;OUT DDRD, R23
+;OUT DDRB, R26
+;
+;Zero: OUT Segments_P, R24
+;	OUT Digits_P, R25
+;	LDI R25, 0x8 ;3cyfra
+;	RCALL DelayInMs 
+;	OUT Segments_P, R24
+;	OUT Digits_P, R25
+;	LDI R25, 0x4 ;2 cyfra
+;	RCALL DelayInMs 
+;	OUT Segments_P, R24
+;	OUT Digits_P, R25
+;	LDI R25, 0x2 ; 1 cyfra
+;	RCALL DelayInMs
+;	OUT Segments_P, R24
+;	OUT Digits_P, R25
+;	LDI R25, 0x10 ;4cyfra
+;	RCALL DelayInMs
+;RJMP Zero
+;
+;DelayInMs:
+;	RCALL DelayOneMs 
+;	
+;	Timer: CLN 
+;	CLC
+;	SBC R16,R18
+;	BRBS 1, OldTimer
+;	BRBS 0, OldTimer
+;	RJMP DelayInMs
+;
+;	OldTimer: CLN 
+;	SUB R17,R18
+;	BRBS 2, DelayEnd
+;	RJMP Timer
+;
+;
+;DelayEnd: 
+;	LDS R16, 0x60
+;	LDS R17, 0x61
+;	RET
+;
+;		DelayOneMs:
+;			PUSH R21
+;			PUSH R20
+;
+;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+;			NOP
+;			BRBS 1, Loop2
+;			RJMP Loop1
+;
+;			Loop2: DEC R21
+;			BRBS 2, End 
+;			RJMP Loop1
+;
+;			End: 
+;			POP R20
+;			POP R21
+;			CLN
+;			RET
+;
+;
 ;cw31
 ;.MACRO LOAD_CONST  
 ;LDI @0, LOW(@2)
