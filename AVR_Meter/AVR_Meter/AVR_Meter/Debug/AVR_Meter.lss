@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm Sat Oct 05 18:17:00 2019
+AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm Sun Oct 06 23:04:47 2019
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\avrasm\inc\tn2313def.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\avrasm\inc\tn2313def.inc'
@@ -676,61 +676,505 @@ AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\A
                                  ; AssemblerApplication1.asm
                                  ;
                                  ; Created: 2019-10-01 20:15:00
-                                 ; Author : Moj
+                                 ; Author : Moj 
                                  
-                                 ;cw28
+                                 ;cw32
+                                 .MACRO LOAD_CONST  
+                                 LDI @0, LOW(@2)
+                                 LDI @1, HIGH(@2)
+                                 .ENDMACRO
                                  
+                                 .equ Digits_P = PORTB  ; .equ is like #define in C:
+                                 .equ Segments_P = PORTD
                                  
-                                 ;cw27b
 000000 e345                      LDI R20, $35
 000001 e056                      LDI R21, $6
-000002 e001                      LDI R16, 1
-000003 e010                      LDI R17, 0
-000004 e021                      LDI R18, 1
-000005 d002                      RCALL DelayInMs 
-000006 0000                      NOP
-000007 cff8                      RJMP 0
+000002 e021                      LDI R18, 1
+000003 e005
+000004 e010                      LOAD_CONST R16,R17, 5
+000005 9300 0060                 STS 0x60, R16
+000007 9310 0061                 STS 0x61, R17
+000009 e77f                      LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie
+00000a e38f                      LDI R24, 0x3f ;"0"
+00000b e190                      LDI R25, 0x10 ;4cyfra
+00000c e1ae                      LDI R26, 0x1e
+                                 
+00000d bb71                      OUT DDRD, R23
+00000e bba7                      OUT DDRB, R26
+                                 
+00000f bb82                      Zero: OUT Segments_P, R24
+000010 bb98                      	OUT Digits_P, R25
+000011 e098                      	LDI R25, 0x8 ;3cyfra
+000012 d00d                      	RCALL DelayInMs 
+000013 bb82                      	OUT Segments_P, R24
+000014 bb98                      	OUT Digits_P, R25
+000015 e094                      	LDI R25, 0x4 ;2 cyfra
+000016 d009                      	RCALL DelayInMs 
+000017 bb82                      	OUT Segments_P, R24
+000018 bb98                      	OUT Digits_P, R25
+000019 e092                      	LDI R25, 0x2 ; 1 cyfra
+00001a d005                      	RCALL DelayInMs
+00001b bb82                      	OUT Segments_P, R24
+00001c bb98                      	OUT Digits_P, R25
+00001d e190                      	LDI R25, 0x10 ;4cyfra
+00001e d001                      	RCALL DelayInMs
+00001f cfef                      RJMP Zero
                                  
                                  DelayInMs:
-000008 d00e                      	RCALL DelayOneMs 
+000020 d00f                      	RCALL DelayOneMs 
+                                 	
+000021 94a8                      	Timer: CLN 
+000022 9488                      	CLC
+000023 0b02                      	SBC R16,R18
+000024 f011                      	BRBS 1, OldTimer
+000025 f008                      	BRBS 0, OldTimer
+000026 cff9                      	RJMP DelayInMs
                                  
-000009 931f                      	PUSH R17
-00000a 930f                      	PUSH R16
-                                 
-00000b 94a8                      	Timer: CLN 
-00000c 910f                      	POP R16
-00000d 911f                      	POP R17
-00000e 1b02                      	SUB R16,R18
-00000f f011                      	BRBS 1, OldTimer
-000010 f008                      	BRBS 0, OldTimer
-000011 cff6                      	RJMP DelayInMs
-                                 
-000012 94a8                      	OldTimer: CLN 
-000013 1b12                      	SUB R17,R18
-000014 f00a                      	BRBS 2, DelayEnd
-000015 cff5                      	RJMP Timer
+000027 94a8                      	OldTimer: CLN 
+000028 1b12                      	SUB R17,R18
+000029 f00a                      	BRBS 2, DelayEnd
+00002a cff6                      	RJMP Timer
                                  
                                  
-000016 9508                      DelayEnd: RET
+                                 DelayEnd: 
+00002b 9100 0060                 	LDS R16, 0x60
+00002d 9110 0061                 	LDS R17, 0x61
+00002f 9508                      	RET
                                  
-                                 	DelayOneMs:
-000017 935f                      		PUSH R21
-000018 934f                      		PUSH R20
+                                 		DelayOneMs:
+000030 935f                      			PUSH R21
+000031 934f                      			PUSH R20
                                  
-000019 954a                      		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
-00001a 0000                      		NOP
-00001b f009                      		BRBS 1, Loop2
-00001c cffc                      		RJMP Loop1
+000032 954a                      			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+000033 0000                      			NOP
+000034 f009                      			BRBS 1, Loop2
+000035 cffc                      			RJMP Loop1
                                  
-00001d 955a                      		Loop2: DEC R21
-00001e f00a                      		BRBS 2, End 
-00001f cff9                      		RJMP Loop1
+000036 955a                      			Loop2: DEC R21
+000037 f00a                      			BRBS 2, End 
+000038 cff9                      			RJMP Loop1
                                  
-                                 		End: 
-000020 914f                      		POP R20
-000021 915f                      		POP R21
-000022 94a8                      		CLN
-000023 9508                      		RET
+                                 			End: 
+000039 914f                      			POP R20
+00003a 915f                      			POP R21
+00003b 94a8                      			CLN
+00003c 9508                      			RET
+                                 
+                                 
+                                 ;cw31
+                                 ;.MACRO LOAD_CONST  
+                                 ;LDI @0, LOW(@2)
+                                 ;LDI @1, HIGH(@2)
+                                 ;.ENDMACRO
+                                 ;
+                                 ;.equ Digits_P = PORTB  ; .equ is like #define in C:
+                                 ;.equ Segments_P = PORTD
+                                 ;
+                                 ;LDI R20, $35
+                                 ;LDI R21, $6
+                                 ;LDI R18, 1
+                                 ;LOAD_CONST R16,R17,1000
+                                 ;STS 0x60, R16
+                                 ;STS 0x61, R17
+                                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie
+                                 ;LDI R24, 0x3f ;"0"
+                                 ;LDI R25, 0x10 ;4cyfra
+                                 ;LDI R26, 0x1e
+                                 ;
+                                 ;OUT DDRD, R23
+                                 ;OUT DDRB, R26
+                                 ;
+                                 ;Zero: OUT Segments_P, R24
+                                 ;	OUT Digits_P, R25
+                                 ;	LDI R25, 0x8 ;3cyfra
+                                 ;	RCALL DelayInMs 
+                                 ;	OUT Segments_P, R24
+                                 ;	OUT Digits_P, R25
+                                 ;	LDI R25, 0x4 ;2 cyfra
+                                 ;	RCALL DelayInMs 
+                                 ;	OUT Segments_P, R24
+                                 ;	OUT Digits_P, R25
+                                 ;	LDI R25, 0x2 ; 1 cyfra
+                                 ;	RCALL DelayInMs
+                                 ;	OUT Segments_P, R24
+                                 ;	OUT Digits_P, R25
+                                 ;	LDI R25, 0x10 ;4cyfra
+                                 ;	RCALL DelayInMs
+                                 ;RJMP Zero
+                                 ;
+                                 ;DelayInMs:
+                                 ;	RCALL DelayOneMs 
+                                 ;	
+                                 ;	Timer: CLN 
+                                 ;	CLC
+                                 ;	SBC R16,R18
+                                 ;	BRBS 1, OldTimer
+                                 ;	BRBS 0, OldTimer
+                                 ;	RJMP DelayInMs
+                                 ;
+                                 ;	OldTimer: CLN 
+                                 ;	SUB R17,R18
+                                 ;	BRBS 2, DelayEnd
+                                 ;	RJMP Timer
+                                 ;
+                                 ;
+                                 ;DelayEnd: 
+                                 ;	LDS R16, 0x60
+                                 ;	LDS R17, 0x61
+                                 ;	RET
+                                 ;
+                                 ;		DelayOneMs:
+                                 ;			PUSH R21
+                                 ;			PUSH R20
+                                 ;
+                                 ;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                                 ;			NOP
+                                 ;			BRBS 1, Loop2
+                                 ;			RJMP Loop1
+                                 ;
+                                 ;			Loop2: DEC R21
+                                 ;			BRBS 2, End 
+                                 ;			RJMP Loop1
+                                 ;
+                                 ;			End: 
+                                 ;			POP R20
+                                 ;			POP R21
+                                 ;			CLN
+                                 ;			RET
+                                 ;
+                                 ;cw30b
+                                 ;.MACRO LOAD_CONST  
+                                 ;LDI @0, LOW(@2)
+                                 ;LDI @1, HIGH(@2)
+                                 ;.ENDMACRO
+                                 ;
+                                 ;.equ Digits_P = PORTB  ; .equ is like #define in C:
+                                 ;.equ Segments_P = PORTD
+                                 ;
+                                 ;LDI R20, $35
+                                 ;LDI R21, $6
+                                 ;LDI R18, 1
+                                 ;LOAD_CONST R16,R17,1000
+                                 ;STS 0x60, R16
+                                 ;STS 0x61, R17
+                                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie
+                                 ;LDI R24, 0x3f ;"0"
+                                 ;LDI R25, 0x10 ;4cyfra
+                                 ;LDI R26, 0x1e
+                                 ;
+                                 ;OUT DDRD, R23
+                                 ;OUT DDRB, R26
+                                 ;Zero: OUT Segments_P, R24
+                                 ;OUT Digits_P, R25
+                                 ;LDI R25, 0x8 ;3cyfra
+                                 ;RCALL DelayInMs 
+                                 ;OUT Segments_P, R24
+                                 ;OUT Digits_P, R25
+                                 ;LDI R25, 0x4 ;2 cyfra
+                                 ;RCALL DelayInMs 
+                                 ;OUT Segments_P, R24
+                                 ;OUT Digits_P, R25
+                                 ;LDI R25, 0x2 ; 1 cyfra
+                                 ;RCALL DelayInMs
+                                 ;OUT Segments_P, R24
+                                 ;OUT Digits_P, R25
+                                 ;LDI R25, 0x10 ;4cyfra
+                                 ;RCALL DelayInMs
+                                 ;RJMP Zero
+                                 ;
+                                 ;DelayInMs:
+                                 ;	RCALL DelayOneMs 
+                                 ;	
+                                 ;	Timer: CLN 
+                                 ;	CLC
+                                 ;	SBC R16,R18
+                                 ;	BRBS 1, OldTimer
+                                 ;	BRBS 0, OldTimer
+                                 ;	RJMP DelayInMs
+                                 ;
+                                 ;	OldTimer: CLN 
+                                 ;	SUB R17,R18
+                                 ;	BRBS 2, DelayEnd
+                                 ;	RJMP Timer
+                                 ;
+                                 ;
+                                 ;DelayEnd: 
+                                 ;	LDS R16, 0x60
+                                 ;	LDS R17, 0x61
+                                 ;	RET
+                                 ;
+                                 ;		DelayOneMs:
+                                 ;			PUSH R21
+                                 ;			PUSH R20
+                                 ;
+                                 ;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                                 ;			NOP
+                                 ;			BRBS 1, Loop2
+                                 ;			RJMP Loop1
+                                 ;
+                                 ;			Loop2: DEC R21
+                                 ;			BRBS 2, End 
+                                 ;			RJMP Loop1
+                                 ;
+                                 ;			End: 
+                                 ;			POP R20
+                                 ;			POP R21
+                                 ;			CLN
+                                 ;			RET
+                                 ;
+                                 ;cw30a
+                                 ;.MACRO LOAD_CONST 
+                                 ;LDI @0, LOW(@2)
+                                 ;LDI @1, HIGH(@2)
+                                 ;.ENDMACRO
+                                 ;
+                                 ;LDI R20, $35
+                                 ;LDI R21, $6
+                                 ;LDI R18, 1
+                                 ;LOAD_CONST R16,R17,250
+                                 ;STS 0x60, R16
+                                 ;STS 0x61, R17
+                                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie
+                                 ;LDI R24, 0x3f ;"0"
+                                 ;LDI R25, 0x10 ;4cyfra
+                                 ;LDI R26, 0x1e
+                                 ;
+                                 ;OUT DDRD, R23
+                                 ;OUT DDRB, R26
+                                 ;Zero: OUT PORTD, R24
+                                 ;OUT PORTB, R25
+                                 ;LDI R25, 0x8 ;3cyfra
+                                 ;RCALL DelayInMs 
+                                 ;OUT PORTD, R24
+                                 ;OUT PORTB, R25
+                                 ;LDI R25, 0x4 ;2 cyfra
+                                 ;RCALL DelayInMs 
+                                 ;OUT PORTD, R24
+                                 ;OUT PORTB, R25
+                                 ;LDI R25, 0x2 ; 1 cyfra
+                                 ;RCALL DelayInMs
+                                 ;OUT PORTD, R24
+                                 ;OUT PORTB, R25
+                                 ;LDI R25, 0x10 ;4cyfra
+                                 ;RCALL DelayInMs
+                                 ;RJMP Zero
+                                 ;
+                                 ;DelayInMs:
+                                 ;	RCALL DelayOneMs 
+                                 ;	
+                                 ;	Timer: CLN 
+                                 ;	CLC
+                                 ;	SBC R16,R18
+                                 ;	BRBS 1, OldTimer
+                                 ;	BRBS 0, OldTimer
+                                 ;	RJMP DelayInMs
+                                 ;
+                                 ;	OldTimer: CLN 
+                                 ;	SUB R17,R18
+                                 ;	BRBS 2, DelayEnd
+                                 ;	RJMP Timer
+                                 ;
+                                 ;
+                                 ;DelayEnd: 
+                                 ;	LDS R16, 0x60
+                                 ;	LDS R17, 0x61
+                                 ;	RET
+                                 ;
+                                 ;	DelayOneMs:
+                                 ;		PUSH R21
+                                 ;		PUSH R20
+                                 ;
+                                 ;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                                 ;		NOP
+                                 ;		BRBS 1, Loop2
+                                 ;		RJMP Loop1
+                                 ;
+                                 ;		Loop2: DEC R21
+                                 ;		BRBS 2, End 
+                                 ;		RJMP Loop1
+                                 ;
+                                 ;		End: 
+                                 ;		POP R20
+                                 ;		POP R21
+                                 ;		CLN
+                                 ;		RET
+                                 ;
+                                 ;cw29
+                                 ;.MACRO LOAD_CONST 
+                                 ;LDI @0, LOW(@2)
+                                 ;LDI @1, HIGH(@2)
+                                 ;.ENDMACRO
+                                 ;
+                                 ;LDI R20, $35
+                                 ;LDI R21, $6
+                                 ;LDI R18, 1
+                                 ;LOAD_CONST R16,R17,250
+                                 ;STS 0x60, R16
+                                 ;STS 0x61, R17
+                                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie
+                                 ;LDI R24, 0x3f ;"0"
+                                 ;LDI R25, 0x6 ;"1"
+                                 ;LDI R26, 0x2
+                                 ;
+                                 ;OUT DDRD, R23
+                                 ;OUT DDRB, R26
+                                 ;OUT PORTB, R26
+                                 ;Zero: OUT PORTD, R24
+                                 ;RCALL DelayInMs 
+                                 ;OUT PORTD, R25
+                                 ;RCALL DelayInMs 
+                                 ;RJMP Zero
+                                 ;
+                                 ;DelayInMs:
+                                 ;	RCALL DelayOneMs 
+                                 ;	
+                                 ;	Timer: CLN 
+                                 ;	CLC
+                                 ;	SBC R16,R18
+                                 ;	BRBS 1, OldTimer
+                                 ;	BRBS 0, OldTimer
+                                 ;	RJMP DelayInMs
+                                 ;
+                                 ;	OldTimer: CLN 
+                                 ;	SUB R17,R18
+                                 ;	BRBS 2, DelayEnd
+                                 ;	RJMP Timer
+                                 ;
+                                 ;
+                                 ;DelayEnd: 
+                                 ;	LDS R16, 0x60
+                                 ;	LDS R17, 0x61
+                                 ;	RET
+                                 ;
+                                 ;	DelayOneMs:
+                                 ;		PUSH R21
+                                 ;		PUSH R20
+                                 ;
+                                 ;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                                 ;		NOP
+                                 ;		BRBS 1, Loop2
+                                 ;		RJMP Loop1
+                                 ;
+                                 ;		Loop2: DEC R21
+                                 ;		BRBS 2, End 
+                                 ;		RJMP Loop1
+                                 ;
+                                 ;		End: 
+                                 ;		POP R20
+                                 ;		POP R21
+                                 ;		CLN
+                                 ;		RET
+                                 ;
+                                 ;cw28
+                                 ;LDI R18, $1e
+                                 ;LDI R19, $0
+                                 ;OUT DDRB, R18
+                                 ;OUT PORTB, R18
+                                 ;OUT PORTB, R19
+                                 ;RJMP 3
+                                 
+                                 ;cw27bcw
+                                 ;.MACRO LOAD_CONST 
+                                 ;LDI @0, LOW(@2)
+                                 ;LDI @1, HIGH(@2)
+                                 ;.ENDMACRO
+                                 ;
+                                 ;LDI R20, $35
+                                 ;LDI R21, $6
+                                 ;LOAD_CONST R16,R17,257
+                                 ;LDI R18, 1
+                                 ;RCALL DelayInMs 
+                                 ;NOP
+                                 ;RJMP 0
+                                 ;
+                                 ;DelayInMs:
+                                 ;	RCALL DelayOneMs 
+                                 ;	
+                                 ;	Timer: CLN 
+                                 ;	CLC
+                                 ;	SBC R16,R18
+                                 ;	BRBS 1, OldTimer
+                                 ;	BRBS 0, OldTimer
+                                 ;	RJMP DelayInMs
+                                 ;
+                                 ;	OldTimer: CLN 
+                                 ;	SUB R17,R18
+                                 ;	BRBS 2, DelayEnd
+                                 ;	RJMP Timer
+                                 ;
+                                 ;
+                                 ;DelayEnd: RET
+                                 ;
+                                 ;	DelayOneMs:
+                                 ;		PUSH R21
+                                 ;		PUSH R20
+                                 ;
+                                 ;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                                 ;		NOP
+                                 ;		BRBS 1, Loop2
+                                 ;		RJMP Loop1
+                                 ;
+                                 ;		Loop2: DEC R21
+                                 ;		BRBS 2, End 
+                                 ;		RJMP Loop1
+                                 ;
+                                 ;		End: 
+                                 ;		POP R20
+                                 ;		POP R21
+                                 ;		CLN
+                                 ;		RET
+                                 ;1ms ~~ 999.63 us
+                                 
+                                 ;cw27b
+                                 ;LDI R20, $35
+                                 ;LDI R21, $6
+                                 ;LDI R16, 1
+                                 ;LDI R17, 0
+                                 ;LDI R18, 1
+                                 ;RCALL DelayInMs 
+                                 ;NOP
+                                 ;RJMP 0
+                                 ;
+                                 ;DelayInMs:
+                                 ;	RCALL DelayOneMs 
+                                 ;
+                                 ;	PUSH R17
+                                 ;	PUSH R16
+                                 ;
+                                 ;	Timer: CLN 
+                                 ;	POP R16
+                                 ;	POP R17
+                                 ;	SUB R16,R18
+                                 ;	BRBS 1, OldTimer
+                                 ;	BRBS 0, OldTimer
+                                 ;	RJMP DelayInMs
+                                 ;
+                                 ;	OldTimer: CLN 
+                                 ;	SUB R17,R18
+                                 ;	BRBS 2, DelayEnd
+                                 ;	RJMP Timer
+                                 ;
+                                 ;
+                                 ;DelayEnd: RET
+                                 ;
+                                 ;	DelayOneMs:
+                                 ;		PUSH R21
+                                 ;		PUSH R20
+                                 ;
+                                 ;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                                 ;		NOP
+                                 ;		BRBS 1, Loop2
+                                 ;		RJMP Loop1
+                                 ;
+                                 ;		Loop2: DEC R21
+                                 ;		BRBS 2, End 
+                                 ;		RJMP Loop1
+                                 ;
+                                 ;		End: 
+                                 ;		POP R20
+                                 ;		POP R21
+                                 ;		CLN
+                                 ;		RET
                                  ;1ms ~~ 999.63 us
                                  
                                  ;cw27a
@@ -1182,9 +1626,9 @@ counted separately from r26..r31 here.
 x  :   0 y  :   0 z  :   0 r0 :   0 r1 :   0 r2 :   0 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
 r13:   0 r14:   0 r15:   0 r16:   4 r17:   4 r18:   3 r19:   0 r20:   4 
-r21:   4 r22:   0 r23:   0 r24:   0 r25:   0 r26:   0 r27:   0 r28:   0 
+r21:   4 r22:   0 r23:   2 r24:   5 r25:   9 r26:   2 r27:   0 r28:   0 
 r29:   0 r30:   0 r31:   0 
-Registers used: 5 out of 35 (14.3%)
+Registers used: 9 out of 35 (25.7%)
 
 "ATtiny2313" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 
@@ -1192,25 +1636,25 @@ andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   5
 brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
 brne  :   0 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 cbi   :   0 cbr   :   0 clc   :   0 
+brvs  :   0 bset  :   0 bst   :   0 cbi   :   0 cbr   :   0 clc   :   1 
 clh   :   0 cli   :   0 cln   :   3 clr   :   0 cls   :   0 clt   :   0 
 clv   :   0 clz   :   0 com   :   0 cp    :   0 cpc   :   0 cpi   :   0 
 cpse  :   0 dec   :   2 eor   :   0 icall :   0 ijmp  :   0 in    :   0 
-inc   :   0 ld    :   0 ldd   :   0 ldi   :   5 lds   :   0 lpm   :   0 
-lsl   :   0 lsr   :   0 mov   :   0 movw  :   0 neg   :   0 nop   :   2 
-or    :   0 ori   :   0 out   :   0 pop   :   4 push  :   4 rcall :   2 
-ret   :   2 reti  :   0 rjmp  :   5 rol   :   0 ror   :   0 sbc   :   0 
+inc   :   0 ld    :   0 ldd   :   0 ldi   :  13 lds   :   2 lpm   :   0 
+lsl   :   0 lsr   :   0 mov   :   0 movw  :   0 neg   :   0 nop   :   1 
+or    :   0 ori   :   0 out   :  10 pop   :   2 push  :   2 rcall :   5 
+ret   :   2 reti  :   0 rjmp  :   5 rol   :   0 ror   :   0 sbc   :   1 
 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 sbiw  :   0 sbr   :   0 
 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 sei   :   0 sen   :   0 
 ser   :   0 ses   :   0 set   :   0 sev   :   0 sez   :   0 sleep :   0 
-spm   :   0 st    :   0 std   :   0 sts   :   0 sub   :   2 subi  :   0 
+spm   :   0 st    :   0 std   :   0 sts   :   2 sub   :   1 subi  :   0 
 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 11 out of 105 (10.5%)
+Instructions used: 16 out of 105 (15.2%)
 
 "ATtiny2313" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000048     72      0     72    2048   3.5%
+[.cseg] 0x000000 0x00007a    122      0    122    2048   6.0%
 [.dseg] 0x000060 0x000060      0      0      0     128   0.0%
 [.eseg] 0x000000 0x000000      0      0      0     128   0.0%
 
