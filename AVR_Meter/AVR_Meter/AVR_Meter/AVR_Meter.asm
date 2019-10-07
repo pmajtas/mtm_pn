@@ -11,6 +11,8 @@
 ; Created: 2019-10-01 20:15:00
 ; Author : Moj 
 
+
+
 ;cw35
 ;.MACRO LOAD_CONST  
 ;LDI @0, LOW(@2)
