@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm Tue Oct 08 10:19:56 2019
+AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm Tue Oct 08 23:11:22 2019
 
 
 EQU  SIGNATURE_000 0000001e
@@ -448,20 +448,38 @@ EQU  USI_OVFaddr  00000010
 EQU  ERDYaddr     00000011
 EQU  WDTaddr      00000012
 EQU  INT_VECTORS_SIZE 00000013
+DEF  PulseEdgeCtrL r0
+DEF  PulseEdgeCtrH r1
 DEF  Dig0         r22
 DEF  Dig1         r23
 DEF  Dig2         r24
 DEF  Dig3         r25
-CSEG NumberToDigits 00000006
-CSEG Comp0        00000006
-CSEG Res0         0000000e
-CSEG Subs0        0000000a
-CSEG Comp1        00000012
-CSEG Res1         0000001a
-CSEG Subs1        00000016
-CSEG Comp2        0000001e
-CSEG Res2         00000026
-CSEG Subs2        00000022
-CSEG Comp3        0000002a
-CSEG Res3         00000032
-CSEG Subs3        0000002e
+EQU  Digits_P     00000018
+EQU  Segments_P   00000012
+CSEG MainLoop     00000014
+CSEG NumberToDigits 0000005e
+CSEG Start        0000001c
+CSEG DigitTo7segCode 00000052
+CSEG DelayInMs    00000035
+CSEG OneMs        00000039
+CSEG DelayOneMs   00000045
+CSEG Timer        0000003a
+CSEG OldTimer     00000040
+CSEG DelayEnd     00000044
+CSEG Loop1        00000047
+CSEG Loop2        0000004b
+CSEG End          0000004e
+CSEG Table        00000059
+CSEG Comp0        00000061
+CSEG Res0         00000069
+CSEG Subs0        00000065
+CSEG Comp1        0000006d
+CSEG Res1         00000075
+CSEG Subs1        00000071
+CSEG Comp2        00000079
+CSEG Res2         00000081
+CSEG Subs2        0000007d
+CSEG Divide       00000088
+CSEG Comp         0000008a
+CSEG Res          00000091
+CSEG Subs         0000008e

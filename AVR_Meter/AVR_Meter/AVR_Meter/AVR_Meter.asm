@@ -10,33 +10,169 @@
 ; Created: 2019-10-01 20:15:00
 ; Author : Moj 
 
-;cw43
+;cw44
+
+.def PulseEdgeCtrL=R0
+.def PulseEdgeCtrH=R1
 
 .def Dig0=R22 ; Digits temps
 .def Dig1=R23 ;
 .def Dig2=R24 ;
 .def Dig3=R25 ;
 
-LDI R16, LOW(4965)
-LDI R17, HIGH(4965)
-LDI R18, LOW(1000)
-LDI R19, HIGH(1000)
-LDI R22, 1
-MOV R0, R22
+.MACRO LOAD_CONST  
+	LDI @0, LOW(@2)
+	LDI @1, HIGH(@2)
+.ENDMACRO
+
+.MACRO SET_DIGIT 
+	LDI R17, (2<<@0)
+	RCALL DigitTo7segCode
+	OUT Segments_P, R27
+	OUT Digits_P, R17
+	RCALL DelayInMs
+.ENDMACRO
+
+.equ Digits_P = PORTB  ; .equ is like #define in C:
+.equ Segments_P = PORTD
+
+LDI R20, $35
+LDI R21, $6
+LDI R18, 1
+MOV R4, R18
+LDI R19, 0
+CLR R3
+LOAD_CONST R16,R17, 10
+STS 0x60, R16
+STS 0x61, R17
+LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+LDI R26, 0x1e ; otworzenie pinów 1-4
+
+OUT DDRD, R23
+OUT DDRB, R26
+CLR R29
+CLR R28
+CLR R27
+CLR R24
+
+MainLoop: 
+	CLC
+	ADD PulseEdgeCtrL, R4
+	ADC PulseEdgeCtrH, R3
+	STS 0x62, PulseEdgeCtrL
+	STS 0x63, PulseEdgeCtrH
+
+	//RCALL Divide
+	RCALL NumberToDigits
+
+	Start: 
+	MOV R27, Dig3
+	SET_DIGIT 3
+
+	MOV R27, Dig2
+	SET_DIGIT 2
+
+	MOV R27, Dig1
+	SET_DIGIT 1
+
+	MOV R27, Dig0
+	SET_DIGIT 0
+
+	/*INC R29
+	CPI R29, 10
+	BRNE Start
+	CLR R29
+
+	INC R28
+	CPI R28,10
+	BRNE Start
+	CLR R28
+
+	INC R27
+	CPI R27,10
+	BRNE Start
+	CLR R27
+
+	INC R24
+	CPI R24,10
+	BRNE Start
+	CLR R24*/
+
+
+RJMP MainLoop
+
+
+DelayInMs:
+	LDS R16, 0x60
+	LDS R17, 0x61
+
+	OneMs: RCALL DelayOneMs 
+	
+	Timer: CLN 
+	CLC
+	SBC R16,R4
+	BRBS 1, OldTimer
+	BRBS 0, OldTimer
+	RJMP OneMs
+
+	OldTimer: CLN 
+	SUB R17,R4
+	BRBS 2, DelayEnd
+	RJMP Timer
+
+
+DelayEnd: RET
+
+		DelayOneMs:
+			PUSH R21
+			PUSH R20
+
+			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+			NOP
+			BRBS 1, Loop2
+			RJMP Loop1
+
+			Loop2: DEC R21
+			BRBS 2, End 
+			RJMP Loop1
+
+			End: 
+			POP R20
+			POP R21
+			CLN
+		RET
+
+DigitTo7segCode:
+		CLR R3
+		LDI R30, Low(Table<<1)
+		LDI R31, High(Table<<1)
+
+		ADD R30, R27
+		ADC R31, R3
+		LPM R27, Z 
+			
+	RET
+	Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
 
 
 NumberToDigits:
-	
+	CLR R29
+	LDI R18, LOW(1000)
+	LDI R19, HIGH(1000)
+	//MOV R10, PulseEdgeCtrL
+	//MOV R11, PulseEdgeCtrH
+
 	Comp0:
-	CP R16, R18
-	CPC R17,R19
+	CP PulseEdgeCtrL, R18
+	CPC PulseEdgeCtrH,R19
 	BRLO Res0
 	RJMP Subs0
 
 	Subs0:
-	SUB R16,R18
-	SBC R17,R19
-	ADD R29, R0	
+	
+	SUB PulseEdgeCtrL,R18
+	SBC PulseEdgeCtrH,R19
+	ADD R29, R4
 	RJMP Comp0
 
 	Res0:
@@ -46,15 +182,15 @@ NumberToDigits:
 	CLR R29
 
 	Comp1:
-	CP R16, R18
-	CPC R17,R19
+	CP PulseEdgeCtrL, R18
+	CPC PulseEdgeCtrH,R19
 	BRLO Res1
 	RJMP Subs1
 
 	Subs1:
-	SUB R16,R18
-	SBC R17,R19
-	ADD R29, R0	
+	SUB PulseEdgeCtrL,R18
+	SBC PulseEdgeCtrH,R19
+	ADD R29, R4	
 	RJMP Comp1
 
 	Res1:
@@ -64,40 +200,158 @@ NumberToDigits:
 	CLR R29
 
 	Comp2:
-	CP R16, R18
-	CPC R17,R19
+	CP PulseEdgeCtrL, R18
+	CPC PulseEdgeCtrH,R19
 	BRLO Res2
 	RJMP Subs2
 
 	Subs2:
-	SUB R16,R18
-	SBC R17,R19
-	ADD R29, R0	
+	SUB PulseEdgeCtrL,R18
+	SBC PulseEdgeCtrH,R19
+	ADD R29, R4
 	RJMP Comp2
 
 	Res2:
 	MOV Dig2, R29 //wynik
-	LDI R18, LOW(1)
-	LDI R19, HIGH(1)
-	CLR R29
+	MOV Dig3, PulseEdgeCtrL
+	LDS PulseEdgeCtrL, 0x62
+	LDS PulseEdgeCtrH, 0x63
+	;LDI R18, LOW(1)
+	;LDI R19, HIGH(1)
+	;CLR R29
 
-	Comp3:
-	CP R16, R18
-	CPC R17,R19
-	BRLO Res3
-	RJMP Subs3
+	;Comp3:
+	;CP PulseEdgeCtrL, R18
+	;CPC PulseEdgeCtrH,R19
+	;;BRLO Res3
+	;RJMP Subs3
 
-	Subs3:
-	SUB R16,R18
-	SBC R17,R19
-	ADD R29, R0	
-	RJMP Comp3
+	;Subs3:
+	;SUB PulseEdgeCtrL,R18 //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	;SBC PulseEdgeCtrH,R19
+	;ADD R29, R4	
+	;RJMP Comp3
 
-	Res3:
-	MOV Dig3, R29 //wynik
-	CLR R29
+	;Res3:
+	;MOV Dig3, R29 //wynik
+	;CLR R29
 	
 RET
+
+	Divide:
+		LDI R18, LOW(10000)
+		LDI R19, HIGH(1000)
+		Comp:
+		CP PulseEdgeCtrL, R18
+		CPC PulseEdgeCtrH,R19
+		BRLO Res
+		RJMP Subs
+	
+		Subs:
+		SUB PulseEdgeCtrL,R18
+		SBC PulseEdgeCtrH,R19
+		;ADD R24, R4 
+		;ADC R25,R3
+		RJMP Comp
+	
+		Res:/*
+		MOV R18,R16//reszta
+		MOV R19,R17//
+		MOV R16, R24 //wynik
+		MOV R17, R25// */
+		
+	RET
+
+
+
+;cw43
+
+;.def Dig0=R22 ; Digits temps
+;.def Dig1=R23 ;
+;.def Dig2=R24 ;
+;.def Dig3=R25 ;
+;
+;LDI R16, LOW(4965)
+;LDI R17, HIGH(4965)
+;LDI R18, LOW(1000)
+;LDI R19, HIGH(1000)
+;LDI R22, 1
+;MOV R0, R22
+;
+;
+;NumberToDigits:
+;	
+;	Comp0:
+;	CP R16, R18
+;	CPC R17,R19
+;	BRLO Res0
+;	RJMP Subs0
+;
+;	Subs0:
+;	SUB R16,R18
+;	SBC R17,R19
+;	ADD R29, R0	
+;	RJMP Comp0
+;
+;	Res0:
+;	MOV Dig0, R29 //wynik
+;	LDI R18, LOW(100)
+;	LDI R19, HIGH(100)
+;	CLR R29
+;
+;	Comp1:
+;	CP R16, R18
+;	CPC R17,R19
+;	BRLO Res1
+;	RJMP Subs1
+;
+;	Subs1:
+;	SUB R16,R18
+;	SBC R17,R19
+;	ADD R29, R0	
+;	RJMP Comp1
+;
+;	Res1:
+;	MOV Dig1, R29
+;	LDI R18, LOW(10)
+;	LDI R19, HIGH(10)
+;	CLR R29
+;
+;	Comp2:
+;	CP R16, R18
+;	CPC R17,R19
+;	BRLO Res2
+;	RJMP Subs2
+;
+;	Subs2:
+;	SUB R16,R18
+;	SBC R17,R19
+;	ADD R29, R0	
+;	RJMP Comp2
+;
+;	Res2:
+;	MOV Dig2, R29 //wynik
+;	LDI R18, LOW(1)
+;	LDI R19, HIGH(1)
+;	CLR R29
+;
+;	Comp3:
+;	CP R16, R18
+;	CPC R17,R19
+;	BRLO Res3
+;	RJMP Subs3
+;
+;	Subs3:
+;	SUB R16,R18
+;	SBC R17,R19
+;	ADD R29, R0	
+;	RJMP Comp3
+;
+;	Res3:
+;	MOV Dig3, R29 //wynik
+;	CLR R29
+;	
+;RET
 
 ;cw42
 ;*** Divide ***
