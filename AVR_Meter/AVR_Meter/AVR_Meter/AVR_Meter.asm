@@ -5,13 +5,621 @@
  *   Author: student
  */ 
 
- ;
 ; AssemblerApplication1.asm
 ;
 ; Created: 2019-10-01 20:15:00
 ; Author : Moj 
 
+;cw43
 
+.def Dig0=R22 ; Digits temps
+.def Dig1=R23 ;
+.def Dig2=R24 ;
+.def Dig3=R25 ;
+
+LDI R16, LOW(4965)
+LDI R17, HIGH(4965)
+LDI R18, LOW(1000)
+LDI R19, HIGH(1000)
+LDI R22, 1
+MOV R0, R22
+
+
+NumberToDigits:
+	
+	Comp0:
+	CP R16, R18
+	CPC R17,R19
+	BRLO Res0
+	RJMP Subs0
+
+	Subs0:
+	SUB R16,R18
+	SBC R17,R19
+	ADD R29, R0	
+	RJMP Comp0
+
+	Res0:
+	MOV Dig0, R29 //wynik
+	LDI R18, LOW(100)
+	LDI R19, HIGH(100)
+	CLR R29
+
+	Comp1:
+	CP R16, R18
+	CPC R17,R19
+	BRLO Res1
+	RJMP Subs1
+
+	Subs1:
+	SUB R16,R18
+	SBC R17,R19
+	ADD R29, R0	
+	RJMP Comp1
+
+	Res1:
+	MOV Dig1, R29
+	LDI R18, LOW(10)
+	LDI R19, HIGH(10)
+	CLR R29
+
+	Comp2:
+	CP R16, R18
+	CPC R17,R19
+	BRLO Res2
+	RJMP Subs2
+
+	Subs2:
+	SUB R16,R18
+	SBC R17,R19
+	ADD R29, R0	
+	RJMP Comp2
+
+	Res2:
+	MOV Dig2, R29 //wynik
+	LDI R18, LOW(1)
+	LDI R19, HIGH(1)
+	CLR R29
+
+	Comp3:
+	CP R16, R18
+	CPC R17,R19
+	BRLO Res3
+	RJMP Subs3
+
+	Subs3:
+	SUB R16,R18
+	SBC R17,R19
+	ADD R29, R0	
+	RJMP Comp3
+
+	Res3:
+	MOV Dig3, R29 //wynik
+	CLR R29
+	
+RET
+
+;cw42
+;*** Divide ***
+; X/Y -> Qotient,Reminder
+; Input/Output: R16-19, Internal R24-25
+
+; inputs
+/*.def XL=R16 ; divident
+.def XH=R17
+.def YL=R18 ; divider
+.def YH=R19
+
+; outputs
+.def RL=R16 ; reminder
+.def RH=R17
+.def QL=R18 ; quotient
+.def QH=R19
+
+; internal
+.def QCtrL=R24
+.def QCtrH=R25*/
+
+;LDI R16, LOW(1200)
+;LDI R17, HIGH(1200)
+;LDI R18, LOW(500)
+;LDI R19, HIGH(500)
+;CLR R1
+;LDI R22, 1
+;MOV R0, R22
+;
+;Divide:
+;	
+;	Comp:
+;	CP R16, R18
+;	CPC R17,R19
+;	BRLO Res
+;	RJMP Subs
+;
+;	Subs:
+;	SUB R16,R18
+;	SBC R17,R19
+;	ADD R24, R0
+;	ADC R25,R1
+;	RJMP Comp
+;
+;	Res:
+;	MOV R18,R16//reszta
+;	MOV R19,R17//
+;	MOV R16, R24 //wynik
+;	MOV R17, R25//
+;	
+;RET
+;
+;
+;cw41
+;.MACRO LOAD_CONST  
+;	LDI @0, LOW(@2)
+;	LDI @1, HIGH(@2)
+;.ENDMACRO
+;
+;.MACRO SET_DIGIT 
+;	LDI R17, (2<<@0)
+;	RCALL DigitTo7segCode
+;	OUT Segments_P, R26
+;	OUT Digits_P, R17
+;	RCALL DelayInMs
+;.ENDMACRO
+;
+;.equ Digits_P = PORTB  ; .equ is like #define in C:
+;.equ Segments_P = PORTD
+;
+;LDI R20, $35
+;LDI R21, $6
+;LDI R18, 1
+;LDI R19, 0
+;LOAD_CONST R16,R17, 5
+;STS 0x60, R16
+;STS 0x61, R17
+;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+;LDI R26, 0x1e ; otworzenie pinów 1-4
+;
+;OUT DDRD, R23
+;OUT DDRB, R26
+;CLR R29
+;CLR R28
+;CLR R27
+;CLR R24
+;
+;MainLoop: 
+;	Start: 
+;	MOV R26, R29
+;	SET_DIGIT 3
+;	MOV R26, R28
+;	SET_DIGIT 2
+;	MOV R26,R27
+;	SET_DIGIT 1
+;	MOV R26, R24
+;	SET_DIGIT 0
+;
+;
+;	INC R29
+;	CPI R29, 10
+;	BRNE Start
+;	CLR R29
+;
+;	INC R28
+;	CPI R28,10
+;	BRNE Start
+;	CLR R28
+;
+;	INC R27
+;	CPI R27,10
+;	BRNE Start
+;	CLR R27
+;
+;	INC R24
+;	CPI R24,10
+;	BRNE Start
+;	CLR R24
+;
+;
+;RJMP MainLoop
+;
+;
+;DelayInMs:
+;	LDS R16, 0x60
+;	LDS R17, 0x61
+;
+;	OneMs: RCALL DelayOneMs 
+;	
+;	Timer: CLN 
+;	CLC
+;	SBC R16,R18
+;	BRBS 1, OldTimer
+;	BRBS 0, OldTimer
+;	RJMP OneMs
+;
+;	OldTimer: CLN 
+;	SUB R17,R18
+;	BRBS 2, DelayEnd
+;	RJMP Timer
+;
+;
+;DelayEnd: RET
+;
+;		DelayOneMs:
+;			PUSH R21
+;			PUSH R20
+;
+;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+;			NOP
+;			BRBS 1, Loop2
+;			RJMP Loop1
+;
+;			Loop2: DEC R21
+;			BRBS 2, End 
+;			RJMP Loop1
+;
+;			End: 
+;			POP R20
+;			POP R21
+;			CLN
+;		RET
+;
+;	DigitTo7segCode:
+;		LDI R25, 0
+;		LDI R30, Low(Table<<1)
+;		LDI R31, High(Table<<1)
+;
+;		ADD R30, R26
+;		ADC R31, R25
+;		LPM R26, Z 
+;			
+;	RET
+;	Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
+;
+;
+;cw40
+;.MACRO LOAD_CONST  
+;	LDI @0, LOW(@2)
+;	LDI @1, HIGH(@2)
+;.ENDMACRO
+;
+;.MACRO SET_DIGIT 
+;	LDI R17, (2<<@0) 
+;	;LDI R26, 0
+;	RCALL DigitTo7segCode
+;	OUT Segments_P, R26
+;	OUT Digits_P, R17
+;	RCALL DelayInMs
+;.ENDMACRO
+;
+;.equ Digits_P = PORTB  ; .equ is like #define in C:
+;.equ Segments_P = PORTD
+;
+;LDI R20, $35
+;LDI R21, $6
+;LDI R18, 1
+;LDI R19, 0
+;LOAD_CONST R16,R17, 1000
+;STS 0x60, R16
+;STS 0x61, R17
+;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+;LDI R26, 0x1e ; otworzenie pinów 1-4;
+;
+;OUT DDRD, R23
+;OUT DDRB, R26
+;CLR R29
+;
+;MainLoop: 
+;	Start: MOV R26, R29
+;	SET_DIGIT 3
+;	INC R29
+;	CPI R29, 10
+;	BRNE Start
+;	CLR R29
+;
+;RJMP MainLoop
+;
+;
+;DelayInMs:
+;	LDS R16, 0x60
+;	LDS R17, 0x61
+;
+;	OneMs: RCALL DelayOneMs 
+;	
+;	Timer: CLN 
+;	CLC
+;	SBC R16,R18
+;	BRBS 1, OldTimer
+;	BRBS 0, OldTimer
+;	RJMP OneMs
+;
+;	OldTimer: CLN 
+;	SUB R17,R18
+;	BRBS 2, DelayEnd
+;	RJMP Timer
+;
+;
+;DelayEnd: RET
+;
+;		DelayOneMs:
+;			PUSH R21
+;			PUSH R20
+;
+;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+;			NOP
+;			BRBS 1, Loop2
+;			RJMP Loop1
+;
+;			Loop2: DEC R21
+;			BRBS 2, End 
+;			RJMP Loop1
+;
+;			End: 
+;			POP R20
+;			POP R21
+;			CLN
+;		RET
+;
+;	DigitTo7segCode:
+;		LDI R25, 0
+;		LDI R30, Low(Table<<1)
+;		LDI R31, High(Table<<1)
+;
+;		ADD R30, R26
+;		ADC R31, R25
+;		LPM R26, Z 
+;			
+;	RET
+;	Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
+;
+;cw39b
+;.MACRO LOAD_CONST  
+;	LDI @0, LOW(@2)
+;	LDI @1, HIGH(@2)
+;.ENDMACRO
+;
+;.MACRO SET_DIGIT
+;	LDI R17, 2<<@0 ; 1 cyfra
+;	LDI R26, 7
+;	RCALL DigitTo7segCode
+;	OUT Segments_P, R26
+;	OUT Digits_P, R17
+;	RCALL DelayInMs
+;.ENDMACRO
+;
+;.equ Digits_P = PORTB  ; .equ is like #define in C:
+;.equ Segments_P = PORTD
+;
+;LDI R20, $35
+;LDI R21, $6
+;LDI R18, 1
+;LOAD_CONST R16,R17, 5
+;STS 0x60, R16
+;STS 0x61, R17
+;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+;LDI R26, 0x1e ; otworzenie pinów 1-4
+;
+;
+;OUT DDRD, R23
+;OUT DDRB, R26
+;
+;MainLoop: 
+;
+;	SET_DIGIT 0
+;	SET_DIGIT 1
+;	SET_DIGIT 2
+;	SET_DIGIT 3
+;
+;RJMP MainLoop
+;
+;
+;
+;DelayInMs:
+;	LDS R16, 0x60
+;	LDS R17, 0x61
+;
+;	OneMs: RCALL DelayOneMs 
+;	
+;	Timer: CLN 
+;	CLC
+;	SBC R16,R18
+;	BRBS 1, OldTimer
+;	BRBS 0, OldTimer
+;	RJMP OneMs
+;
+;	OldTimer: CLN 
+;	SUB R17,R18
+;	BRBS 2, DelayEnd
+;	RJMP Timer
+;
+;
+;DelayEnd: RET
+;
+;		DelayOneMs:
+;			PUSH R21
+;			PUSH R20
+;
+;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+;			NOP
+;			BRBS 1, Loop2
+;			RJMP Loop1
+;
+;			Loop2: DEC R21
+;			BRBS 2, End 
+;			RJMP Loop1
+;
+;			End: 
+;			POP R20
+;			POP R21
+;			CLN
+;		RET
+;
+;	DigitTo7segCode:
+;		LDI R25, 0
+;		LDI R30, Low(Table<<1)
+;		LDI R31, High(Table<<1)
+;
+;		ADD R30, R26
+;		ADC R31, R25
+;		LPM R26, Z 
+;			
+;	RET
+;	Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
+;
+;cw39
+;.MACRO LOAD_CONST  
+;LDI @0, LOW(@2)
+;LDI @1, HIGH(@2)
+;.ENDMACRO
+;
+;.equ Digits_P = PORTB  ; .equ is like #define in C:
+;.equ Segments_P = PORTD
+;
+;LDI R20, $35
+;LDI R21, $6
+;LDI R18, 1
+;LOAD_CONST R16,R17, 5
+;STS 0x60, R16
+;STS 0x61, R17
+;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+;LDI R26, 0x1e ; otworzenie pinów 1-4
+;
+;
+;OUT DDRD, R23
+;OUT DDRB, R26
+;
+;MAIN: 
+;	LDI R17, 0x8 ;3 cyfra
+;	LDI R26,5
+;	RCALL DigitTo7segCode
+;	OUT Segments_P, R26
+;	OUT Digits_P, R17
+;	RCALL DelayInMs 
+;
+;	
+;	LDI R17, 0x4 ;2 cyfra
+;	LDI R26, 6
+;	RCALL DigitTo7segCode
+;	OUT Segments_P, R26
+;	OUT Digits_P, R17
+;	RCALL DelayInMs 
+;
+;	
+;	LDI R17, 0x2 ; 1 cyfra
+;	LDI R26, 7
+;	RCALL DigitTo7segCode
+;	OUT Segments_P, R26
+;	OUT Digits_P, R17
+;	RCALL DelayInMs
+;
+;	
+;	LDI R17, 0x10 ;4 cyfra
+;	LDI R26, 4
+;	RCALL DigitTo7segCode
+;	OUT Segments_P, R26
+;	OUT Digits_P, R17
+;	RCALL DelayInMs
+;
+;RJMP MAIN
+;
+;
+;
+;DelayInMs:
+;	LDS R16, 0x60
+;	LDS R17, 0x61
+;
+;	OneMs: RCALL DelayOneMs 
+;	
+;	Timer: CLN 
+;	CLC
+;	SBC R16,R18
+;	BRBS 1, OldTimer
+;	BRBS 0, OldTimer
+;	RJMP OneMs
+;
+;	OldTimer: CLN 
+;	SUB R17,R18
+;	BRBS 2, DelayEnd
+;	RJMP Timer
+;
+;
+;DelayEnd: RET
+;
+;		DelayOneMs:
+;			PUSH R21
+;			PUSH R20
+;
+;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+;			NOP
+;			BRBS 1, Loop2
+;			RJMP Loop1
+;
+;			Loop2: DEC R21
+;			BRBS 2, End 
+;			RJMP Loop1
+;
+;			End: 
+;			POP R20
+;			POP R21
+;			CLN
+;		RET
+;
+;	DigitTo7segCode:
+;		LDI R25, 0
+;		LDI R30, Low(Table<<1)
+;		LDI R31, High(Table<<1)
+;
+;		ADD R30, R26
+;		ADC R31, R25
+;		LPM R26, Z 
+;			
+;	RET
+;	Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
+;
+;cw38
+;LDI R30, Low(Table<<1) 
+;LDI R31, High(Table<<1)
+;LDI R16, 3
+;STS 0x60, R16
+;RCALL DigitTo7segCode 
+;NOP
+;
+;DigitTo7segCode:
+;
+;	ADIW R30:R31, 3
+;	LPM R16, Z 
+;	LDS R16, 0x60
+;	NOP
+;		Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
+;RET
+;
+;cw37
+;LDI R30, Low(Table<<1) 
+;LDI R31, High(Table<<1)
+;LDI R16, 3
+;RCALL Square 
+;NOP
+;
+;Square:
+;
+;	ADIW R30:R31, 3
+;	LPM R16, Z 
+;	NOP
+;		Table: .db 0x0, 0x1, 0x4, 0x9, 0x10, 0x19, 0x23, 0x31, 0x40, 0x51
+;RET
+;
+;cw36
+// Program odczytuje 4 bajty z tablicy sta³ych zdefiniowanej w pamiêci kodu do rejestrów R20..R23
+;ldi R30, Low(Table<<1) // inicjalizacja rejestru Z
+;ldi R31, High(Table<<1)
+;lpm R20, Z // odczyt pierwszej sta³ej z tablicy Table
+;adiw R30:R31,1 // inkrementacja Z
+;lpm R21, Z // odczyt drugiej sta³ej
+;adiw R30:R31,1 // inkrementacja Z
+;lpm R22, Z // odczyt trzeciej sta³ej
+;adiw R30:R31,1 // inkrementacja Z
+;lpm R23, Z // odczyt czwartej sta³ej
+;nop
+;Table: .db 0x57, 0x58, 0x59, 0x5A // UWAGA: liczba bajtów zdeklarowanych w
+								// pamiêci kodu musi byæ parzysta
 
 ;cw35
 ;.MACRO LOAD_CONST  
