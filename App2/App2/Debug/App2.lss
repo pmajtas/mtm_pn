@@ -1,0 +1,3061 @@
+
+AVRASM ver. 2.1.57  C:\Users\student\Desktop\majtas\mtm_pn\App2\App2\App2.asm Wed Oct 09 16:29:10 2019
+
+[builtin](2): Including file 'C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include\tn2313Adef.inc'
+                 
+                 /*
+                 
+                 ;***** Created: 2011-02-09 12:04 ******* Source: ATtiny2313A.xml *********
+                 ;*************************************************************************
+                 ;* A P P L I C A T I O N   N O T E   F O R   T H E   A V R   F A M I L Y
+                 ;* 
+                 ;* Number            : AVR000
+                 ;* File Name         : "tn2313Adef.inc"
+                 ;* Title             : Register/Bit Definitions for the ATtiny2313A
+                 ;* Date              : 2011-02-09
+                 ;* Version           : 2.35
+                 ;* Support E-mail    : avr@atmel.com
+                 ;* Target MCU        : ATtiny2313A
+                 ;* 
+                 ;* DESCRIPTION
+                 ;* When including this file in the assembly program file, all I/O register 
+                 ;* names and I/O register bit names appearing in the data book can be used.
+                 ;* In addition, the six registers forming the three data pointers X, Y and 
+                 ;* Z have been assigned names XL - ZH. Highest RAM address for Internal 
+                 ;* SRAM is also defined 
+                 ;* 
+                 ;* The Register names are represented by their hexadecimal address.
+                 ;* 
+                 ;* The Register Bit names are represented by their bit number (0-7).
+                 ;* 
+                 ;* Please observe the difference in using the bit names with instructions
+                 ;* such as "sbr"/"cbr" (set/clear bit in register) and "sbrs"/"sbrc"
+                 ;* (skip if bit in register set/cleared). The following example illustrates
+                 ;* this:
+                 ;* 
+                 ;* in    r16,PORTB             ;read PORTB latch
+                 ;* sbr   r16,(1<<PB6)+(1<<PB5) ;set PB6 and PB5 (use masks, not bit#)
+                 ;* out   PORTB,r16             ;output to PORTB
+                 ;* 
+                 ;* in    r16,TIFR              ;read the Timer Interrupt Flag Register
+                 ;* sbrc  r16,TOV0              ;test the overflow flag (use bit#)
+                 ;* rjmp  TOV0_is_set           ;jump if set
+                 ;* ...                         ;otherwise do something else
+                 ;*************************************************************************
+                 
+                 #ifndef _TN2313ADEF_INC_
+                 #define _TN2313ADEF_INC_
+                 
+                 
+                 #pragma partinc 0
+                 
+                 ; ***** SPECIFY DEVICE ***************************************************
+                 .device ATtiny2313A
+                 #pragma AVRPART ADMIN PART_NAME ATtiny2313A
+                 .equ	SIGNATURE_000	= 0x1e
+                 .equ	SIGNATURE_001	= 0x91
+                 .equ	SIGNATURE_002	= 0x0a
+                 
+                 #pragma AVRPART CORE CORE_VERSION V2
+                 #pragma AVRPART CORE NEW_INSTRUCTIONS lpm rd,z+
+                 
+                 
+                 ; ***** I/O REGISTER DEFINITIONS *****************************************
+                 ; NOTE:
+                 ; Definitions marked "MEMORY MAPPED"are extended I/O ports
+                 ; and cannot be used with IN/OUT instructions
+                 .equ	SREG	= 0x3f
+                 .equ	SPL	= 0x3d
+                 .equ	OCR0B	= 0x3c
+                 .equ	GIMSK	= 0x3b
+                 .equ	EIFR	= 0x3a
+                 .equ	TIMSK	= 0x39
+                 .equ	TIFR	= 0x38
+                 .equ	SPMCSR	= 0x37
+                 .equ	OCR0A	= 0x36
+                 .equ	MCUCR	= 0x35
+                 .equ	MCUSR	= 0x34
+                 .equ	TCCR0B	= 0x33
+                 .equ	TCNT0	= 0x32
+                 .equ	OSCCAL	= 0x31
+                 .equ	TCCR0A	= 0x30
+                 .equ	TCCR1A	= 0x2f
+                 .equ	TCCR1B	= 0x2e
+                 .equ	TCNT1L	= 0x2c
+                 .equ	TCNT1H	= 0x2d
+                 .equ	OCR1AL	= 0x2a
+                 .equ	OCR1AH	= 0x2b
+                 .equ	OCR1BL	= 0x28
+                 .equ	OCR1BH	= 0x29
+                 .equ	CLKPR	= 0x26
+                 .equ	ICR1L	= 0x24
+                 .equ	ICR1H	= 0x25
+                 .equ	GTCCR	= 0x23
+                 .equ	TCCR1C	= 0x22
+                 .equ	WDTCR	= 0x21
+                 .equ	PCMSK0	= 0x20
+                 .equ	EEAR	= 0x1e
+                 .equ	EEDR	= 0x1d
+                 .equ	EECR	= 0x1c
+                 .equ	PORTA	= 0x1b
+                 .equ	DDRA	= 0x1a
+                 .equ	PINA	= 0x19
+                 .equ	PORTB	= 0x18
+                 .equ	DDRB	= 0x17
+                 .equ	PINB	= 0x16
+                 .equ	GPIOR2	= 0x15
+                 .equ	GPIOR1	= 0x14
+                 .equ	GPIOR0	= 0x13
+                 .equ	PORTD	= 0x12
+                 .equ	DDRD	= 0x11
+                 .equ	PIND	= 0x10
+                 .equ	USIDR	= 0x0f
+                 .equ	USISR	= 0x0e
+                 .equ	USICR	= 0x0d
+                 .equ	UDR	= 0x0c
+                 .equ	UCSRA	= 0x0b
+                 .equ	UCSRB	= 0x0a
+                 .equ	UBRRL	= 0x09
+                 .equ	ACSR	= 0x08
+                 .equ	BODCR	= 0x07
+                 .equ	PRR	= 0x06
+                 .equ	PCMSK2	= 0x05
+                 .equ	PCMSK1	= 0x04
+                 .equ	UCSRC	= 0x03
+                 .equ	UBRRH	= 0x02
+                 .equ	DIDR	= 0x01
+                 
+                 
+                 ; ***** BIT DEFINITIONS **************************************************
+                 
+                 ; ***** PORTB ************************
+                 ; PORTB - Port B Data Register
+                 .equ	PORTB0	= 0	; Port B Data Register bit 0
+                 .equ	PB0	= 0	; For compatibility
+                 .equ	PORTB1	= 1	; Port B Data Register bit 1
+                 .equ	PB1	= 1	; For compatibility
+                 .equ	PORTB2	= 2	; Port B Data Register bit 2
+                 .equ	PB2	= 2	; For compatibility
+                 .equ	PORTB3	= 3	; Port B Data Register bit 3
+                 .equ	PB3	= 3	; For compatibility
+                 .equ	PORTB4	= 4	; Port B Data Register bit 4
+                 .equ	PB4	= 4	; For compatibility
+                 .equ	PORTB5	= 5	; Port B Data Register bit 5
+                 .equ	PB5	= 5	; For compatibility
+                 .equ	PORTB6	= 6	; Port B Data Register bit 6
+                 .equ	PB6	= 6	; For compatibility
+                 .equ	PORTB7	= 7	; Port B Data Register bit 7
+                 .equ	PB7	= 7	; For compatibility
+                 
+                 ; DDRB - Port B Data Direction Register
+                 .equ	DDB0	= 0	; Port B Data Direction Register bit 0
+                 .equ	DDB1	= 1	; Port B Data Direction Register bit 1
+                 .equ	DDB2	= 2	; Port B Data Direction Register bit 2
+                 .equ	DDB3	= 3	; Port B Data Direction Register bit 3
+                 .equ	DDB4	= 4	; Port B Data Direction Register bit 4
+                 .equ	DDB5	= 5	; Port B Data Direction Register bit 5
+                 .equ	DDB6	= 6	; Port B Data Direction Register bit 6
+                 .equ	DDB7	= 7	; Port B Data Direction Register bit 7
+                 
+                 ; PINB - Port B Input Pins
+                 .equ	PINB0	= 0	; Port B Input Pins bit 0
+                 .equ	PINB1	= 1	; Port B Input Pins bit 1
+                 .equ	PINB2	= 2	; Port B Input Pins bit 2
+                 .equ	PINB3	= 3	; Port B Input Pins bit 3
+                 .equ	PINB4	= 4	; Port B Input Pins bit 4
+                 .equ	PINB5	= 5	; Port B Input Pins bit 5
+                 .equ	PINB6	= 6	; Port B Input Pins bit 6
+                 .equ	PINB7	= 7	; Port B Input Pins bit 7
+                 
+                 
+                 ; ***** TIMER_COUNTER_0 **************
+                 ; TIMSK - Timer/Counter Interrupt Mask Register
+                 .equ	OCIE0A	= 0	; Timer/Counter0 Output Compare Match A Interrupt Enable
+                 .equ	TOIE0	= 1	; Timer/Counter0 Overflow Interrupt Enable
+                 .equ	OCIE0B	= 2	; Timer/Counter0 Output Compare Match B Interrupt Enable
+                 
+                 ; TIFR - Timer/Counter Interrupt Flag register
+                 .equ	OCF0A	= 0	; Timer/Counter0 Output Compare Flag 0A
+                 .equ	TOV0	= 1	; Timer/Counter0 Overflow Flag
+                 .equ	OCF0B	= 2	; Timer/Counter0 Output Compare Flag 0B
+                 
+                 ; OCR0B - Timer/Counter0 Output Compare Register
+                 .equ	OCR0_0	= 0	; 
+                 .equ	OCR0_1	= 1	; 
+                 .equ	OCR0_2	= 2	; 
+                 .equ	OCR0_3	= 3	; 
+                 .equ	OCR0_4	= 4	; 
+                 .equ	OCR0_5	= 5	; 
+                 .equ	OCR0_6	= 6	; 
+                 .equ	OCR0_7	= 7	; 
+                 
+                 ; OCR0A - Timer/Counter0 Output Compare Register
+                 .equ	OCR0A_0	= 0	; 
+                 .equ	OCR0A_1	= 1	; 
+                 .equ	OCR0A_2	= 2	; 
+                 .equ	OCR0A_3	= 3	; 
+                 .equ	OCR0A_4	= 4	; 
+                 .equ	OCR0A_5	= 5	; 
+                 .equ	OCR0A_6	= 6	; 
+                 .equ	OCR0A_7	= 7	; 
+                 
+                 ; TCCR0A - Timer/Counter  Control Register A
+                 .equ	WGM00	= 0	; Waveform Generation Mode
+                 .equ	WGM01	= 1	; Waveform Generation Mode
+                 .equ	COM0B0	= 4	; Compare Match Output B Mode
+                 .equ	COM0B1	= 5	; Compare Match Output B Mode
+                 .equ	COM0A0	= 6	; Compare Match Output A Mode
+                 .equ	COM0A1	= 7	; Compare Match Output A Mode
+                 
+                 ; TCNT0 - Timer/Counter0
+                 .equ	TCNT0_0	= 0	; 
+                 .equ	TCNT0_1	= 1	; 
+                 .equ	TCNT0_2	= 2	; 
+                 .equ	TCNT0_3	= 3	; 
+                 .equ	TCNT0_4	= 4	; 
+                 .equ	TCNT0_5	= 5	; 
+                 .equ	TCNT0_6	= 6	; 
+                 .equ	TCNT0_7	= 7	; 
+                 
+                 ; TCCR0B - Timer/Counter Control Register B
+                 .equ	TCCR0	= TCCR0B	; For compatibility
+                 .equ	CS00	= 0	; Clock Select
+                 .equ	CS01	= 1	; Clock Select
+                 .equ	CS02	= 2	; Clock Select
+                 .equ	WGM02	= 3	; 
+                 .equ	FOC0B	= 6	; Force Output Compare B
+                 .equ	FOC0A	= 7	; Force Output Compare B
+                 
+                 
+                 ; ***** TIMER_COUNTER_1 **************
+                 ; TIMSK - Timer/Counter Interrupt Mask Register
+                 .equ	ICIE1	= 3	; Timer/Counter1 Input Capture Interrupt Enable
+                 .equ	TICIE	= ICIE1	; For compatibility
+                 .equ	OCIE1B	= 5	; Timer/Counter1 Output CompareB Match Interrupt Enable
+                 .equ	OCIE1A	= 6	; Timer/Counter1 Output CompareA Match Interrupt Enable
+                 .equ	TOIE1	= 7	; Timer/Counter1 Overflow Interrupt Enable
+                 
+                 ; TIFR - Timer/Counter Interrupt Flag register
+                 .equ	ICF1	= 3	; Input Capture Flag 1
+                 .equ	OCF1B	= 5	; Output Compare Flag 1B
+                 .equ	OCF1A	= 6	; Output Compare Flag 1A
+                 .equ	TOV1	= 7	; Timer/Counter1 Overflow Flag
+                 
+                 ; TCCR1A - Timer/Counter1 Control Register A
+                 .equ	WGM10	= 0	; Pulse Width Modulator Select Bit 0
+                 .equ	PWM10	= WGM10	; For compatibility
+                 .equ	WGM11	= 1	; Pulse Width Modulator Select Bit 1
+                 .equ	PWM11	= WGM11	; For compatibility
+                 .equ	COM1B0	= 4	; Comparet Ouput Mode 1B, bit 0
+                 .equ	COM1B1	= 5	; Compare Output Mode 1B, bit 1
+                 .equ	COM1A0	= 6	; Comparet Ouput Mode 1A, bit 0
+                 .equ	COM1A1	= 7	; Compare Output Mode 1A, bit 1
+                 
+                 ; TCCR1B - Timer/Counter1 Control Register B
+                 .equ	CS10	= 0	; Clock Select bit 0
+                 .equ	CS11	= 1	; Clock Select 1 bit 1
+                 .equ	CS12	= 2	; Clock Select1 bit 2
+                 .equ	WGM12	= 3	; Waveform Generation Mode Bit 2
+                 .equ	CTC1	= WGM12	; For compatibility
+                 .equ	WGM13	= 4	; Waveform Generation Mode Bit 3
+                 .equ	ICES1	= 6	; Input Capture 1 Edge Select
+                 .equ	ICNC1	= 7	; Input Capture 1 Noise Canceler
+                 
+                 ; TCCR1C - Timer/Counter1 Control Register C
+                 .equ	FOC1B	= 6	; Force Output Compare for Channel B
+                 .equ	FOC1A	= 7	; Force Output Compare for Channel A
+                 
+                 
+                 ; ***** WATCHDOG *********************
+                 ; WDTCR - Watchdog Timer Control Register
+                 .equ	WDTCSR	= WDTCR	; For compatibility
+                 .equ	WDP0	= 0	; Watch Dog Timer Prescaler bit 0
+                 .equ	WDP1	= 1	; Watch Dog Timer Prescaler bit 1
+                 .equ	WDP2	= 2	; Watch Dog Timer Prescaler bit 2
+                 .equ	WDE	= 3	; Watch Dog Enable
+                 .equ	WDCE	= 4	; Watchdog Change Enable
+                 .equ	WDTOE	= WDCE	; For compatibility
+                 .equ	WDP3	= 5	; Watchdog Timer Prescaler Bit 3
+                 .equ	WDIE	= 6	; Watchdog Timeout Interrupt Enable
+                 .equ	WDIF	= 7	; Watchdog Timeout Interrupt Flag
+                 
+                 
+                 ; ***** USART ************************
+                 ; UDR - USART I/O Data Register
+                 .equ	UDR0	= 0	; USART I/O Data Register bit 0
+                 .equ	UDR1	= 1	; USART I/O Data Register bit 1
+                 .equ	UDR2	= 2	; USART I/O Data Register bit 2
+                 .equ	UDR3	= 3	; USART I/O Data Register bit 3
+                 .equ	UDR4	= 4	; USART I/O Data Register bit 4
+                 .equ	UDR5	= 5	; USART I/O Data Register bit 5
+                 .equ	UDR6	= 6	; USART I/O Data Register bit 6
+                 .equ	UDR7	= 7	; USART I/O Data Register bit 7
+                 
+                 ; UCSRA - USART Control and Status Register A
+                 .equ	USR	= UCSRA	; For compatibility
+                 .equ	MPCM	= 0	; Multi-processor Communication Mode
+                 .equ	U2X	= 1	; Double the USART Transmission Speed
+                 .equ	UPE	= 2	; USART Parity Error
+                 .equ	PE	= UPE	; For compatibility
+                 .equ	DOR	= 3	; Data overRun
+                 .equ	FE	= 4	; Framing Error
+                 .equ	UDRE	= 5	; USART Data Register Empty
+                 .equ	TXC	= 6	; USART Transmitt Complete
+                 .equ	RXC	= 7	; USART Receive Complete
+                 
+                 ; UCSRB - USART Control and Status Register B
+                 .equ	UCR	= UCSRB	; For compatibility
+                 .equ	TXB8	= 0	; Transmit Data Bit 8
+                 .equ	RXB8	= 1	; Receive Data Bit 8
+                 .equ	UCSZ2	= 2	; Character Size
+                 .equ	CHR9	= UCSZ2	; For compatibility
+                 .equ	TXEN	= 3	; Transmitter Enable
+                 .equ	RXEN	= 4	; Receiver Enable
+                 .equ	UDRIE	= 5	; USART Data register Empty Interrupt Enable
+                 .equ	TXCIE	= 6	; TX Complete Interrupt Enable
+                 .equ	RXCIE	= 7	; RX Complete Interrupt Enable
+                 
+                 ; UCSRC - USART Control and Status Register C
+                 .equ	UCPOL	= 0	; Clock Polarity
+                 .equ	UCSZ0	= 1	; Character Size Bit 0
+                 .equ	UCSZ1	= 2	; Character Size Bit 1
+                 .equ	USBS	= 3	; Stop Bit Select
+                 .equ	UPM0	= 4	; Parity Mode Bit 0
+                 .equ	UPM1	= 5	; Parity Mode Bit 1
+                 .equ	UMSEL0 	= 6	; USART Mode Select 0
+                 .equ 	UMSEL1 	= 7 ; USART Mode Select 1
+                 .equ 	UCPHA  	= 1 ; USART MSPIM Clock Phase
+                 .equ 	UDORD  	= 2 ; USART MSPIM Data Order 
+                 
+                 .equ	UBRR	= UBRRL	; For compatibility
+                 
+                 ; ***** ANALOG_COMPARATOR ************
+                 ; ACSR - Analog Comparator Control And Status Register
+                 .equ	ACIS0	= 0	; Analog Comparator Interrupt Mode Select bit 0
+                 .equ	ACIS1	= 1	; Analog Comparator Interrupt Mode Select bit 1
+                 .equ	ACIC	= 2	; 
+                 .equ	ACIE	= 3	; Analog Comparator Interrupt Enable
+                 .equ	ACI	= 4	; Analog Comparator Interrupt Flag
+                 .equ	ACO	= 5	; Analog Compare Output
+                 .equ	ACBG	= 6	; Analog Comparator Bandgap Select
+                 .equ	ACD	= 7	; Analog Comparator Disable
+                 
+                 ; DIDR - Digital Input Disable Register 1
+                 .equ	AIN0D	= 0	; AIN0 Digital Input Disable
+                 .equ	AIN1D	= 1	; AIN1 Digital Input Disable
+                 
+                 
+                 ; ***** PORTD ************************
+                 ; PORTD - Data Register, Port D
+                 .equ	PORTD0	= 0	; 
+                 .equ	PD0	= 0	; For compatibility
+                 .equ	PORTD1	= 1	; 
+                 .equ	PD1	= 1	; For compatibility
+                 .equ	PORTD2	= 2	; 
+                 .equ	PD2	= 2	; For compatibility
+                 .equ	PORTD3	= 3	; 
+                 .equ	PD3	= 3	; For compatibility
+                 .equ	PORTD4	= 4	; 
+                 .equ	PD4	= 4	; For compatibility
+                 .equ	PORTD5	= 5	; 
+                 .equ	PD5	= 5	; For compatibility
+                 .equ	PORTD6	= 6	; 
+                 .equ	PD6	= 6	; For compatibility
+                 
+                 ; DDRD - Data Direction Register, Port D
+                 .equ	DDD0	= 0	; 
+                 .equ	DDD1	= 1	; 
+                 .equ	DDD2	= 2	; 
+                 .equ	DDD3	= 3	; 
+                 .equ	DDD4	= 4	; 
+                 .equ	DDD5	= 5	; 
+                 .equ	DDD6	= 6	; 
+                 
+                 ; PIND - Input Pins, Port D
+                 .equ	PIND0	= 0	; 
+                 .equ	PIND1	= 1	; 
+                 .equ	PIND2	= 2	; 
+                 .equ	PIND3	= 3	; 
+                 .equ	PIND4	= 4	; 
+                 .equ	PIND5	= 5	; 
+                 .equ	PIND6	= 6	; 
+                 
+                 
+                 ; ***** EEPROM ***********************
+                 ; EEAR - EEPROM Read/Write Access
+                 .equ	EEARL	= EEAR	; For compatibility
+                 .equ	EEAR0	= 0	; EEPROM Read/Write Access bit 0
+                 .equ	EEAR1	= 1	; EEPROM Read/Write Access bit 1
+                 .equ	EEAR2	= 2	; EEPROM Read/Write Access bit 2
+                 .equ	EEAR3	= 3	; EEPROM Read/Write Access bit 3
+                 .equ	EEAR4	= 4	; EEPROM Read/Write Access bit 4
+                 .equ	EEAR5	= 5	; EEPROM Read/Write Access bit 5
+                 .equ	EEAR6	= 6	; EEPROM Read/Write Access bit 6
+                 
+                 ; EEDR - EEPROM Data Register
+                 .equ	EEDR0	= 0	; EEPROM Data Register bit 0
+                 .equ	EEDR1	= 1	; EEPROM Data Register bit 1
+                 .equ	EEDR2	= 2	; EEPROM Data Register bit 2
+                 .equ	EEDR3	= 3	; EEPROM Data Register bit 3
+                 .equ	EEDR4	= 4	; EEPROM Data Register bit 4
+                 .equ	EEDR5	= 5	; EEPROM Data Register bit 5
+                 .equ	EEDR6	= 6	; EEPROM Data Register bit 6
+                 .equ	EEDR7	= 7	; EEPROM Data Register bit 7
+                 
+                 ; EECR - EEPROM Control Register
+                 .equ	EERE	= 0	; EEPROM Read Enable
+                 .equ	EEPE	= 1	; EEPROM Write Enable
+                 .equ	EEWE	= EEPE	; For compatibility
+                 .equ	EEMPE	= 2	; EEPROM Master Write Enable
+                 .equ	EEMWE	= EEMPE	; For compatibility
+                 .equ	EERIE	= 3	; EEProm Ready Interrupt Enable
+                 .equ	EEPM0	= 4	; 
+                 .equ	EEPM1	= 5	; 
+                 
+                 
+                 ; ***** PORTA ************************
+                 ; PORTA - Port A Data Register
+                 .equ	PORTA0	= 0	; Port A Data Register bit 0
+                 .equ	PA0	= 0	; For compatibility
+                 .equ	PORTA1	= 1	; Port A Data Register bit 1
+                 .equ	PA1	= 1	; For compatibility
+                 .equ	PORTA2	= 2	; Port A Data Register bit 2
+                 .equ	PA2	= 2	; For compatibility
+                 
+                 ; DDRA - Port A Data Direction Register
+                 .equ	DDA0	= 0	; Data Direction Register, Port A, bit 0
+                 .equ	DDA1	= 1	; Data Direction Register, Port A, bit 1
+                 .equ	DDA2	= 2	; Data Direction Register, Port A, bit 2
+                 
+                 ; PINA - Port A Input Pins
+                 .equ	PINA0	= 0	; Input Pins, Port A bit 0
+                 .equ	PINA1	= 1	; Input Pins, Port A bit 1
+                 .equ	PINA2	= 2	; Input Pins, Port A bit 2
+                 
+                 
+                 ; ***** USI **************************
+                 ; USIDR - USI Data Register
+                 .equ	USIDR0	= 0	; USI Data Register bit 0
+                 .equ	USIDR1	= 1	; USI Data Register bit 1
+                 .equ	USIDR2	= 2	; USI Data Register bit 2
+                 .equ	USIDR3	= 3	; USI Data Register bit 3
+                 .equ	USIDR4	= 4	; USI Data Register bit 4
+                 .equ	USIDR5	= 5	; USI Data Register bit 5
+                 .equ	USIDR6	= 6	; USI Data Register bit 6
+                 .equ	USIDR7	= 7	; USI Data Register bit 7
+                 
+                 ; USISR - USI Status Register
+                 .equ	USICNT0	= 0	; USI Counter Value Bit 0
+                 .equ	USICNT1	= 1	; USI Counter Value Bit 1
+                 .equ	USICNT2	= 2	; USI Counter Value Bit 2
+                 .equ	USICNT3	= 3	; USI Counter Value Bit 3
+                 .equ	USIDC	= 4	; Data Output Collision
+                 .equ	USIPF	= 5	; Stop Condition Flag
+                 .equ	USIOIF	= 6	; Counter Overflow Interrupt Flag
+                 .equ	USISIF	= 7	; Start Condition Interrupt Flag
+                 
+                 ; USICR - USI Control Register
+                 .equ	USITC	= 0	; Toggle Clock Port Pin
+                 .equ	USICLK	= 1	; Clock Strobe
+                 .equ	USICS0	= 2	; USI Clock Source Select Bit 0
+                 .equ	USICS1	= 3	; USI Clock Source Select Bit 1
+                 .equ	USIWM0	= 4	; USI Wire Mode Bit 0
+                 .equ	USIWM1	= 5	; USI Wire Mode Bit 1
+                 .equ	USIOIE	= 6	; Counter Overflow Interrupt Enable
+                 .equ	USISIE	= 7	; Start Condition Interrupt Enable
+                 
+                 
+                 ; ***** EXTERNAL_INTERRUPT ***********
+                 ; GIMSK - General Interrupt Mask Register
+                 .equ  PCIE1 = 3 ;
+                 .equ  PCIE2 = 4 ;
+                 .equ	PCIE0	= 5	; 
+                 .equ	INT0	= 6	; External Interrupt Request 0 Enable
+                 .equ	INT1	= 7	; External Interrupt Request 1 Enable
+                 
+                 ; EIFR - Extended Interrupt Flag Register
+                 .equ	GIFR	= EIFR	; For compatibility
+                 .equ	PCIF0	= 5	; 
+                 .equ  PCIF2	= 4   ;
+                 .equ  PCIF1   = 3   ;
+                 .equ	INTF0	= 6	; External Interrupt Flag 0
+                 .equ	INTF1	= 7	; External Interrupt Flag 1
+                 
+                 ; PCMSK2 - Pin Change Interrupt Mask Register 2
+                 .equ	PCINT11	= 0	; Pin Change Interrupt Mask 11
+                 .equ	PCINT12	= 1	; Pin Change Interrupt Mask 12
+                 .equ	PCINT13	= 2	; Pin Change Interrupt Mask 13
+                 .equ	PCINT14	= 3	; Pin Change Interrupt Mask 14
+                 .equ	PCINT15	= 4	; Pin Change Interrupt Mask 15
+                 .equ	PCINT16	= 5	; Pin Change Interrupt Mask 16
+                 .equ	PCINT17	= 6	; Pin Change Interrupt Mask 17
+                 
+                 ; PCMSK1 - Pin Change Interrupt Mask Register 1
+                 .equ	PCINT8	= 0	; Pin Change Interrupt Mask 8
+                 .equ	PCINT9	= 1	; Pin Change Interrupt Mask 9
+                 .equ	PCINT10	= 2	; Pin Change Interrupt Mask 10
+                 
+                 
+                 ; ***** CPU **************************
+                 ; SREG - Status Register
+                 .equ	SREG_C	= 0	; Carry Flag
+                 .equ	SREG_Z	= 1	; Zero Flag
+                 .equ	SREG_N	= 2	; Negative Flag
+                 .equ	SREG_V	= 3	; Two's Complement Overflow Flag
+                 .equ	SREG_S	= 4	; Sign Bit
+                 .equ	SREG_H	= 5	; Half Carry Flag
+                 .equ	SREG_T	= 6	; Bit Copy Storage
+                 .equ	SREG_I	= 7	; Global Interrupt Enable
+                 
+                 ; SPMCSR - Store Program Memory Control and Status register
+                 .equ	SPMEN	= 0	; Store Program Memory Enable
+                 .equ	PGERS	= 1	; Page Erase
+                 .equ	PGWRT	= 2	; Page Write
+                 .equ	RFLB	= 3	; Read Fuse and Lock Bits
+                 .equ	CTPB	= 4	; Clear Temporary Page Buffer
+                 
+                 ; MCUCR - MCU Control Register
+                 .equ	ISC00	= 0	; Interrupt Sense Control 0 bit 0
+                 .equ	ISC01	= 1	; Interrupt Sense Control 0 bit 1
+                 .equ	ISC10	= 2	; Interrupt Sense Control 1 bit 0
+                 .equ	ISC11	= 3	; Interrupt Sense Control 1 bit 1
+                 .equ	SM0	= 4	; Sleep Mode Select Bit 0
+                 .equ	SM	= SM0	; For compatibility
+                 .equ	SE	= 5	; Sleep Enable
+                 .equ	SM1	= 6	; Sleep Mode Select Bit 1
+                 .equ	PUD	= 7	; Pull-up Disable
+                 
+                 ; CLKPR - Clock Prescale Register
+                 .equ	CLKPS0	= 0	; Clock Prescaler Select Bit 0
+                 .equ	CLKPS1	= 1	; Clock Prescaler Select Bit 1
+                 .equ	CLKPS2	= 2	; Clock Prescaler Select Bit 2
+                 .equ	CLKPS3	= 3	; Clock Prescaler Select Bit 3
+                 .equ	CLKPCE	= 7	; Clock Prescaler Change Enable
+                 
+                 ; MCUSR - MCU Status register
+                 .equ	PORF	= 0	; Power-On Reset Flag
+                 .equ	EXTRF	= 1	; External Reset Flag
+                 .equ	BORF	= 2	; Brown-out Reset Flag
+                 .equ	WDRF	= 3	; Watchdog Reset Flag
+                 
+                 ; OSCCAL - Oscillator Calibration Register
+                 .equ	CAL0	= 0	; Oscillatro Calibration Value Bit 0
+                 .equ	CAL1	= 1	; Oscillatro Calibration Value Bit 1
+                 .equ	CAL2	= 2	; Oscillatro Calibration Value Bit 2
+                 .equ	CAL3	= 3	; Oscillatro Calibration Value Bit 3
+                 .equ	CAL4	= 4	; Oscillatro Calibration Value Bit 4
+                 .equ	CAL5	= 5	; Oscillatro Calibration Value Bit 5
+                 .equ	CAL6	= 6	; Oscillatro Calibration Value Bit 6
+                 
+                 ; GTCCR - General Timer Counter Control Register
+                 .equ	SFIOR	= GTCCR	; For compatibility
+                 .equ	PSR10	= 0	; 
+                 
+                 ; PCMSK - Pin-Change Mask register
+                 .equ	PCINT0	= 0	; Pin-Change Interrupt 0
+                 .equ	PCINT1	= 1	; Pin-Change Interrupt 1
+                 .equ	PCINT2	= 2	; Pin-Change Interrupt 2
+                 .equ	PCINT3	= 3	; Pin-Change Interrupt 3
+                 .equ	PCINT4	= 4	; Pin-Change Interrupt 4
+                 .equ	PCINT5	= 5	; Pin-Change Interrupt 5
+                 .equ	PCINT6	= 6	; Pin-Change Interrupt 6
+                 .equ	PCINT7	= 7	; Pin-Change Interrupt 7
+                 
+                 ; GPIOR2 - General Purpose I/O Register 2
+                 .equ	GPIOR20	= 0	; General Purpose I/O Register 2 bit 0
+                 .equ	GPIOR21	= 1	; General Purpose I/O Register 2 bit 1
+                 .equ	GPIOR22	= 2	; General Purpose I/O Register 2 bit 2
+                 .equ	GPIOR23	= 3	; General Purpose I/O Register 2 bit 3
+                 .equ	GPIOR24	= 4	; General Purpose I/O Register 2 bit 4
+                 .equ	GPIOR25	= 5	; General Purpose I/O Register 2 bit 5
+                 .equ	GPIOR26	= 6	; General Purpose I/O Register 2 bit 6
+                 .equ	GPIOR27	= 7	; General Purpose I/O Register 2 bit 7
+                 
+                 ; GPIOR1 - General Purpose I/O Register 1
+                 .equ	GPIOR10	= 0	; General Purpose I/O Register 1 bit 0
+                 .equ	GPIOR11	= 1	; General Purpose I/O Register 1 bit 1
+                 .equ	GPIOR12	= 2	; General Purpose I/O Register 1 bit 2
+                 .equ	GPIOR13	= 3	; General Purpose I/O Register 1 bit 3
+                 .equ	GPIOR14	= 4	; General Purpose I/O Register 1 bit 4
+                 .equ	GPIOR15	= 5	; General Purpose I/O Register 1 bit 5
+                 .equ	GPIOR16	= 6	; General Purpose I/O Register 1 bit 6
+                 .equ	GPIOR17	= 7	; General Purpose I/O Register 1 bit 7
+                 
+                 ; GPIOR0 - General Purpose I/O Register 0
+                 .equ	GPIOR00	= 0	; General Purpose I/O Register 0 bit 0
+                 .equ	GPIOR01	= 1	; General Purpose I/O Register 0 bit 1
+                 .equ	GPIOR02	= 2	; General Purpose I/O Register 0 bit 2
+                 .equ	GPIOR03	= 3	; General Purpose I/O Register 0 bit 3
+                 .equ	GPIOR04	= 4	; General Purpose I/O Register 0 bit 4
+                 .equ	GPIOR05	= 5	; General Purpose I/O Register 0 bit 5
+                 .equ	GPIOR06	= 6	; General Purpose I/O Register 0 bit 6
+                 .equ	GPIOR07	= 7	; General Purpose I/O Register 0 bit 7
+                 
+                 ; PRR - Power reduction register
+                 .equ	PRUSART	= 0	; 
+                 .equ	PRUSI	= 1	; 
+                 .equ	PRTIM0	= 2	; 
+                 .equ	PRTIM1	= 3	; 
+                 
+                 ; BODCR - BOD control register
+                 .equ	BPDSE	= 0	; 
+                 .equ	BPDS	= 1	; 
+                 
+                 
+                 
+                 ; ***** LOCKSBITS ********************************************************
+                 .equ	LB1	= 0	; Lockbit
+                 .equ	LB2	= 1	; Lockbit
+                 
+                 
+                 ; ***** FUSES ************************************************************
+                 ; LOW fuse bits
+                 .equ	CKSEL0	= 0	; Select Clock Source
+                 .equ	CKSEL1	= 1	; Select Clock Source
+                 .equ	CKSEL2	= 2	; Select Clock Source
+                 .equ	CKSEL3	= 3	; Select Clock Source
+                 .equ	SUT0	= 4	; Select start-up time
+                 .equ	SUT1	= 5	; Select start-up time
+                 .equ	CKOUT	= 6	; Clock output
+                 .equ	CKDIV8	= 7	; Divide clock by 8
+                 
+                 ; HIGH fuse bits
+                 .equ	BODLEVEL0	= 0	; Brown-out Detector trigger level
+                 .equ	BODLEVEL1	= 1	; Brown-out Detector trigger level
+                 .equ	BODLEVEL2	= 2	; Brown-out Detector trigger level
+                 .equ	EESAVE	= 3	; EEPROM memory is preserved through chip erase
+                 .equ	WDTON	= 4	; Watchdog Timer Always On
+                 .equ	SPIEN	= 5	; Enable Serial programming and Data Downloading
+                 .equ	DWEN	= 6	; debugWIRE Enable
+                 .equ	RSTDISBL	= 7	; External reset disable
+                 
+                 ; EXTENDED fuse bits
+                 .equ	SELFPRGEN	= 0	; Self Programming Enable
+                 
+                 
+                 
+                 ; ***** CPU REGISTER DEFINITIONS *****************************************
+                 .def	XH	= r27
+                 .def	XL	= r26
+                 .def	YH	= r29
+                 .def	YL	= r28
+                 .def	ZH	= r31
+                 .def	ZL	= r30
+                 
+                 
+                 
+                 ; ***** DATA MEMORY DECLARATIONS *****************************************
+                 .equ	FLASHEND	= 0x03ff	; Note: Word address
+                 .equ	IOEND	= 0x003f
+                 .equ	SRAM_START	= 0x0060
+                 .equ	SRAM_SIZE	= 128
+                 .equ	RAMEND	= 0x00df
+                 .equ	XRAMEND	= 0x0000
+                 .equ	E2END	= 0x007f
+                 .equ	EEPROMEND	= 0x007f
+                 .equ	EEADRBITS	= 7
+                 #pragma AVRPART MEMORY PROG_FLASH 2048
+                 #pragma AVRPART MEMORY EEPROM 128
+                 #pragma AVRPART MEMORY INT_SRAM SIZE 128
+                 #pragma AVRPART MEMORY INT_SRAM START_ADDR 0x60
+                 
+                 
+                 
+                 ; ***** BOOTLOADER DECLARATIONS ******************************************
+                 .equ	NRWW_START_ADDR	= 0x0
+                 .equ	NRWW_STOP_ADDR	= 0x3ff
+                 .equ	RWW_START_ADDR	= 0x0
+                 .equ	RWW_STOP_ADDR	= 0x0
+                 .equ	PAGESIZE	= 16
+                 
+                 
+                 
+                 ; ***** INTERRUPT VECTORS ************************************************
+                 .equ	INT0addr	= 0x0001	; External Interrupt Request 0
+                 .equ	INT1addr	= 0x0002	; External Interrupt Request 1
+                 .equ	ICP1addr	= 0x0003	; Timer/Counter1 Capture Event
+                 .equ	OC1Aaddr	= 0x0004	; Timer/Counter1 Compare Match A
+                 .equ	OC1addr	= 0x0004	; For compatibility
+                 .equ	OVF1addr	= 0x0005	; Timer/Counter1 Overflow
+                 .equ	OVF0addr	= 0x0006	; Timer/Counter0 Overflow
+                 .equ	URXCaddr	= 0x0007	; USART, Rx Complete
+                 .equ	URXC0addr	= 0x0007	; For compatibility
+                 .equ	UDREaddr	= 0x0008	; USART Data Register Empty
+                 .equ	UDRE0addr	= 0x0008	; For compatibility
+                 .equ	UTXCaddr	= 0x0009	; USART, Tx Complete
+                 .equ	UTXC0addr	= 0x0009	; For compatibility
+                 .equ	ACIaddr	= 0x000a	; Analog Comparator
+                 .equ	PCIBaddr	= 0x000b	; Pin Change Interrupt Request B
+                 .equ	PCIaddr	= 0x000b	; For compatibility
+                 .equ	OC1Baddr	= 0x000c	; 
+                 .equ	OC0Aaddr	= 0x000d	; 
+                 .equ	OC0Baddr	= 0x000e	; 
+                 .equ	USI_STARTaddr	= 0x000f	; USI Start Condition
+                 .equ	USI_OVFaddr	= 0x0010	; USI Overflow
+                 .equ	ERDYaddr	= 0x0011	; 
+                 .equ	WDTaddr	= 0x0012	; Watchdog Timer Overflow
+                 .equ	PCIAaddr	= 0x0013	; Pin Change Interrupt Request A
+                 .equ	PCIDaddr	= 0x0014	; Pin Change Interrupt Request D
+                 
+                 .equ	INT_VECTORS_SIZE	= 21	; size in words
+                 
+                 #endif  /* _TN2313ADEF_INC_ */
+                 
+                 ; ***** END OF FILE ******************************************************
+                 
+                  * AVR_Meter.asm
+                  *
+                  *  Created: 10/2/2019 2:39:02 PM
+                  *   Author: student
+                  */ 
+                 
+                 ; AssemblerApplication1.asm
+                 ;
+                 ; Created: 2019-10-01 20:15:00
+                 ; Author : Moj 
+                 
+                 ;cw45-46
+                 
+                 .cseg ; segment pamiêci kodu programu;https://github.com/DarkSector/AVR/blob/master/asm/include/tn2313Adef.inc
+000000 c00d      .org 0 rjmp _main ; skok po resecie (do programu g³ównego)http://maxembedded.com/2011/07/avr-timers-ctc-mode/
+000004 c000      .org OC1Aaddr rjmp _timer_isr ; skok do obs³ugi przerwania timera, timer counter compare match A ;
+                 _timer_isr: ; procedura obs³ugi przerwania timera;;;; https://niki.art.pl/index.php/avr/59-timery-sprzetowe-ctc
+000005 e001      	LDI R16, ((1<<2)||(1<<3))
+000006 2e80      	MOV R8,R16
+                 	//LDI R16, 0b0
+                 	//MOV R9, R16
+                 	//OUT TCCR1A, R9
+000007 bc8e      	OUT TCCR1B , R8 ;
+000008 e000      	LDI R16, LOW(25600) ;timer1 nie ma output control register
+000009 bd0a      	OUT OCR1AL , R16
+00000a e604      	LDI R16, HIGH(25600)
+00000b bd0b      	OUT OCR1AH, R16
+                 
+00000c 94a3      inc R10 ; jakiœ kod
+00000d 9518      reti ; powrót z procedury obs³ugi przerwania (reti zamiast ret)
+                 
+                 _main:
+                 
+                 .def PulseEdgeCtrL=R0
+                 .def PulseEdgeCtrH=R1
+                 
+                 .def Dig0=R22 ; Digits temps
+                 .def Dig1=R23 ;
+                 .def Dig2=R24 ;
+                 .def Dig3=R25 ;
+                 
+                 .MACRO LOAD_CONST  
+                 	LDI @0, LOW(@2)
+                 	LDI @1, HIGH(@2)
+                 .ENDMACRO
+                 
+                 .MACRO SET_DIGIT 
+                 	LDI R17, (2<<@0)
+                 	RCALL DigitTo7segCode
+                 	OUT Segments_P, R27
+                 	OUT Digits_P, R17
+                 	RCALL DelayInMs
+                 .ENDMACRO
+                 
+                 .equ Digits_P = PORTB  ; .equ is like #define in C:
+                 .equ Segments_P = PORTD
+                 
+00000e e345      LDI R20, $35
+00000f e056      LDI R21, $6
+000010 e021      LDI R18, 1
+000011 2e42      MOV R4, R18
+000012 e030      LDI R19, 0
+000013 2433      CLR R3
+000014 e005
+000015 e010      LOAD_CONST R16,R17, 5
+000016 9300 0060 STS 0x60, R16
+000018 9310 0061 STS 0x61, R17
+00001a e77f      LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+00001b e1ae      LDI R26, 0x1e ; otworzenie pinów 1-4
+                 
+00001c bb71      OUT DDRD, R23
+00001d bba7      OUT DDRB, R26
+00001e 27dd      CLR R29
+00001f 27cc      CLR R28
+000020 27bb      CLR R27
+000021 2788      CLR R24
+                 
+                 MainLoop: 
+000022 9488      	CLC
+000023 0c04      	ADD PulseEdgeCtrL, R4
+000024 1c13      	ADC PulseEdgeCtrH, R3
+000025 9200 0062 	STS 0x62, PulseEdgeCtrL
+000027 9210 0063 	STS 0x63, PulseEdgeCtrH
+                 
+000029 d06d      	RCALL Divide
+00002a d042      	RCALL NumberToDigits
+                 
+                 	Start: 
+00002b 2fb9      	MOV R27, Dig3
+00002c e110
+00002d d033
+00002e bbb2
+00002f bb18
+000030 d013      	SET_DIGIT 3
+                 
+000031 2fb8      	MOV R27, Dig2
+000032 e018
+000033 d02d
+000034 bbb2
+000035 bb18
+000036 d00d      	SET_DIGIT 2
+                 
+000037 2fb7      	MOV R27, Dig1
+000038 e014
+000039 d027
+00003a bbb2
+00003b bb18
+00003c d007      	SET_DIGIT 1
+                 
+00003d 2fb6      	MOV R27, Dig0
+00003e e012
+00003f d021
+000040 bbb2
+000041 bb18
+000042 d001      	SET_DIGIT 0
+                 
+                 
+000043 cfde      RJMP MainLoop
+                 
+                 
+                 DelayInMs:
+000044 9100 0060 	LDS R16, 0x60
+000046 9110 0061 	LDS R17, 0x61
+                 
+000048 d00b      	OneMs: RCALL DelayOneMs 
+                 	
+000049 94a8      	Timer: CLN 
+00004a 9488      	CLC
+00004b 0904      	SBC R16,R4
+00004c f011      	BRBS 1, OldTimer
+00004d f008      	BRBS 0, OldTimer
+00004e cff9      	RJMP OneMs
+                 
+00004f 94a8      	OldTimer: CLN 
+000050 1914      	SUB R17,R4
+000051 f00a      	BRBS 2, DelayEnd
+000052 cff6      	RJMP Timer
+                 
+                 
+000053 9508      DelayEnd: RET
+                 
+                 		DelayOneMs:
+000054 935f      			PUSH R21
+000055 934f      			PUSH R20
+                 
+000056 954a      			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+000057 0000      			NOP
+000058 f009      			BRBS 1, Loop2
+000059 cffc      			RJMP Loop1
+                 
+00005a 955a      			Loop2: DEC R21
+00005b f00a      			BRBS 2, End 
+00005c cff9      			RJMP Loop1
+                 
+                 			End: 
+00005d 914f      			POP R20
+00005e 915f      			POP R21
+00005f 94a8      			CLN
+000060 9508      		RET
+                 
+                 DigitTo7segCode:
+000061 2433      		CLR R3
+000062 ede0      		LDI R30, Low(Table<<1)
+000063 e0f0      		LDI R31, High(Table<<1)
+                 
+000064 0feb      		ADD R30, R27
+000065 1df3      		ADC R31, R3
+000066 91b4      		LPM R27, Z 
+                 			
+000067 9508      	RET
+000068 063f
+000069 4f5b
+00006a 6d66
+00006b 077d
+00006c 6f7f      	Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
+                 
+                 
+                 NumberToDigits:
+00006d 27dd      	CLR R29
+00006e ee28      	LDI R18, LOW(1000)
+00006f e033      	LDI R19, HIGH(1000)
+                 
+                 	Comp0:
+000070 1602      	CP PulseEdgeCtrL, R18
+000071 0613      	CPC PulseEdgeCtrH,R19
+000072 f028      	BRLO Res0
+000073 c000      	RJMP Subs0
+                 
+                 	Subs0:
+                 	
+000074 1a02      	SUB PulseEdgeCtrL,R18
+000075 0a13      	SBC PulseEdgeCtrH,R19
+000076 0dd4      	ADD R29, R4
+000077 cff8      	RJMP Comp0
+                 
+                 	Res0:
+000078 2f6d      	MOV Dig0, R29 //wynik
+000079 e624      	LDI R18, LOW(100)
+00007a e030      	LDI R19, HIGH(100)
+00007b 27dd      	CLR R29
+                 
+                 	Comp1:
+00007c 1602      	CP PulseEdgeCtrL, R18
+00007d 0613      	CPC PulseEdgeCtrH,R19
+00007e f028      	BRLO Res1
+00007f c000      	RJMP Subs1
+                 
+                 	Subs1:
+000080 1a02      	SUB PulseEdgeCtrL,R18
+000081 0a13      	SBC PulseEdgeCtrH,R19
+000082 0dd4      	ADD R29, R4	
+000083 cff8      	RJMP Comp1
+                 
+                 	Res1:
+000084 2f7d      	MOV Dig1, R29
+000085 e02a      	LDI R18, LOW(10)
+000086 e030      	LDI R19, HIGH(10)
+000087 27dd      	CLR R29
+                 
+                 	Comp2:
+000088 1602      	CP PulseEdgeCtrL, R18
+000089 0613      	CPC PulseEdgeCtrH,R19
+00008a f028      	BRLO Res2
+00008b c000      	RJMP Subs2
+                 
+                 	Subs2:
+00008c 1a02      	SUB PulseEdgeCtrL,R18
+00008d 0a13      	SBC PulseEdgeCtrH,R19
+00008e 0dd4      	ADD R29, R4
+00008f cff8      	RJMP Comp2
+                 
+                 	Res2:
+000090 2f8d      	MOV Dig2, R29 //wynik
+000091 2d90      	MOV Dig3, PulseEdgeCtrL
+000092 9000 0062 	LDS PulseEdgeCtrL, 0x62
+000094 9010 0063 	LDS PulseEdgeCtrH, 0x63
+                 
+                 	
+000096 9508      RET
+                 
+                 	Divide:
+000097 e120      		LDI R18, LOW(10000)
+000098 e237      		LDI R19, HIGH(10000)
+                 		Comp:
+000099 1602      		CP PulseEdgeCtrL, R18
+00009a 0613      		CPC PulseEdgeCtrH,R19
+00009b f020      		BRLO Res
+00009c c000      		RJMP Subs
+                 	
+                 		Subs:
+00009d 1a02      		SUB PulseEdgeCtrL,R18
+00009e 0a13      		SBC PulseEdgeCtrH,R19
+00009f cff9      		RJMP Comp
+                 
+                 		Res:
+                 		
+0000a0 9508      	RET
+                 
+                 
+                 
+                 ;cw44
+                 ;
+                 ;.def PulseEdgeCtrL=R0
+                 ;.def PulseEdgeCtrH=R1
+                 ;
+                 ;.def Dig0=R22 ; Digits temps
+                 ;.def Dig1=R23 ;
+                 ;.def Dig2=R24 ;
+                 ;.def Dig3=R25 ;
+                 ;
+                 ;.MACRO LOAD_CONST  
+                 ;	LDI @0, LOW(@2)
+                 ;	LDI @1, HIGH(@2)
+                 ;.ENDMACRO
+                 ;
+                 ;.MACRO SET_DIGIT 
+                 ;	LDI R17, (2<<@0)
+                 ;	RCALL DigitTo7segCode
+                 ;	OUT Segments_P, R27
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs
+                 ;.ENDMACRO
+                 ;
+                 ;.equ Digits_P = PORTB  ; .equ is like #define in C:
+                 ;.equ Segments_P = PORTD
+                 ;
+                 ;LDI R20, $35
+                 ;LDI R21, $6
+                 ;LDI R18, 1
+                 ;MOV R4, R18
+                 ;LDI R19, 0
+                 ;CLR R3
+                 ;LOAD_CONST R16,R17, 10
+                 ;STS 0x60, R16
+                 ;STS 0x61, R17
+                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+                 ;LDI R26, 0x1e ; otworzenie pinów 1-4
+                 ;
+                 ;OUT DDRD, R23
+                 ;OUT DDRB, R26
+                 ;CLR R29
+                 ;CLR R28
+                 ;CLR R27
+                 ;CLR R24
+                 ;
+                 ;MainLoop: 
+                 ;	CLC
+                 ;	ADD PulseEdgeCtrL, R4
+                 ;	ADC PulseEdgeCtrH, R3
+                 ;	STS 0x62, PulseEdgeCtrL
+                 ;	STS 0x63, PulseEdgeCtrH
+                 ;
+                 ;	RCALL Divide
+                 ;	RCALL NumberToDigits
+                 ;
+                 ;	Start: 
+                 ;	MOV R27, Dig3
+                 ;	SET_DIGIT 3
+                 ;
+                 ;	MOV R27, Dig2
+                 ;	SET_DIGIT 2
+                 ;
+                 ;	MOV R27, Dig1
+                 ;	SET_DIGIT 1
+                 ;
+                 ;	MOV R27, Dig0
+                 ;	SET_DIGIT 0
+                 ;
+                 ;
+                 ;RJMP MainLoop
+                 ;
+                 ;
+                 ;DelayInMs:
+                 ;	LDS R16, 0x60
+                 ;	LDS R17, 0x61
+                 ;
+                 ;	OneMs: RCALL DelayOneMs 
+                 ;	
+                 ;	Timer: CLN 
+                 ;	CLC
+                 ;	SBC R16,R4
+                 ;	BRBS 1, OldTimer
+                 ;	BRBS 0, OldTimer
+                 ;	RJMP OneMs
+                 ;
+                 ;	OldTimer: CLN 
+                 ;	SUB R17,R4
+                 ;	BRBS 2, DelayEnd
+                 ;	RJMP Timer
+                 ;
+                 ;
+                 ;DelayEnd: RET
+                 ;
+                 ;		DelayOneMs:
+                 ;			PUSH R21
+                 ;			PUSH R20
+                 ;
+                 ;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;			NOP
+                 ;			BRBS 1, Loop2
+                 ;			RJMP Loop1
+                 ;
+                 ;			Loop2: DEC R21
+                 ;			BRBS 2, End 
+                 ;			RJMP Loop1
+                 ;
+                 ;			End: 
+                 ;			POP R20
+                 ;			POP R21
+                 ;			CLN
+                 ;		RET
+                 ;
+                 ;DigitTo7segCode:
+                 ;		CLR R3
+                 ;		LDI R30, Low(Table<<1)
+                 ;		LDI R31, High(Table<<1)
+                 ;
+                 ;		ADD R30, R27
+                 ;		ADC R31, R3
+                 ;		LPM R27, Z 
+                 ;			
+                 ;	RET
+                 ;	Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
+                 ;
+                 ;
+                 ;NumberToDigits:
+                 ;	CLR R29
+                 ;	LDI R18, LOW(1000)
+                 ;	LDI R19, HIGH(1000)
+                 ;
+                 ;	Comp0:
+                 ;	CP PulseEdgeCtrL, R18
+                 ;	CPC PulseEdgeCtrH,R19
+                 ;	BRLO Res0
+                 ;	RJMP Subs0
+                 ;
+                 ;	Subs0:
+                 ;	
+                 ;	SUB PulseEdgeCtrL,R18
+                 ;	SBC PulseEdgeCtrH,R19
+                 ;	ADD R29, R4
+                 ;	RJMP Comp0
+                 ;
+                 ;	Res0:
+                 ;	MOV Dig0, R29 //wynik
+                 ;	LDI R18, LOW(100)
+                 ;	LDI R19, HIGH(100)
+                 ;	CLR R29
+                 ;
+                 ;	Comp1:
+                 ;	CP PulseEdgeCtrL, R18
+                 ;	CPC PulseEdgeCtrH,R19
+                 ;	BRLO Res1
+                 ;	RJMP Subs1
+                 ;
+                 ;	Subs1:
+                 ;	SUB PulseEdgeCtrL,R18
+                 ;	SBC PulseEdgeCtrH,R19
+                 ;	ADD R29, R4	
+                 ;	RJMP Comp1
+                 ;
+                 ;	Res1:
+                 ;	MOV Dig1, R29
+                 ;	LDI R18, LOW(10)
+                 ;	LDI R19, HIGH(10)
+                 ;	CLR R29
+                 ;
+                 ;	Comp2:
+                 ;	CP PulseEdgeCtrL, R18
+                 ;	CPC PulseEdgeCtrH,R19
+                 ;	BRLO Res2
+                 ;	RJMP Subs2
+                 ;
+                 ;	Subs2:
+                 ;	SUB PulseEdgeCtrL,R18
+                 ;	SBC PulseEdgeCtrH,R19
+                 ;	ADD R29, R4
+                 ;	RJMP Comp2
+                 ;
+                 ;	Res2:
+                 ;	MOV Dig2, R29 //wynik
+                 ;	MOV Dig3, PulseEdgeCtrL
+                 ;	LDS PulseEdgeCtrL, 0x62
+                 ;	LDS PulseEdgeCtrH, 0x63
+                 ;
+                 ;	
+                 ;RET
+                 ;
+                 ;	Divide:
+                 ;		LDI R18, LOW(10000)
+                 ;		LDI R19, HIGH(10000)
+                 ;		Comp:
+                 ;		CP PulseEdgeCtrL, R18
+                 ;		CPC PulseEdgeCtrH,R19
+                 ;		BRLO Res
+                 ;		RJMP Subs
+                 ;	
+                 ;		Subs:
+                 ;		SUB PulseEdgeCtrL,R18
+                 ;		SBC PulseEdgeCtrH,R19
+                 ;		RJMP Comp
+                 ;
+                 ;		Res:
+                 ;		
+                 ;	RET
+                 ;
+                 ;
+                 ;
+                 ;cw43
+                 ;
+                 ;.def Dig0=R22 ; Digits temps
+                 ;.def Dig1=R23 ;
+                 ;.def Dig2=R24 ;
+                 ;.def Dig3=R25 ;
+                 ;
+                 ;LDI R16, LOW(4965)
+                 ;LDI R17, HIGH(4965)
+                 ;LDI R18, LOW(1000)
+                 ;LDI R19, HIGH(1000)
+                 ;LDI R22, 1
+                 ;MOV R0, R22
+                 ;
+                 ;
+                 ;NumberToDigits:
+                 ;	
+                 ;	Comp0:
+                 ;	CP R16, R18
+                 ;	CPC R17,R19
+                 ;	BRLO Res0
+                 ;	RJMP Subs0
+                 ;
+                 ;	Subs0:
+                 ;	SUB R16,R18
+                 ;	SBC R17,R19
+                 ;	ADD R29, R0	
+                 ;	RJMP Comp0
+                 ;
+                 ;	Res0:
+                 ;	MOV Dig0, R29 //wynik
+                 ;	LDI R18, LOW(100)
+                 ;	LDI R19, HIGH(100)
+                 ;	CLR R29
+                 ;
+                 ;	Comp1:
+                 ;	CP R16, R18
+                 ;	CPC R17,R19
+                 ;	BRLO Res1
+                 ;	RJMP Subs1
+                 ;
+                 ;	Subs1:
+                 ;	SUB R16,R18
+                 ;	SBC R17,R19
+                 ;	ADD R29, R0	
+                 ;	RJMP Comp1
+                 ;
+                 ;	Res1:
+                 ;	MOV Dig1, R29
+                 ;	LDI R18, LOW(10)
+                 ;	LDI R19, HIGH(10)
+                 ;	CLR R29
+                 ;
+                 ;	Comp2:
+                 ;	CP R16, R18
+                 ;	CPC R17,R19
+                 ;	BRLO Res2
+                 ;	RJMP Subs2
+                 ;
+                 ;	Subs2:
+                 ;	SUB R16,R18
+                 ;	SBC R17,R19
+                 ;	ADD R29, R0	
+                 ;	RJMP Comp2
+                 ;
+                 ;	Res2:
+                 ;	MOV Dig2, R29 //wynik
+                 ;	LDI R18, LOW(1)
+                 ;	LDI R19, HIGH(1)
+                 ;	CLR R29
+                 ;
+                 ;	Comp3:
+                 ;	CP R16, R18
+                 ;	CPC R17,R19
+                 ;	BRLO Res3
+                 ;	RJMP Subs3
+                 ;
+                 ;	Subs3:
+                 ;	SUB R16,R18
+                 ;	SBC R17,R19
+                 ;	ADD R29, R0	
+                 ;	RJMP Comp3
+                 ;
+                 ;	Res3:
+                 ;	MOV Dig3, R29 //wynik
+                 ;	CLR R29
+                 ;	
+                 ;RET
+                 
+                 ;cw42
+                 ;*** Divide ***
+                 ; X/Y -> Qotient,Reminder
+                 ; Input/Output: R16-19, Internal R24-25
+                 
+                 ; inputs
+                 /*.def XL=R16 ; divident
+                 .def XH=R17
+                 .def YL=R18 ; divider
+                 .def YH=R19
+                 
+                 ; outputs
+                 .def RL=R16 ; reminder
+                 .def RH=R17
+                 .def QL=R18 ; quotient
+                 .def QH=R19
+                 
+                 ; internal
+                 .def QCtrL=R24
+                 .def QCtrH=R25*/
+                 
+                 ;LDI R16, LOW(1200)
+                 ;LDI R17, HIGH(1200)
+                 ;LDI R18, LOW(500)
+                 ;LDI R19, HIGH(500)
+                 ;CLR R1
+                 ;LDI R22, 1
+                 ;MOV R0, R22
+                 ;
+                 ;Divide:
+                 ;	
+                 ;	Comp:
+                 ;	CP R16, R18
+                 ;	CPC R17,R19
+                 ;	BRLO Res
+                 ;	RJMP Subs
+                 ;
+                 ;	Subs:
+                 ;	SUB R16,R18
+                 ;	SBC R17,R19
+                 ;	ADD R24, R0
+                 ;	ADC R25,R1
+                 ;	RJMP Comp
+                 ;
+                 ;	Res:
+                 ;	MOV R18,R16//reszta
+                 ;	MOV R19,R17//
+                 ;	MOV R16, R24 //wynik
+                 ;	MOV R17, R25//
+                 ;	
+                 ;RET
+                 ;
+                 ;
+                 ;cw41
+                 ;.MACRO LOAD_CONST  
+                 ;	LDI @0, LOW(@2)
+                 ;	LDI @1, HIGH(@2)
+                 ;.ENDMACRO
+                 ;
+                 ;.MACRO SET_DIGIT 
+                 ;	LDI R17, (2<<@0)
+                 ;	RCALL DigitTo7segCode
+                 ;	OUT Segments_P, R26
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs
+                 ;.ENDMACRO
+                 ;
+                 ;.equ Digits_P = PORTB  ; .equ is like #define in C:
+                 ;.equ Segments_P = PORTD
+                 ;
+                 ;LDI R20, $35
+                 ;LDI R21, $6
+                 ;LDI R18, 1
+                 ;LDI R19, 0
+                 ;LOAD_CONST R16,R17, 5
+                 ;STS 0x60, R16
+                 ;STS 0x61, R17
+                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+                 ;LDI R26, 0x1e ; otworzenie pinów 1-4
+                 ;
+                 ;OUT DDRD, R23
+                 ;OUT DDRB, R26
+                 ;CLR R29
+                 ;CLR R28
+                 ;CLR R27
+                 ;CLR R24
+                 ;
+                 ;MainLoop: 
+                 ;	Start: 
+                 ;	MOV R26, R29
+                 ;	SET_DIGIT 3
+                 ;	MOV R26, R28
+                 ;	SET_DIGIT 2
+                 ;	MOV R26,R27
+                 ;	SET_DIGIT 1
+                 ;	MOV R26, R24
+                 ;	SET_DIGIT 0
+                 ;
+                 ;
+                 ;	INC R29
+                 ;	CPI R29, 10
+                 ;	BRNE Start
+                 ;	CLR R29
+                 ;
+                 ;	INC R28
+                 ;	CPI R28,10
+                 ;	BRNE Start
+                 ;	CLR R28
+                 ;
+                 ;	INC R27
+                 ;	CPI R27,10
+                 ;	BRNE Start
+                 ;	CLR R27
+                 ;
+                 ;	INC R24
+                 ;	CPI R24,10
+                 ;	BRNE Start
+                 ;	CLR R24
+                 ;
+                 ;
+                 ;RJMP MainLoop
+                 ;
+                 ;
+                 ;DelayInMs:
+                 ;	LDS R16, 0x60
+                 ;	LDS R17, 0x61
+                 ;
+                 ;	OneMs: RCALL DelayOneMs 
+                 ;	
+                 ;	Timer: CLN 
+                 ;	CLC
+                 ;	SBC R16,R18
+                 ;	BRBS 1, OldTimer
+                 ;	BRBS 0, OldTimer
+                 ;	RJMP OneMs
+                 ;
+                 ;	OldTimer: CLN 
+                 ;	SUB R17,R18
+                 ;	BRBS 2, DelayEnd
+                 ;	RJMP Timer
+                 ;
+                 ;
+                 ;DelayEnd: RET
+                 ;
+                 ;		DelayOneMs:
+                 ;			PUSH R21
+                 ;			PUSH R20
+                 ;
+                 ;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;			NOP
+                 ;			BRBS 1, Loop2
+                 ;			RJMP Loop1
+                 ;
+                 ;			Loop2: DEC R21
+                 ;			BRBS 2, End 
+                 ;			RJMP Loop1
+                 ;
+                 ;			End: 
+                 ;			POP R20
+                 ;			POP R21
+                 ;			CLN
+                 ;		RET
+                 ;
+                 ;	DigitTo7segCode:
+                 ;		LDI R25, 0
+                 ;		LDI R30, Low(Table<<1)
+                 ;		LDI R31, High(Table<<1)
+                 ;
+                 ;		ADD R30, R26
+                 ;		ADC R31, R25
+                 ;		LPM R26, Z 
+                 ;			
+                 ;	RET
+                 ;	Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
+                 ;
+                 ;
+                 ;cw40
+                 ;.MACRO LOAD_CONST  
+                 ;	LDI @0, LOW(@2)
+                 ;	LDI @1, HIGH(@2)
+                 ;.ENDMACRO
+                 ;
+                 ;.MACRO SET_DIGIT 
+                 ;	LDI R17, (2<<@0) 
+                 ;	;LDI R26, 0
+                 ;	RCALL DigitTo7segCode
+                 ;	OUT Segments_P, R26
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs
+                 ;.ENDMACRO
+                 ;
+                 ;.equ Digits_P = PORTB  ; .equ is like #define in C:
+                 ;.equ Segments_P = PORTD
+                 ;
+                 ;LDI R20, $35
+                 ;LDI R21, $6
+                 ;LDI R18, 1
+                 ;LDI R19, 0
+                 ;LOAD_CONST R16,R17, 1000
+                 ;STS 0x60, R16
+                 ;STS 0x61, R17
+                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+                 ;LDI R26, 0x1e ; otworzenie pinów 1-4;
+                 ;
+                 ;OUT DDRD, R23
+                 ;OUT DDRB, R26
+                 ;CLR R29
+                 ;
+                 ;MainLoop: 
+                 ;	Start: MOV R26, R29
+                 ;	SET_DIGIT 3
+                 ;	INC R29
+                 ;	CPI R29, 10
+                 ;	BRNE Start
+                 ;	CLR R29
+                 ;
+                 ;RJMP MainLoop
+                 ;
+                 ;
+                 ;DelayInMs:
+                 ;	LDS R16, 0x60
+                 ;	LDS R17, 0x61
+                 ;
+                 ;	OneMs: RCALL DelayOneMs 
+                 ;	
+                 ;	Timer: CLN 
+                 ;	CLC
+                 ;	SBC R16,R18
+                 ;	BRBS 1, OldTimer
+                 ;	BRBS 0, OldTimer
+                 ;	RJMP OneMs
+                 ;
+                 ;	OldTimer: CLN 
+                 ;	SUB R17,R18
+                 ;	BRBS 2, DelayEnd
+                 ;	RJMP Timer
+                 ;
+                 ;
+                 ;DelayEnd: RET
+                 ;
+                 ;		DelayOneMs:
+                 ;			PUSH R21
+                 ;			PUSH R20
+                 ;
+                 ;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;			NOP
+                 ;			BRBS 1, Loop2
+                 ;			RJMP Loop1
+                 ;
+                 ;			Loop2: DEC R21
+                 ;			BRBS 2, End 
+                 ;			RJMP Loop1
+                 ;
+                 ;			End: 
+                 ;			POP R20
+                 ;			POP R21
+                 ;			CLN
+                 ;		RET
+                 ;
+                 ;	DigitTo7segCode:
+                 ;		LDI R25, 0
+                 ;		LDI R30, Low(Table<<1)
+                 ;		LDI R31, High(Table<<1)
+                 ;
+                 ;		ADD R30, R26
+                 ;		ADC R31, R25
+                 ;		LPM R26, Z 
+                 ;			
+                 ;	RET
+                 ;	Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
+                 ;
+                 ;cw39b
+                 ;.MACRO LOAD_CONST  
+                 ;	LDI @0, LOW(@2)
+                 ;	LDI @1, HIGH(@2)
+                 ;.ENDMACRO
+                 ;
+                 ;.MACRO SET_DIGIT
+                 ;	LDI R17, 2<<@0 ; 1 cyfra
+                 ;	LDI R26, 7
+                 ;	RCALL DigitTo7segCode
+                 ;	OUT Segments_P, R26
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs
+                 ;.ENDMACRO
+                 ;
+                 ;.equ Digits_P = PORTB  ; .equ is like #define in C:
+                 ;.equ Segments_P = PORTD
+                 ;
+                 ;LDI R20, $35
+                 ;LDI R21, $6
+                 ;LDI R18, 1
+                 ;LOAD_CONST R16,R17, 5
+                 ;STS 0x60, R16
+                 ;STS 0x61, R17
+                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+                 ;LDI R26, 0x1e ; otworzenie pinów 1-4
+                 ;
+                 ;
+                 ;OUT DDRD, R23
+                 ;OUT DDRB, R26
+                 ;
+                 ;MainLoop: 
+                 ;
+                 ;	SET_DIGIT 0
+                 ;	SET_DIGIT 1
+                 ;	SET_DIGIT 2
+                 ;	SET_DIGIT 3
+                 ;
+                 ;RJMP MainLoop
+                 ;
+                 ;
+                 ;
+                 ;DelayInMs:
+                 ;	LDS R16, 0x60
+                 ;	LDS R17, 0x61
+                 ;
+                 ;	OneMs: RCALL DelayOneMs 
+                 ;	
+                 ;	Timer: CLN 
+                 ;	CLC
+                 ;	SBC R16,R18
+                 ;	BRBS 1, OldTimer
+                 ;	BRBS 0, OldTimer
+                 ;	RJMP OneMs
+                 ;
+                 ;	OldTimer: CLN 
+                 ;	SUB R17,R18
+                 ;	BRBS 2, DelayEnd
+                 ;	RJMP Timer
+                 ;
+                 ;
+                 ;DelayEnd: RET
+                 ;
+                 ;		DelayOneMs:
+                 ;			PUSH R21
+                 ;			PUSH R20
+                 ;
+                 ;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;			NOP
+                 ;			BRBS 1, Loop2
+                 ;			RJMP Loop1
+                 ;
+                 ;			Loop2: DEC R21
+                 ;			BRBS 2, End 
+                 ;			RJMP Loop1
+                 ;
+                 ;			End: 
+                 ;			POP R20
+                 ;			POP R21
+                 ;			CLN
+                 ;		RET
+                 ;
+                 ;	DigitTo7segCode:
+                 ;		LDI R25, 0
+                 ;		LDI R30, Low(Table<<1)
+                 ;		LDI R31, High(Table<<1)
+                 ;
+                 ;		ADD R30, R26
+                 ;		ADC R31, R25
+                 ;		LPM R26, Z 
+                 ;			
+                 ;	RET
+                 ;	Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
+                 ;
+                 ;cw39
+                 ;.MACRO LOAD_CONST  
+                 ;LDI @0, LOW(@2)
+                 ;LDI @1, HIGH(@2)
+                 ;.ENDMACRO
+                 ;
+                 ;.equ Digits_P = PORTB  ; .equ is like #define in C:
+                 ;.equ Segments_P = PORTD
+                 ;
+                 ;LDI R20, $35
+                 ;LDI R21, $6
+                 ;LDI R18, 1
+                 ;LOAD_CONST R16,R17, 5
+                 ;STS 0x60, R16
+                 ;STS 0x61, R17
+                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+                 ;LDI R26, 0x1e ; otworzenie pinów 1-4
+                 ;
+                 ;
+                 ;OUT DDRD, R23
+                 ;OUT DDRB, R26
+                 ;
+                 ;MAIN: 
+                 ;	LDI R17, 0x8 ;3 cyfra
+                 ;	LDI R26,5
+                 ;	RCALL DigitTo7segCode
+                 ;	OUT Segments_P, R26
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs 
+                 ;
+                 ;	
+                 ;	LDI R17, 0x4 ;2 cyfra
+                 ;	LDI R26, 6
+                 ;	RCALL DigitTo7segCode
+                 ;	OUT Segments_P, R26
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs 
+                 ;
+                 ;	
+                 ;	LDI R17, 0x2 ; 1 cyfra
+                 ;	LDI R26, 7
+                 ;	RCALL DigitTo7segCode
+                 ;	OUT Segments_P, R26
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs
+                 ;
+                 ;	
+                 ;	LDI R17, 0x10 ;4 cyfra
+                 ;	LDI R26, 4
+                 ;	RCALL DigitTo7segCode
+                 ;	OUT Segments_P, R26
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs
+                 ;
+                 ;RJMP MAIN
+                 ;
+                 ;
+                 ;
+                 ;DelayInMs:
+                 ;	LDS R16, 0x60
+                 ;	LDS R17, 0x61
+                 ;
+                 ;	OneMs: RCALL DelayOneMs 
+                 ;	
+                 ;	Timer: CLN 
+                 ;	CLC
+                 ;	SBC R16,R18
+                 ;	BRBS 1, OldTimer
+                 ;	BRBS 0, OldTimer
+                 ;	RJMP OneMs
+                 ;
+                 ;	OldTimer: CLN 
+                 ;	SUB R17,R18
+                 ;	BRBS 2, DelayEnd
+                 ;	RJMP Timer
+                 ;
+                 ;
+                 ;DelayEnd: RET
+                 ;
+                 ;		DelayOneMs:
+                 ;			PUSH R21
+                 ;			PUSH R20
+                 ;
+                 ;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;			NOP
+                 ;			BRBS 1, Loop2
+                 ;			RJMP Loop1
+                 ;
+                 ;			Loop2: DEC R21
+                 ;			BRBS 2, End 
+                 ;			RJMP Loop1
+                 ;
+                 ;			End: 
+                 ;			POP R20
+                 ;			POP R21
+                 ;			CLN
+                 ;		RET
+                 ;
+                 ;	DigitTo7segCode:
+                 ;		LDI R25, 0
+                 ;		LDI R30, Low(Table<<1)
+                 ;		LDI R31, High(Table<<1)
+                 ;
+                 ;		ADD R30, R26
+                 ;		ADC R31, R25
+                 ;		LPM R26, Z 
+                 ;			
+                 ;	RET
+                 ;	Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
+                 ;
+                 ;cw38
+                 ;LDI R30, Low(Table<<1) 
+                 ;LDI R31, High(Table<<1)
+                 ;LDI R16, 3
+                 ;STS 0x60, R16
+                 ;RCALL DigitTo7segCode 
+                 ;NOP
+                 ;
+                 ;DigitTo7segCode:
+                 ;
+                 ;	ADIW R30:R31, 3
+                 ;	LPM R16, Z 
+                 ;	LDS R16, 0x60
+                 ;	NOP
+                 ;		Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
+                 ;RET
+                 ;
+                 ;cw37
+                 ;LDI R30, Low(Table<<1) 
+                 ;LDI R31, High(Table<<1)
+                 ;LDI R16, 3
+                 ;RCALL Square 
+                 ;NOP
+                 ;
+                 ;Square:
+                 ;
+                 ;	ADIW R30:R31, 3
+                 ;	LPM R16, Z 
+                 ;	NOP
+                 ;		Table: .db 0x0, 0x1, 0x4, 0x9, 0x10, 0x19, 0x23, 0x31, 0x40, 0x51
+                 ;RET
+                 ;
+                 ;cw36
+                 // Program odczytuje 4 bajty z tablicy sta³ych zdefiniowanej w pamiêci kodu do rejestrów R20..R23
+                 ;ldi R30, Low(Table<<1) // inicjalizacja rejestru Z
+                 ;ldi R31, High(Table<<1)
+                 ;lpm R20, Z // odczyt pierwszej sta³ej z tablicy Table
+                 ;adiw R30:R31,1 // inkrementacja Z
+                 ;lpm R21, Z // odczyt drugiej sta³ej
+                 ;adiw R30:R31,1 // inkrementacja Z
+                 ;lpm R22, Z // odczyt trzeciej sta³ej
+                 ;adiw R30:R31,1 // inkrementacja Z
+                 ;lpm R23, Z // odczyt czwartej sta³ej
+                 ;nop
+                 ;Table: .db 0x57, 0x58, 0x59, 0x5A // UWAGA: liczba bajtów zdeklarowanych w
+                 								// pamiêci kodu musi byæ parzysta
+                 
+                 ;cw35
+                 ;.MACRO LOAD_CONST  
+                 ;LDI @0, LOW(@2)
+                 ;LDI @1, HIGH(@2)
+                 ;.ENDMACRO
+                 ;
+                 ;#define DIGIT_0 R2
+                 ;#define DIGIT_1 R3
+                 ;#define DIGIT_2 R4
+                 ;#define DIGIT_3 R5
+                 ;
+                 ;.equ Digits_P = PORTB  ; .equ is like #define in C:
+                 ;.equ Segments_P = PORTD
+                 ;
+                 ;LDI R20, $35
+                 ;LDI R21, $6
+                 ;LDI R18, 1
+                 ;LOAD_CONST R16,R17, 5
+                 ;STS 0x60, R16
+                 ;STS 0x61, R17
+                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+                 ;LDI R26, 0x1e ; otworzenie pinów 1-4
+                 ;
+                 ;LDI R16, 0x3f
+                 ;MOV DIGIT_0,R16 ;"0"
+                 ;LDI R16, 0x6
+                 ;MOV DIGIT_1, R16 ;"1"
+                 ;LDI R16, 0x5b
+                 ;MOV DIGIT_2, R16 ;"2"
+                 ;LDI R16, 0x4f 
+                 ;MOV DIGIT_3, R16 ;"3"
+                 ;
+                 ;OUT DDRD, R23
+                 ;OUT DDRB, R26
+                 ;
+                 ;Zero: 
+                 ;	LDI R17, 0x8 ;3 cyfra
+                 ;	OUT Segments_P, DIGIT_2
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs 
+                 ;
+                 ;	
+                 ;	LDI R17, 0x4 ;2 cyfra
+                 ;	OUT Segments_P, DIGIT_1
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs 
+                 ;
+                 ;	
+                 ;	LDI R17, 0x2 ; 1 cyfra
+                 ;	OUT Segments_P, DIGIT_0
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs
+                 ;
+                 ;	
+                 ;	LDI R17, 0x10 ;4 cyfra
+                 ;	OUT Segments_P, DIGIT_3
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs
+                 ;
+                 ;RJMP Zero
+                 ;
+                 ;DelayInMs:
+                 ;	LDS R16, 0x60
+                 ;	LDS R17, 0x61
+                 ;
+                 ;	OneMs: RCALL DelayOneMs 
+                 ;	
+                 ;	Timer: CLN 
+                 ;	CLC
+                 ;	SBC R16,R18
+                 ;	BRBS 1, OldTimer
+                 ;	BRBS 0, OldTimer
+                 ;	RJMP OneMs
+                 ;
+                 ;	OldTimer: CLN 
+                 ;	SUB R17,R18
+                 ;	BRBS 2, DelayEnd
+                 ;	RJMP Timer
+                 ;
+                 ;
+                 ;DelayEnd: 
+                 ;	;LDS R16, 0x60
+                 ;	;LDS R17, 0x61
+                 ;	RET
+                 ;
+                 ;		DelayOneMs:
+                 ;			PUSH R21
+                 ;			PUSH R20
+                 ;
+                 ;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;			NOP
+                 ;			BRBS 1, Loop2
+                 ;			RJMP Loop1
+                 ;
+                 ;			Loop2: DEC R21
+                 ;			BRBS 2, End 
+                 ;			RJMP Loop1
+                 ;
+                 ;			End: 
+                 ;			POP R20
+                 ;			POP R21
+                 ;			CLN
+                 ;			RET
+                 ;
+                 ;cw34
+                 ;.MACRO LOAD_CONST  
+                 ;LDI @0, LOW(@2)
+                 ;LDI @1, HIGH(@2)
+                 ;.ENDMACRO
+                 ;
+                 ;.equ Digits_P = PORTB  ; .equ is like #define in C:
+                 ;.equ Segments_P = PORTD
+                 ;
+                 ;LDI R20, $35
+                 ;LDI R21, $6
+                 ;LDI R18, 1
+                 ;LOAD_CONST R16,R17, 5
+                 ;STS 0x60, R16
+                 ;STS 0x61, R17
+                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+                 ;LDI R26, 0x1e ; otworzenie pinów 1-4
+                 ;
+                 ;LDI R16, 0x3f
+                 ;MOV R2,R16 ;"0"
+                 ;LDI R16, 0x6
+                 ;MOV R3, R16 ;"1"
+                 ;LDI R16, 0x5b
+                 ;MOV R4, R16 ;"2"
+                 ;LDI R16, 0x4f 
+                 ;MOV R5, R16 ;"3"
+                 ;
+                 ;OUT DDRD, R23
+                 ;OUT DDRB, R26
+                 ;
+                 ;Zero: 
+                 ;	LDI R17, 0x8 ;3 cyfra
+                 ;	OUT Segments_P, R4
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs 
+                 ;
+                 ;	
+                 ;	LDI R17, 0x4 ;2 cyfra
+                 ;	OUT Segments_P, R3
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs 
+                 ;
+                 ;	
+                 ;	LDI R17, 0x2 ; 1 cyfra
+                 ;	OUT Segments_P, R2
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs
+                 ;
+                 ;	
+                 ;	LDI R17, 0x10 ;4 cyfra
+                 ;	OUT Segments_P, R5
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs
+                 ;
+                 ;RJMP Zero
+                 ;
+                 ;DelayInMs:
+                 ;	LDS R16, 0x60
+                 ;	LDS R17, 0x61
+                 ;
+                 ;	OneMs: RCALL DelayOneMs 
+                 ;	
+                 ;	Timer: CLN 
+                 ;	CLC
+                 ;	SBC R16,R18
+                 ;	BRBS 1, OldTimer
+                 ;	BRBS 0, OldTimer
+                 ;	RJMP OneMs
+                 ;
+                 ;	OldTimer: CLN 
+                 ;	SUB R17,R18
+                 ;	BRBS 2, DelayEnd
+                 ;	RJMP Timer
+                 ;
+                 ;
+                 ;DelayEnd: 
+                 ;	;LDS R16, 0x60
+                 ;	;LDS R17, 0x61
+                 ;	RET
+                 ;
+                 ;		DelayOneMs:
+                 ;			PUSH R21
+                 ;			PUSH R20
+                 ;
+                 ;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;			NOP
+                 ;			BRBS 1, Loop2
+                 ;			RJMP Loop1
+                 ;
+                 ;			Loop2: DEC R21
+                 ;			BRBS 2, End 
+                 ;			RJMP Loop1
+                 ;
+                 ;			End: 
+                 ;			POP R20
+                 ;			POP R21
+                 ;			CLN
+                 ;			RET
+                 ;
+                 ;cw33
+                 ;.MACRO LOAD_CONST  
+                 ;LDI @0, LOW(@2)
+                 ;LDI @1, HIGH(@2)
+                 ;.ENDMACRO
+                 ;
+                 ;.equ Digits_P = PORTB  ; .equ is like #define in C:
+                 ;.equ Segments_P = PORTD
+                 ;
+                 ;LDI R20, $35
+                 ;LDI R21, $6
+                 ;LDI R18, 1
+                 ;LOAD_CONST R16,R17, 5
+                 ;STS 0x60, R16
+                 ;STS 0x61, R17
+                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+                 ;LDI R26, 0x1e ; otworzenie pinów 1-4
+                 ;
+                 ;OUT DDRD, R23
+                 ;OUT DDRB, R26
+                 ;
+                 ;Zero: LDI R16, 0b1011011 ; cyfra "2"
+                 ;	LDI R17, 0x8 ;3cyfra
+                 ;	OUT Segments_P, R16
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs 
+                 ;
+                 ;	LDI R16, 0b110 ;cyfra "1"
+                 ;	LDI R17, 0x4 ;2 cyfra
+                 ;	OUT Segments_P, R16
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs 
+                 ;
+                 ;	LDI R16 , 0b111111 ;cyfra "0"
+                 ;	LDI R17, 0x2 ; 1 cyfra
+                 ;	OUT Segments_P, R16
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs
+                 ;
+                 ;	LDI R16, 0x4f ;cyfra "3"
+                 ;	LDI R17, 0x10 ;4cyfra
+                 ;	OUT Segments_P, R16
+                 ;	OUT Digits_P, R17
+                 ;	RCALL DelayInMs
+                 ;
+                 ;RJMP Zero
+                 ;
+                 ;DelayInMs:
+                 ;	LDS R16, 0x60
+                 ;	LDS R17, 0x61
+                 ;
+                 ;	OneMs: RCALL DelayOneMs 
+                 ;	
+                 ;	Timer: CLN 
+                 ;	CLC
+                 ;	SBC R16,R18
+                 ;	BRBS 1, OldTimer
+                 ;	BRBS 0, OldTimer
+                 ;	RJMP OneMs
+                 ;
+                 ;	OldTimer: CLN 
+                 ;	SUB R17,R18
+                 ;	BRBS 2, DelayEnd
+                 ;	RJMP Timer
+                 ;
+                 ;
+                 ;DelayEnd: 
+                 ;	;LDS R16, 0x60
+                 ;	;LDS R17, 0x61
+                 ;	RET
+                 ;
+                 ;		DelayOneMs:
+                 ;			PUSH R21
+                 ;			PUSH R20
+                 ;
+                 ;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;			NOP
+                 ;			BRBS 1, Loop2
+                 ;			RJMP Loop1
+                 ;
+                 ;			Loop2: DEC R21
+                 ;			BRBS 2, End 
+                 ;			RJMP Loop1
+                 ;
+                 ;			End: 
+                 ;			POP R20
+                 ;			POP R21
+                 ;			CLN
+                 ;			RET
+                 ;
+                 ;cw32
+                 ;.MACRO LOAD_CONST  
+                 ;LDI @0, LOW(@2)
+                 ;LDI @1, HIGH(@2)
+                 ;.ENDMACRO
+                 
+                 ;.equ Digits_P = PORTB  ; .equ is like #define in C:
+                 ;.equ Segments_P = PORTD
+                 ;
+                 ;LDI R20, $35
+                 ;LDI R21, $6
+                 ;LDI R18, 1
+                 ;LOAD_CONST R16,R17, 5
+                 ;STS 0x60, R16
+                 ;STS 0x61, R17
+                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie
+                 ;LDI R24, 0x3f ; "0"
+                 ;LDI R25, 0x10 ;4cyfra
+                 ;LDI R26, 0x1e
+                 ;
+                 ;OUT DDRD, R23
+                 ;OUT DDRB, R26
+                 ;
+                 ;Zero: OUT Segments_P, R24
+                 ;	OUT Digits_P, R25
+                 ;	LDI R25, 0x8 ;3cyfra
+                 ;	RCALL DelayInMs 
+                 ;
+                 ;	OUT Segments_P, R24
+                 ;	OUT Digits_P, R25
+                 ;	LDI R25, 0x4 ;2 cyfra
+                 ;	RCALL DelayInMs 
+                 ;
+                 ;	OUT Segments_P, R24
+                 ;	OUT Digits_P, R25
+                 ;	LDI R25, 0x2 ; 1 cyfra
+                 ;	RCALL DelayInMs
+                 ;
+                 ;	OUT Segments_P, R24
+                 ;	OUT Digits_P, R25
+                 ;	LDI R25, 0x10 ;4cyfra
+                 ;	RCALL DelayInMs
+                 ;
+                 ;RJMP Zero
+                 ;
+                 ;DelayInMs:
+                 ;	RCALL DelayOneMs 
+                 ;	
+                 ;	Timer: CLN 
+                 ;	CLC
+                 ;	SBC R16,R18
+                 ;	BRBS 1, OldTimer
+                 ;	BRBS 0, OldTimer
+                 ;	RJMP DelayInMs
+                 ;
+                 ;	OldTimer: CLN 
+                 ;	SUB R17,R18
+                 ;	BRBS 2, DelayEnd
+                 ;	RJMP Timer
+                 ;
+                 ;
+                 ;DelayEnd: 
+                 ;	LDS R16, 0x60
+                 ;	LDS R17, 0x61
+                 ;	RET
+                 ;
+                 ;		DelayOneMs:
+                 ;			PUSH R21
+                 ;			PUSH R20
+                 ;
+                 ;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;			NOP
+                 ;			BRBS 1, Loop2
+                 ;			RJMP Loop1
+                 ;
+                 ;			Loop2: DEC R21
+                 ;			BRBS 2, End 
+                 ;			RJMP Loop1
+                 ;
+                 ;			End: 
+                 ;			POP R20
+                 ;			POP R21
+                 ;			CLN
+                 ;			RET
+                 ;
+                 ;
+                 ;cw31
+                 ;.MACRO LOAD_CONST  
+                 ;LDI @0, LOW(@2)
+                 ;LDI @1, HIGH(@2)
+                 ;.ENDMACRO
+                 ;
+                 ;.equ Digits_P = PORTB  ; .equ is like #define in C:
+                 ;.equ Segments_P = PORTD
+                 ;
+                 ;LDI R20, $35
+                 ;LDI R21, $6
+                 ;LDI R18, 1
+                 ;LOAD_CONST R16,R17,1000
+                 ;STS 0x60, R16
+                 ;STS 0x61, R17
+                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie
+                 ;LDI R24, 0x3f ;"0"
+                 ;LDI R25, 0x10 ;4cyfra
+                 ;LDI R26, 0x1e
+                 ;
+                 ;OUT DDRD, R23
+                 ;OUT DDRB, R26
+                 ;
+                 ;Zero: OUT Segments_P, R24
+                 ;	OUT Digits_P, R25
+                 ;	LDI R25, 0x8 ;3cyfra
+                 ;	RCALL DelayInMs 
+                 ;	OUT Segments_P, R24
+                 ;	OUT Digits_P, R25
+                 ;	LDI R25, 0x4 ;2 cyfra
+                 ;	RCALL DelayInMs 
+                 ;	OUT Segments_P, R24
+                 ;	OUT Digits_P, R25
+                 ;	LDI R25, 0x2 ; 1 cyfra
+                 ;	RCALL DelayInMs
+                 ;	OUT Segments_P, R24
+                 ;	OUT Digits_P, R25
+                 ;	LDI R25, 0x10 ;4cyfra
+                 ;	RCALL DelayInMs
+                 ;RJMP Zero
+                 ;
+                 ;DelayInMs:
+                 ;	RCALL DelayOneMs 
+                 ;	
+                 ;	Timer: CLN 
+                 ;	CLC
+                 ;	SBC R16,R18
+                 ;	BRBS 1, OldTimer
+                 ;	BRBS 0, OldTimer
+                 ;	RJMP DelayInMs
+                 ;
+                 ;	OldTimer: CLN 
+                 ;	SUB R17,R18
+                 ;	BRBS 2, DelayEnd
+                 ;	RJMP Timer
+                 ;
+                 ;
+                 ;DelayEnd: 
+                 ;	LDS R16, 0x60
+                 ;	LDS R17, 0x61
+                 ;	RET
+                 ;
+                 ;		DelayOneMs:
+                 ;			PUSH R21
+                 ;			PUSH R20
+                 ;
+                 ;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;			NOP
+                 ;			BRBS 1, Loop2
+                 ;			RJMP Loop1
+                 ;
+                 ;			Loop2: DEC R21
+                 ;			BRBS 2, End 
+                 ;			RJMP Loop1
+                 ;
+                 ;			End: 
+                 ;			POP R20
+                 ;			POP R21
+                 ;			CLN
+                 ;			RET
+                 ;
+                 ;cw30b
+                 ;.MACRO LOAD_CONST  
+                 ;LDI @0, LOW(@2)
+                 ;LDI @1, HIGH(@2)
+                 ;.ENDMACRO
+                 ;
+                 ;.equ Digits_P = PORTB  ; .equ is like #define in C:
+                 ;.equ Segments_P = PORTD
+                 ;
+                 ;LDI R20, $35
+                 ;LDI R21, $6
+                 ;LDI R18, 1
+                 ;LOAD_CONST R16,R17,1000
+                 ;STS 0x60, R16
+                 ;STS 0x61, R17
+                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie
+                 ;LDI R24, 0x3f ;"0"
+                 ;LDI R25, 0x10 ;4cyfra
+                 ;LDI R26, 0x1e
+                 ;
+                 ;OUT DDRD, R23
+                 ;OUT DDRB, R26
+                 ;Zero: OUT Segments_P, R24
+                 ;OUT Digits_P, R25
+                 ;LDI R25, 0x8 ;3cyfra
+                 ;RCALL DelayInMs 
+                 ;OUT Segments_P, R24
+                 ;OUT Digits_P, R25
+                 ;LDI R25, 0x4 ;2 cyfra
+                 ;RCALL DelayInMs 
+                 ;OUT Segments_P, R24
+                 ;OUT Digits_P, R25
+                 ;LDI R25, 0x2 ; 1 cyfra
+                 ;RCALL DelayInMs
+                 ;OUT Segments_P, R24
+                 ;OUT Digits_P, R25
+                 ;LDI R25, 0x10 ;4cyfra
+                 ;RCALL DelayInMs
+                 ;RJMP Zero
+                 ;
+                 ;DelayInMs:
+                 ;	RCALL DelayOneMs 
+                 ;	
+                 ;	Timer: CLN 
+                 ;	CLC
+                 ;	SBC R16,R18
+                 ;	BRBS 1, OldTimer
+                 ;	BRBS 0, OldTimer
+                 ;	RJMP DelayInMs
+                 ;
+                 ;	OldTimer: CLN 
+                 ;	SUB R17,R18
+                 ;	BRBS 2, DelayEnd
+                 ;	RJMP Timer
+                 ;
+                 ;
+                 ;DelayEnd: 
+                 ;	LDS R16, 0x60
+                 ;	LDS R17, 0x61
+                 ;	RET
+                 ;
+                 ;		DelayOneMs:
+                 ;			PUSH R21
+                 ;			PUSH R20
+                 ;
+                 ;			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;			NOP
+                 ;			BRBS 1, Loop2
+                 ;			RJMP Loop1
+                 ;
+                 ;			Loop2: DEC R21
+                 ;			BRBS 2, End 
+                 ;			RJMP Loop1
+                 ;
+                 ;			End: 
+                 ;			POP R20
+                 ;			POP R21
+                 ;			CLN
+                 ;			RET
+                 ;
+                 ;cw30a
+                 ;.MACRO LOAD_CONST 
+                 ;LDI @0, LOW(@2)
+                 ;LDI @1, HIGH(@2)
+                 ;.ENDMACRO
+                 ;
+                 ;LDI R20, $35
+                 ;LDI R21, $6
+                 ;LDI R18, 1
+                 ;LOAD_CONST R16,R17,250
+                 ;STS 0x60, R16
+                 ;STS 0x61, R17
+                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie
+                 ;LDI R24, 0x3f ;"0"
+                 ;LDI R25, 0x10 ;4cyfra
+                 ;LDI R26, 0x1e
+                 ;
+                 ;OUT DDRD, R23
+                 ;OUT DDRB, R26
+                 ;Zero: OUT PORTD, R24
+                 ;OUT PORTB, R25
+                 ;LDI R25, 0x8 ;3cyfra
+                 ;RCALL DelayInMs 
+                 ;OUT PORTD, R24
+                 ;OUT PORTB, R25
+                 ;LDI R25, 0x4 ;2 cyfra
+                 ;RCALL DelayInMs 
+                 ;OUT PORTD, R24
+                 ;OUT PORTB, R25
+                 ;LDI R25, 0x2 ; 1 cyfra
+                 ;RCALL DelayInMs
+                 ;OUT PORTD, R24
+                 ;OUT PORTB, R25
+                 ;LDI R25, 0x10 ;4cyfra
+                 ;RCALL DelayInMs
+                 ;RJMP Zero
+                 ;
+                 ;DelayInMs:
+                 ;	RCALL DelayOneMs 
+                 ;	
+                 ;	Timer: CLN 
+                 ;	CLC
+                 ;	SBC R16,R18
+                 ;	BRBS 1, OldTimer
+                 ;	BRBS 0, OldTimer
+                 ;	RJMP DelayInMs
+                 ;
+                 ;	OldTimer: CLN 
+                 ;	SUB R17,R18
+                 ;	BRBS 2, DelayEnd
+                 ;	RJMP Timer
+                 ;
+                 ;
+                 ;DelayEnd: 
+                 ;	LDS R16, 0x60
+                 ;	LDS R17, 0x61
+                 ;	RET
+                 ;
+                 ;	DelayOneMs:
+                 ;		PUSH R21
+                 ;		PUSH R20
+                 ;
+                 ;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;		NOP
+                 ;		BRBS 1, Loop2
+                 ;		RJMP Loop1
+                 ;
+                 ;		Loop2: DEC R21
+                 ;		BRBS 2, End 
+                 ;		RJMP Loop1
+                 ;
+                 ;		End: 
+                 ;		POP R20
+                 ;		POP R21
+                 ;		CLN
+                 ;		RET
+                 ;
+                 ;cw29
+                 ;.MACRO LOAD_CONST 
+                 ;LDI @0, LOW(@2)
+                 ;LDI @1, HIGH(@2)
+                 ;.ENDMACRO
+                 ;
+                 ;LDI R20, $35
+                 ;LDI R21, $6
+                 ;LDI R18, 1
+                 ;LOAD_CONST R16,R17,250
+                 ;STS 0x60, R16
+                 ;STS 0x61, R17
+                 ;LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie
+                 ;LDI R24, 0x3f ;"0"
+                 ;LDI R25, 0x6 ;"1"
+                 ;LDI R26, 0x2
+                 ;
+                 ;OUT DDRD, R23
+                 ;OUT DDRB, R26
+                 ;OUT PORTB, R26
+                 ;Zero: OUT PORTD, R24
+                 ;RCALL DelayInMs 
+                 ;OUT PORTD, R25
+                 ;RCALL DelayInMs 
+                 ;RJMP Zero
+                 ;
+                 ;DelayInMs:
+                 ;	RCALL DelayOneMs 
+                 ;	
+                 ;	Timer: CLN 
+                 ;	CLC
+                 ;	SBC R16,R18
+                 ;	BRBS 1, OldTimer
+                 ;	BRBS 0, OldTimer
+                 ;	RJMP DelayInMs
+                 ;
+                 ;	OldTimer: CLN 
+                 ;	SUB R17,R18
+                 ;	BRBS 2, DelayEnd
+                 ;	RJMP Timer
+                 ;
+                 ;
+                 ;DelayEnd: 
+                 ;	LDS R16, 0x60
+                 ;	LDS R17, 0x61
+                 ;	RET
+                 ;
+                 ;	DelayOneMs:
+                 ;		PUSH R21
+                 ;		PUSH R20
+                 ;
+                 ;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;		NOP
+                 ;		BRBS 1, Loop2
+                 ;		RJMP Loop1
+                 ;
+                 ;		Loop2: DEC R21
+                 ;		BRBS 2, End 
+                 ;		RJMP Loop1
+                 ;
+                 ;		End: 
+                 ;		POP R20
+                 ;		POP R21
+                 ;		CLN
+                 ;		RET
+                 ;
+                 ;cw28
+                 ;LDI R18, $1e
+                 ;LDI R19, $0
+                 ;OUT DDRB, R18
+                 ;OUT PORTB, R18
+                 ;OUT PORTB, R19
+                 ;RJMP 3
+                 
+                 ;cw27bcw
+                 ;.MACRO LOAD_CONST 
+                 ;LDI @0, LOW(@2)
+                 ;LDI @1, HIGH(@2)
+                 ;.ENDMACRO
+                 ;
+                 ;LDI R20, $35
+                 ;LDI R21, $6
+                 ;LOAD_CONST R16,R17,257
+                 ;LDI R18, 1
+                 ;RCALL DelayInMs 
+                 ;NOP
+                 ;RJMP 0
+                 ;
+                 ;DelayInMs:
+                 ;	RCALL DelayOneMs 
+                 ;	
+                 ;	Timer: CLN 
+                 ;	CLC
+                 ;	SBC R16,R18
+                 ;	BRBS 1, OldTimer
+                 ;	BRBS 0, OldTimer
+                 ;	RJMP DelayInMs
+                 ;
+                 ;	OldTimer: CLN 
+                 ;	SUB R17,R18
+                 ;	BRBS 2, DelayEnd
+                 ;	RJMP Timer
+                 ;
+                 ;
+                 ;DelayEnd: RET
+                 ;
+                 ;	DelayOneMs:
+                 ;		PUSH R21
+                 ;		PUSH R20
+                 ;
+                 ;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;		NOP
+                 ;		BRBS 1, Loop2
+                 ;		RJMP Loop1
+                 ;
+                 ;		Loop2: DEC R21
+                 ;		BRBS 2, End 
+                 ;		RJMP Loop1
+                 ;
+                 ;		End: 
+                 ;		POP R20
+                 ;		POP R21
+                 ;		CLN
+                 ;		RET
+                 ;1ms ~~ 999.63 us
+                 
+                 ;cw27b
+                 ;LDI R20, $35
+                 ;LDI R21, $6
+                 ;LDI R16, 1
+                 ;LDI R17, 0
+                 ;LDI R18, 1
+                 ;RCALL DelayInMs 
+                 ;NOP
+                 ;RJMP 0
+                 ;
+                 ;DelayInMs:
+                 ;	RCALL DelayOneMs 
+                 ;
+                 ;	PUSH R17
+                 ;	PUSH R16
+                 ;
+                 ;	Timer: CLN 
+                 ;	POP R16
+                 ;	POP R17
+                 ;	SUB R16,R18
+                 ;	BRBS 1, OldTimer
+                 ;	BRBS 0, OldTimer
+                 ;	RJMP DelayInMs
+                 ;
+                 ;	OldTimer: CLN 
+                 ;	SUB R17,R18
+                 ;	BRBS 2, DelayEnd
+                 ;	RJMP Timer
+                 ;
+                 ;
+                 ;DelayEnd: RET
+                 ;
+                 ;	DelayOneMs:
+                 ;		PUSH R21
+                 ;		PUSH R20
+                 ;
+                 ;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;		NOP
+                 ;		BRBS 1, Loop2
+                 ;		RJMP Loop1
+                 ;
+                 ;		Loop2: DEC R21
+                 ;		BRBS 2, End 
+                 ;		RJMP Loop1
+                 ;
+                 ;		End: 
+                 ;		POP R20
+                 ;		POP R21
+                 ;		CLN
+                 ;		RET
+                 ;1ms ~~ 999.63 us
+                 
+                 ;cw27a
+                 ;LDI R20, $37
+                 ;LDI R21, $7
+                 ;LDI R22, 2
+                 ;RCALL DelayInMs 
+                 ;NOP
+                 ;RJMP 0
+                 ;
+                 ;DelayInMs:
+                 ;	RCALL DelayOneMs 
+                 ;
+                 ;	Timer: DEC R22
+                 ;	BRBS 1, DelayEnd
+                 ;	RJMP DelayInMs
+                 ;
+                 ;DelayEnd: RET
+                 ;
+                 ;	DelayOneMs:
+                 ;		PUSH R21
+                 ;		PUSH R20
+                 ;
+                 ;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;		NOP
+                 ;		BRBS 1, Loop2
+                 ;		RJMP Loop1
+                 ;
+                 ;		Loop2: DEC R21
+                 ;		BRBS 1, End 
+                 ;		RJMP Loop1
+                 ;
+                 ;		End: 
+                 ;		POP R20
+                 ;		POP R21
+                 ;		RET
+                 ; 1ms ~~ 999.63 us
+                 
+                 
+                 ;cw26
+                 ;LDI R20, $37
+                 ;LDI R21, $7
+                 ;STS 0x60, R20
+                 ;STS 0x61, R21
+                 ;RCALL DelayInMs 
+                 ;NOP
+                 ;RJMP 0
+                 ;
+                 ;DelayInMs:
+                 ;	RCALL DelayOneMs 
+                 ;
+                 ;	LDI R20, 1
+                 ;	Timer: DEC R20
+                 ;	BRBS 1, DelayEnd
+                 ;	;STS 0x60, R20
+                 ;	RJMP DelayInMs
+                 ;
+                 ;DelayEnd: RET
+                 ;
+                 ;	DelayOneMs:
+                 ;		LDS R20 , 0x60
+                 ;		LDS R21 , 0x61
+                 ;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;		NOP
+                 ;		BRBS 1, Loop2
+                 ;		RJMP Loop1
+                 ;
+                 ;		Loop2: DEC R21
+                 ;		BRBS 1, End 
+                 ;		RJMP Loop1
+                 ;
+                 ;		End: RET
+                 ; 1ms ~~ 999.63 us
+                 
+                 ;cw25
+                 ;LDI R20, 1
+                 ;STS 0x60, R20
+                 ;RCALL DelayInMs 
+                 ;NOP
+                 ;RJMP 0
+                 ;
+                 ;DelayInMs:
+                 ;	LDI R20, $37
+                 ;	LDI R21, $7
+                 ;	RCALL DelayOneMs 
+                 ;
+                 ;	LDS R20, 0x60
+                 ;	Timer: DEC R20
+                 ;	BRBS 1, DelayEnd
+                 ;	STS 0x60, R20
+                 ;	RJMP DelayInMs
+                 ;
+                 ;DelayEnd: RET
+                 ;	DelayOneMs:
+                 ;
+                 ;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;		NOP
+                 ;		BRBS 1, Loop2
+                 ;		RJMP Loop1
+                 ;
+                 ;		Loop2: DEC R21
+                 ;		BRBS 1, End 
+                 ;		RJMP Loop1
+                 ;
+                 ;		End: RET
+                 ; 1ms ~~ 999.88 us
+                 
+                 ;cw24
+                 ;RCALL DelayInMs 
+                 ;NOP
+                 ;RJMP 0
+                 ;
+                 ;DelayInMs:
+                 ;	LDI R20, $39
+                 ;	LDI R21, $7
+                 ;
+                 ;	RCALL DelayOneMs 
+                 ;RET
+                 ;	DelayOneMs:
+                 ;		;LDI R22, 1 ; ms delay
+                 ;		Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                 ;		NOP
+                 ;		BRBS 1, Loop2
+                 ;		RJMP Loop1
+                 ;
+                 ;		Loop2: DEC R21
+                 ;		BRBS 1, End ; Timer
+                 ;		RJMP Loop1
+                 ;
+                 ;		;Timer: DEC R22
+                 ;		;BRBS 1, End
+                 ;		;RJMP Loop1
+                 ;
+                 ;		End: RET
+                 
+                 ;cw23
+                 ;LDI R22, 1 ; ms delay
+                 ;RCALL DelayInMs 
+                 ;RJMP 0
+                 
+                 ;DelayInMs:
+                 ;LDI R20, $39
+                 ;LDI R21, $c
+                 ;LDI R23, 1
+                 
+                 ;RCALL DelayOneMs 
+                 ;RET
+                 
+                 ;	DelayOneMs:
+                 ;	LDI R22, 1
+                 ;	Loop1: SBC R20,R23
+                 ;	NOP
+                 ;	BRBS 0, Loop2
+                 ;	RJMP Loop1
+                 ;
+                 ;	Loop2: SBC R21,R23
+                 ;	BRBS 0, Timer
+                 ;	RJMP Loop1
+                 ;
+                 ;	Timer: DEC R22
+                 ;	BRBS 1, End
+                 ;	RJMP Loop1
+                 ;
+                 ;	End: RET
+                 
+                 ;cw22
+                 ;LDI R22, 1 ; ms delay
+                 ;LDI R20, $39
+                 ;LDI R21, $c
+                 ;RCALL DelayInMs 
+                 ;RJMP 0
+                 
+                 ;DelayInMs:
+                 
+                 ;LDI R23, 1
+                 
+                 ;Loop1: SBC R20,R23
+                 ;NOP
+                 ;BRBS 0, Loop2
+                 ;RJMP Loop1
+                 
+                 ;Loop2: SBC R21,R23
+                 ;BRBS 0, Timer
+                 ;RJMP Loop1
+                 
+                 ;Timer: DEC R22
+                 ;BRBS 1, End
+                 ;RJMP Loop1
+                 
+                 ;End: RET
+                 
+                 ;cw21
+                 
+                 ;Start:
+                 ;LDI R20,5
+                 ;RCALL Loop 
+                 ;RJMP Start
+                 
+                 ;Loop: 
+                 ;DEC R20
+                 ;BRBS 1,End
+                 ;RJMP Loop
+                 ;End: RET
+                 
+                 
+                 ;cw20
+                 
+                 ;MainLoop:
+                 ;RCALL DelayNCycles ;
+                 ;RJMP MainLoop
+                 
+                 ;DelayNCycles: ;zwyk³a etykieta
+                 ;NOP
+                 ;NOP
+                 ;NOP
+                 ;RET ;powrót do miejsca wywo³ania
+                 ;1 cykl - 12.5 us ; czas podprogramu - 10 cykli
+                 
+                 ;cw19
+                 
+                 ;LDI R22, 1
+                 ;LDI R20, $39
+                 ;LDI R21, $c
+                 ;LDI R23, 1
+                 
+                 ;Loop1: SBC R20,R23
+                 ;NOP
+                 ;BRBS 0, Loop2
+                 ;RJMP Loop1
+                 
+                 ;Loop2: SBC R21,R23
+                 ;BRBS 0, Timer
+                 ;RJMP Loop1
+                 
+                 ;Timer: DEC R22
+                 ;BRBS 1, End
+                 ;RJMP Loop1
+                 
+                 ;End: NOP
+                 ;StopWatch = 1ms *R22 - (999,63us)
+                 
+                 
+                 ;cw18
+                 
+                 ;LDI R22, 1
+                 ;LDI R20, $c6
+                 ;LDI R21, $f3
+                 ;LDI R23, 1
+                 ;
+                 ;Loop1: ADC R20,R23
+                 ;NOP
+                 ;BRBS 0, Loop2
+                 ;RJMP Loop1
+                 ;
+                 ;Loop2: ADC R21,R23
+                 ;BRBS 0, Timer
+                 ;RJMP Loop1
+                 ;
+                 ;Timer: DEC R22
+                 ;BRBS 1, End
+                 ;RJMP Loop1
+                 
+                 ;End: NOP
+                 ;StopWatch = 1ms *R22 - (999,63us)
+                 
+                 ;cw17
+                 ;LDI R22, 2
+                 ;LDI R20, 96
+                 ;LDI R21, 16
+                 
+                 ;Timer:
+                 
+                 ;Loop1: DEC R20
+                 ;BRBS 1, Jump1
+                 
+                 ;Loop2: DEC R21
+                 ;NOP
+                 ;BRBS 1, Jump2
+                 ;RJMP Loop2
+                 
+                 ;Jump2: LDI R21, 16
+                 ;RJMP Loop1
+                 ;Jump1: LDI R20, 96
+                 ;LDI R21, 16
+                 ;DEC R21
+                 ;LDI R21, 16
+                 ;DEC R22
+                 ;BRBS 1, End
+                 ;RJMP Loop1
+                 
+                 ;RJMP Timer
+                 ;End: NOP
+                 ;StopWatch = 1ms *R22 - (999us)
+                 
+                 ;cw16
+                 ;LDI R20, 96
+                 ;LDI R21, 16
+                 ;Loop1: DEC R20
+                 ;BRBS 1, End
+                 ;Loop2: DEC R21
+                 ;NOP
+                 ;BRBS 1, Jump1
+                 ;RJMP Loop2
+                 ;Jump1: RJMP 1
+                 ;End:NOP
+                 ;Cycles = 5*R20*R21 + 4*R20 + 3
+                 
+                 ;cw15
+                 ;LDI R20, 119
+                 ;LDI R21, 16
+                 ;Loop1: DEC R20
+                 ;NOP
+                 ;BRBS 1, End
+                 ;Loop2: DEC R21
+                 ;NOP
+                 ;BRBS 1, Jump1
+                 ;RJMP Loop2
+                 ;Jump1: RJMP 1
+                 ;End:NOP
+                 ;Cycles = 5*R20*R21 + 4*R20 + 3
+                 
+                 ;cw14
+                 ;LDI R20, 50
+                 ;LDI R21, 10
+                 ;Loop1: DEC R20
+                 ;BRBS 1, End
+                 ;Loop2: DEC R21
+                 ;NOP
+                 ;BRBS 1, Jump1
+                 ;RJMP Loop2
+                 ;Jump1: RJMP 1
+                 ;End:
+                 
+                 ;cw13
+                 ;NOP
+                 ;NOP
+                 ;NOP
+                 ;NOP
+                 ;NOP
+                 ;LDI R20, 5
+                 ;Loop: DEC R20
+                 ;NOP
+                 ;BRBS 1,End
+                 ;RJMP Loop
+                 ;End: RJMP 0
+                 ;b)c)20 cykli potrzebuje, Cycles = R20*4, 
+                 
+                 ;cw12
+                 ;LDI R20, $5
+                 ;Loop: DEC R20
+                 ;BRBS 1,End
+                 ;RJMP Loop
+                 ;End: NOP
+                 
+                 ;cw11
+                 ;LDI R20, $5
+                 ;LDI R21, $1
+                 ;Loop: SUB R20, R21
+                 ;RJMP Loop
+                 
+                 ;cw10
+                 ;LDI R20, $5
+                 ;LDI R21, $1
+                 ;SUB R20, R21
+                 ;RJMP 2
+                 
+                 ;cw9
+                 ;NOP
+                 ;NOP
+                 ;RJMP 4
+                 ;NOP
+                 ;NOP
+                 ;NOP
+                 ;0 ffd - 1 ffe - 2 fff - 3 000 - 4 001
+                 
+                 ;cw8
+                 ;NOP
+                 ;NOP
+                 ;RJMP 1
+                 ;NOP
+                 ;NOP
+                 ;NOP
+                 
+                 ;cw7
+                 ;LDI R20, 1
+                 ;LDI R21, 2
+                 ;SBC R20, R21
+                 
+                 ;cw6
+                 ;LDI R20, $2c
+                 ;LDI R21, $1
+                 ;LDI R22, $90
+                 ;LDI R23, $1
+                 ;ADC R20, R22
+                 ;ADC R21, R23
+                 
+                 ;cw5
+                 ;LDI R20,100
+                 ;LDI R21,200
+                 ;ADC R20,R21
+                 ;LDI R21,0
+                 ;ADC R21,R21
+                 
+                 ;cw4
+                 ;LDI R16, 100
+                 ;LDI R17, 200
+                 ;ADD R16, R17
+                 ;SUB R17, R16
+                 ;zapala flagê
+                 
+                 ;cw3
+                 ;LDI R16, 100
+                 ;LDI R17, 200
+                 ;ADD R16, R17
+                 ;jest to reszta z dzielenia
+                 
+                 ;cw2
+                 ;LDI R16, 3
+                 ;LDI R17, 1
+                 ;MOV R0, R16
+                 ;SUB R0, R17 
+                 ;SUB R0, R17
+                 ;SUB R0, R17
+                 
+                 ; cw1
+                 ;LDI R20, 14
+                 ;LDI R21, 17
+                 ;MOV R0, R20
+                 ;MOV R1, R21
+                 ;ADD R0, R1
+                 
+
+
+RESOURCE USE INFORMATION
+------------------------
+
+Notice:
+The register and instruction counts are symbol table hit counts,
+and hence implicitly used resources are not counted, eg, the
+'lpm' instruction without operands implicitly uses r0 and z,
+none of which are counted.
+
+x,y,z are separate entities in the symbol table and are
+counted separately from r26..r31 here.
+
+.dseg memory usage only counts static data declared with .byte
+
+"ATtiny2313A" register use summary:
+r0 :  12 r1 :  11 r2 :   0 r3 :   4 r4 :   7 r5 :   0 r6 :   0 r7 :   0 
+r8 :   2 r9 :   0 r10:   1 r11:   0 r12:   0 r13:   0 r14:   0 r15:   0 
+r16:  10 r17:  12 r18:  14 r19:  13 r20:   4 r21:   4 r22:   2 r23:   4 
+r24:   3 r25:   2 r26:   2 r27:  11 r28:   1 r29:  10 r30:   2 r31:   2 
+x  :   0 y  :   0 z  :   1 
+Registers used: 23 out of 35 (65.7%)
+
+"ATtiny2313A" instruction use summary:
+.lds  :   0 .sts  :   0 adc   :   2 add   :   5 adiw  :   0 and   :   0 
+andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   5 
+brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   0 brhc  :   0 
+brhs  :   0 brid  :   0 brie  :   0 brlo  :   4 brlt  :   0 brmi  :   0 
+brne  :   0 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
+brvs  :   0 bset  :   0 bst   :   0 cbi   :   0 cbr   :   0 clc   :   2 
+clh   :   0 cli   :   0 cln   :   3 clr   :   9 cls   :   0 clt   :   0 
+clv   :   0 clz   :   0 com   :   0 cp    :   4 cpc   :   4 cpi   :   0 
+cpse  :   0 dec   :   2 eor   :   0 icall :   0 ijmp  :   0 in    :   0 
+inc   :   1 ld    :   0 ldd   :   0 ldi   :  25 lds   :   4 lpm   :   2 
+lsl   :   0 lsr   :   0 mov   :  10 movw  :   0 neg   :   0 nop   :   1 
+or    :   0 ori   :   0 out   :  13 pop   :   2 push  :   2 rcall :  11 
+ret   :   5 reti  :   1 rjmp  :  15 rol   :   0 ror   :   0 sbc   :   5 
+sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 sbiw  :   0 sbr   :   0 
+sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 sei   :   0 sen   :   0 
+ser   :   0 ses   :   0 set   :   0 sev   :   0 sez   :   0 sleep :   0 
+spm   :   0 st    :   0 std   :   0 sts   :   4 sub   :   5 subi  :   0 
+swap  :   0 tst   :   0 wdr   :   0 
+Instructions used: 26 out of 105 (24.8%)
+
+"ATtiny2313A" memory use summary [bytes]:
+Segment   Begin    End      Code   Data   Used    Size   Use%
+---------------------------------------------------------------
+[.cseg] 0x000000 0x000142    306     10    316    2048  15.4%
+[.dseg] 0x000060 0x000060      0      0      0     128   0.0%
+[.eseg] 0x000000 0x000000      0      0      0     128   0.0%
+
+Assembly complete, 0 errors, 0 warnings
