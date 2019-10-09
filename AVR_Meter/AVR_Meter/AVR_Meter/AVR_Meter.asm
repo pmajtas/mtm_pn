@@ -10,21 +10,35 @@
 ; Created: 2019-10-01 20:15:00
 ; Author : Moj 
 
-;cw45
+;cw45-46
 
-.cseg ; segment pamiêci kodu programu;https://github.com/DarkSector/AVR/blob/master/asm/include/tn2313Adef.inc
-.org 0 rjmp _main ; skok po resecie (do programu g³ównego)http://maxembedded.com/2011/07/avr-timers-ctc-mode/
-.org OC1Aaddr rjmp _timer_isr ; skok do obs³ugi przerwania timera, timer counter compare match A
-_timer_isr: ; procedura obs³ugi przerwania timera;;;; https://niki.art.pl/index.php/avr/59-timery-sprzetowe-ctc
-	LDI R16, 0b1100
-	MOV R8,R16
-	OUT TCCR1B , R8 ;3bit-prescaler, 4bit- ctc
-	OUT OCR1A , 25600
+.cseg ; segment pamiêci kodu programu;
+.org 0 rjmp _main ; skok po resecie (do programu g³ównego)
+.org 4 rjmp _timer_isr ; skok do obs³ugi przerwania timera, timer counter compare match A ;
+_timer_isr: ; procedura obs³ugi przerwania timera;;
 
-inc R8 ; jakiœ kod
+
+inc R10 ; jakiœ kod
 reti ; powrót z procedury obs³ugi przerwania (reti zamiast ret)
 
+
 _main:
+
+	LDI R16, 0b10000000
+	OUT SREG,  R16
+
+	LDI R16, 0b01000000
+	OUT TIMSK , R16
+
+	LDI R16, 0b1100
+	OUT TCCR1B , R16 ;
+
+	LDI R16, LOW(100) 
+	OUT OCR1AL , R16
+	LDI R16, HIGH(100)
+	OUT OCR1AH, R16
+
+
 
 .def PulseEdgeCtrL=R0
 .def PulseEdgeCtrH=R1
