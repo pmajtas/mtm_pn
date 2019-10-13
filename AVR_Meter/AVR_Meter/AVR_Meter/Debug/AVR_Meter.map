@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm Sat Oct 12 23:32:22 2019
+AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm Sun Oct 13 22:47:51 2019
 
 
 EQU  SIGNATURE_000 0000001e
@@ -453,7 +453,7 @@ CSEG _timer_isr   00000010
 CSEG _pin_isr     0000000c
 DEF  PulseEdgeCtrL r0
 DEF  PulseEdgeCtrH r1
-CSEG NumberToDigits 00000075
+CSEG NumberToDigits 00000071
 DEF  Dig0         r5
 DEF  Dig1         r6
 DEF  Dig2         r7
@@ -461,27 +461,27 @@ DEF  Dig3         r8
 EQU  Digits_P     00000018
 EQU  Segments_P   00000012
 CSEG MainLoop     00000030
-CSEG DigitTo7segCode 0000006a
-CSEG DelayInMs    0000004d
-CSEG OneMs        0000004f
-CSEG DelayOneMs   0000005d
-CSEG Timer        00000050
-CSEG OldTimer     00000056
-CSEG DelayEnd     0000005a
-CSEG Loop1        0000005f
-CSEG Loop2        00000063
-CSEG End          00000066
-CSEG Table        00000070
-CSEG Comp0        0000007a
-CSEG Res0         00000082
-CSEG Subs0        0000007e
-CSEG Comp1        00000086
-CSEG Res1         0000008e
-CSEG Subs1        0000008a
-CSEG Comp2        00000092
-CSEG Res2         0000009a
-CSEG Subs2        00000096
-CSEG Divide       0000009f
-CSEG Comp         000000a1
-CSEG Res          000000a8
-CSEG Subs         000000a5
+CSEG DigitTo7segCode 00000066
+CSEG DelayInMs    00000049
+CSEG OneMs        0000004b
+CSEG DelayOneMs   00000059
+CSEG Timer        0000004c
+CSEG OldTimer     00000052
+CSEG DelayEnd     00000056
+CSEG Loop1        0000005b
+CSEG Loop2        0000005f
+CSEG End          00000062
+CSEG Table        0000006c
+CSEG Comp0        00000076
+CSEG Res0         0000007e
+CSEG Subs0        0000007a
+CSEG Comp1        00000082
+CSEG Res1         0000008a
+CSEG Subs1        00000086
+CSEG Comp2        0000008e
+CSEG Res2         00000096
+CSEG Subs2        00000092
+CSEG Divide       0000009b
+CSEG Comp         0000009d
+CSEG Res          000000a4
+CSEG Subs         000000a1

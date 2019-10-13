@@ -12,19 +12,22 @@
 
 
 ;cw49
+
 .MACRO LOAD_CONST  
 	LDI @0, LOW(@2)
 	LDI @1, HIGH(@2)
 .ENDMACRO
 
 .MACRO SET_DIGIT 
+	LDI R18, (2<<@0)
+	MOV R27, @1
 	RCALL DigitTo7segCode
 	OUT Segments_P, R27
-	LDI R18, (2<<@0)
+	
 	OUT Digits_P, R18
 	
 	RCALL DelayInMs
-	CLC
+	
 .ENDMACRO
 
 .cseg ; segment pamiêci kodu programu;
@@ -109,17 +112,17 @@ CLR R23
 
 MainLoop: 
  
-	MOV R27, Dig3
-	SET_DIGIT 3
+	//MOV R27, Dig3
+	SET_DIGIT 3, Dig3
 
-	MOV R27, Dig2
-	SET_DIGIT 2
+	//MOV R27, Dig2
+	SET_DIGIT 2, Dig2
 
-	MOV R27, Dig1
-	SET_DIGIT 1
+	//MOV R27, Dig1
+	SET_DIGIT 1, Dig1
 
-	MOV R27, Dig0
-	SET_DIGIT 0
+	//MOV R27, Dig0
+	SET_DIGIT 0, Dig0
 
 
 RJMP MainLoop
