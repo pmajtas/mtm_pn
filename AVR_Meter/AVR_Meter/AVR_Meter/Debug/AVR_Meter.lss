@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm Wed Oct 09 15:04:06 2019
+AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm Sat Oct 12 23:32:22 2019
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\avrasm\inc\tn2313def.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\avrasm\inc\tn2313def.inc'
@@ -677,34 +677,577 @@ AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\A
                                  ; Created: 2019-10-01 20:15:00
                                  ; Author : Moj 
                                  
-                                 ;cw45-46
+                                 
+                                 ;cw49
+                                 .MACRO LOAD_CONST  
+                                 	LDI @0, LOW(@2)
+                                 	LDI @1, HIGH(@2)
+                                 .ENDMACRO
+                                 
+                                 .MACRO SET_DIGIT 
+                                 	RCALL DigitTo7segCode
+                                 	OUT Segments_P, R27
+                                 	LDI R18, (2<<@0)
+                                 	OUT Digits_P, R18
+                                 	
+                                 	RCALL DelayInMs
+                                 	CLC
+                                 .ENDMACRO
                                  
                                  .cseg ; segment pamiêci kodu programu;
-000000 c006                      .org 0 rjmp _main ; skok po resecie (do programu g³ównego)
-000004 c000                      .org 4 rjmp _timer_isr ; skok do obs³ugi przerwania timera, timer counter compare match A ;
+000000 c013                      .org 0 rjmp _main ; skok po resecie (do programu g³ównego)
+000004 c00b                      .org 4 rjmp _timer_isr ; skok do obs³ugi przerwania timera,
+00000b c000                      .org 0xb rjmp _pin_isr 
+                                 
+                                 
+                                 _pin_isr:
+                                 	
+00000c 0c04                      	ADD PulseEdgeCtrL, R4
+00000d 1c13                      	ADC PulseEdgeCtrH, R3
+00000e 9488                      	CLC
+                                 	
+00000f 9518                      reti
+                                 
+                                 
+                                 
+                                 _timer_isr: ; procedura obs³ugi przerwania timera;;
+                                 	
+000010 d064                      	RCALL NumberToDigits
+                                 
+000011 2400                      	CLR PulseEdgeCtrL
+000012 2411                      	CLR PulseEdgeCtrH	
+                                 
+000013 9518                      reti ; powrót z procedury obs³ugi przerwania (reti zamiast ret)
+                                 
+                                 
+                                 _main:	
+                                 
+                                 
+                                 .def PulseEdgeCtrL=R0
+                                 .def PulseEdgeCtrH=R1
+                                 
+                                 .def Dig0=R5 ; Digits temps
+                                 .def Dig1=R6 ;
+                                 .def Dig2=R7 ;
+                                 .def Dig3=R8 ;
+                                 
+                                 
+                                 
+                                 .equ Digits_P = PORTB  ; .equ is like #define in C:
+                                 .equ Segments_P = PORTD
+                                 
+                                 
+000014 e800                      	LDI R16, (1<<7)
+000015 bf0f                      	OUT SREG,  R16
+                                 
+000016 e00c                      	LDI R16, 0b1100
+000017 bd0e                      	OUT TCCR1B , R16 ;
+                                 
+000018 e30d                      	LDI R16, HIGH(15625) //wpisaæ 100 dla ok25600 cykli - 31250 - 1sek
+000019 bd0b                      	OUT OCR1AH ,R16
+00001a e009                      	LDI R16, LOW(15625)
+00001b bd0a                      	OUT OCR1AL, R16 
+                                 
+00001c e400                      	LDI R16, (1<<6)
+00001d bf09                      	OUT TIMSK , R16
+00001e 2700                      	CLR R16
+                                 
+00001f e200                      	LDI R16, 0b00100000;$38;$df
+000020 bf0b                      	OUT GIMSK, R16
+                                 
+000021 e001                      	LDI R16, 0b1 ;pcint0 
+000022 bd00                      	OUT PCMSK, R16
+                                 
+                                 
+000023 e345                      LDI R20, $35
+000024 e056                      LDI R21, $6
+000025 e021                      LDI R18, 1
+000026 2e42                      MOV R4, R18
+000027 2433                      CLR R3
+000028 e005
+000029 e010                      LOAD_CONST R16,R17,5
+00002a e77f                      LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+00002b e1ae                      LDI R26, 0x1e ; otworzenie pinów 1-4
+                                 
+00002c bb71                      OUT DDRD, R23
+00002d bba7                      OUT DDRB, R26
+                                 
+00002e 27cc                      CLR R28
+00002f 2777                      CLR R23 
+                                 
+                                 MainLoop: 
+                                  
+000030 2db8                      	MOV R27, Dig3
+000031 d038
+000032 bbb2
+000033 e120
+000034 bb28
+000035 d017
+000036 9488                      	SET_DIGIT 3
+                                 
+000037 2db7                      	MOV R27, Dig2
+000038 d031
+000039 bbb2
+00003a e028
+00003b bb28
+00003c d010
+00003d 9488                      	SET_DIGIT 2
+                                 
+00003e 2db6                      	MOV R27, Dig1
+00003f d02a
+000040 bbb2
+000041 e024
+000042 bb28
+000043 d009
+000044 9488                      	SET_DIGIT 1
+                                 
+000045 2db5                      	MOV R27, Dig0
+000046 d023
+000047 bbb2
+000048 e022
+000049 bb28
+00004a d002
+00004b 9488                      	SET_DIGIT 0
+                                 
+                                 
+00004c cfe3                      RJMP MainLoop
+                                 
+                                 
+                                 DelayInMs:
+                                 
+00004d 930f                      	PUSH R16
+00004e 931f                      	PUSH R17
+                                 
+00004f d00d                      	OneMs: RCALL DelayOneMs 
+                                 	
+000050 94a8                      	Timer: CLN 
+000051 9488                      	CLC
+000052 0904                      	SBC R16,R4
+000053 f011                      	BRBS 1, OldTimer
+000054 f008                      	BRBS 0, OldTimer
+000055 cff9                      	RJMP OneMs
+                                 
+000056 94a8                      	OldTimer: CLN 
+000057 1914                      	SUB R17,R4
+000058 f00a                      	BRBS 2, DelayEnd
+000059 cff6                      	RJMP Timer
+                                 
+                                 
+00005a 911f                      DelayEnd:POP R17
+00005b 910f                      		POP R16 
+00005c 9508                      		RET
+                                 
+                                 		DelayOneMs:
+00005d 935f                      			PUSH R21
+00005e 934f                      			PUSH R20
+                                 
+00005f 954a                      			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+000060 0000                      			NOP
+000061 f009                      			BRBS 1, Loop2
+000062 cffc                      			RJMP Loop1
+                                 
+000063 955a                      			Loop2: DEC R21
+000064 f00a                      			BRBS 2, End 
+000065 cff9                      			RJMP Loop1
+                                 
+                                 			End: 
+000066 914f                      			POP R20
+000067 915f                      			POP R21
+000068 94a8                      			CLN
+000069 9508                      		RET
+                                 
+                                 DigitTo7segCode:
+                                 	
+00006a eee0                      		LDI R30, Low(Table<<1)
+00006b e0f0                      		LDI R31, High(Table<<1)
+                                 
+00006c 0feb                      		ADD R30, R27
+00006d 1df3                      		ADC R31, R3
+00006e 91b4                      		LPM R27, Z 
+                                 			
+00006f 9508                      	RET
+000070 063f
+000071 4f5b
+000072 6d66
+000073 077d
+000074 6f7f                      	Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
+                                 
+                                 
+                                 NumberToDigits:
+000075 27dd                      	CLR R29
+000076 920f                      	PUSH R0
+000077 921f                      	PUSH R1
+                                 
+000078 ee28                      	LDI R18, LOW(1000)
+000079 e033                      	LDI R19, HIGH(1000)
+                                 
+                                 	Comp0:
+00007a 1602                      	CP PulseEdgeCtrL, R18
+00007b 0613                      	CPC PulseEdgeCtrH,R19
+00007c f028                      	BRLO Res0
+00007d c000                      	RJMP Subs0
+                                 
+                                 	Subs0:
+                                 	
+00007e 1a02                      	SUB PulseEdgeCtrL,R18
+00007f 0a13                      	SBC PulseEdgeCtrH,R19
+000080 0dd4                      	ADD R29, R4
+000081 cff8                      	RJMP Comp0
+                                 
+                                 	Res0:
+000082 2e5d                      	MOV Dig0, R29 //wynik
+000083 e624                      	LDI R18, LOW(100)
+000084 e030                      	LDI R19, HIGH(100)
+000085 27dd                      	CLR R29
+                                 
+                                 	Comp1:
+000086 1602                      	CP PulseEdgeCtrL, R18
+000087 0613                      	CPC PulseEdgeCtrH,R19
+000088 f028                      	BRLO Res1
+000089 c000                      	RJMP Subs1
+                                 
+                                 	Subs1:
+00008a 1a02                      	SUB PulseEdgeCtrL,R18
+00008b 0a13                      	SBC PulseEdgeCtrH,R19
+00008c 0dd4                      	ADD R29, R4	
+00008d cff8                      	RJMP Comp1
+                                 
+                                 	Res1:
+00008e 2e6d                      	MOV Dig1, R29
+00008f e02a                      	LDI R18, LOW(10)
+000090 e030                      	LDI R19, HIGH(10)
+000091 27dd                      	CLR R29
+                                 
+                                 	Comp2:
+000092 1602                      	CP PulseEdgeCtrL, R18
+000093 0613                      	CPC PulseEdgeCtrH,R19
+000094 f028                      	BRLO Res2
+000095 c000                      	RJMP Subs2
+                                 
+                                 	Subs2:
+000096 1a02                      	SUB PulseEdgeCtrL,R18
+000097 0a13                      	SBC PulseEdgeCtrH,R19
+000098 0dd4                      	ADD R29, R4
+000099 cff8                      	RJMP Comp2
+                                 
+                                 	Res2:
+00009a 2e7d                      	MOV Dig2, R29 //wynik
+00009b 2c80                      	MOV Dig3, PulseEdgeCtrL
+                                 
+00009c 901f                      	pop r1
+00009d 900f                      	pop r0
+                                 	
+00009e 9508                      RET
+                                 
+                                 	Divide:
+00009f e120                      		LDI R18, LOW(10000)
+0000a0 e237                      		LDI R19, HIGH(10000)
+                                 		Comp:
+0000a1 1602                      		CP PulseEdgeCtrL, R18
+0000a2 0613                      		CPC PulseEdgeCtrH,R19
+0000a3 f020                      		BRLO Res
+0000a4 c000                      		RJMP Subs
+                                 	
+                                 		Subs:
+0000a5 1a02                      		SUB PulseEdgeCtrL,R18
+0000a6 0a13                      		SBC PulseEdgeCtrH,R19
+0000a7 cff9                      		RJMP Comp
+                                 
+                                 		Res:
+                                 		
+0000a8 9508                      	RET
+                                 
+                                 /*
+                                 ;cw48 
+                                 .cseg ; segment pamiêci kodu programu;
+                                 .org 0 rjmp _main ; skok po resecie (do programu g³ównego)
+                                 
+                                 //.org 4 rjmp _timer_isr ; skok do obs³ugi przerwania timera,
+                                 .org 0xb rjmp _pin_isr ;INT0addr
+                                 
+                                 
+                                 _pin_isr:
+                                 	
+                                 	CLC
+                                 	ADD PulseEdgeCtrL, R4
+                                 	ADC PulseEdgeCtrH, R3
+                                 	STS 0x62, PulseEdgeCtrL
+                                 	STS 0x63, PulseEdgeCtrH
+                                 
+                                 	RCALL Divide
+                                 	RCALL NumberToDigits
+                                 	
+                                 reti
+                                 
+                                 
+                                 
                                  _timer_isr: ; procedura obs³ugi przerwania timera;;
                                  
                                  
-000005 94a3                      inc R10 ; jakiœ kod
-000006 9518                      reti ; powrót z procedury obs³ugi przerwania (reti zamiast ret)
+                                 CLC
+                                 	ADD PulseEdgeCtrL, R4
+                                 	ADC PulseEdgeCtrH, R3
+                                 	STS 0x62, PulseEdgeCtrL
+                                 	STS 0x63, PulseEdgeCtrH
+                                 
+                                 	RCALL Divide
+                                 	RCALL NumberToDigits
+                                 
+                                 reti ; powrót z procedury obs³ugi przerwania (reti zamiast ret)
                                  
                                  
                                  _main:
                                  
-000007 e800                      	LDI R16, 0b10000000
-000008 bf0f                      	OUT SREG,  R16
+                                 	
                                  
-000009 e400                      	LDI R16, 0b01000000
-00000a bf09                      	OUT TIMSK , R16
                                  
-00000b e00c                      	LDI R16, 0b1100
-00000c bd0e                      	OUT TCCR1B , R16 ;
+                                 .def PulseEdgeCtrL=R0
+                                 .def PulseEdgeCtrH=R1
                                  
-00000d e604                      	LDI R16, LOW(100) 
-00000e bd0a                      	OUT OCR1AL , R16
-00000f e000                      	LDI R16, HIGH(100)
-000010 bd0b                      	OUT OCR1AH, R16
+                                 .def Dig0=R22 ; Digits temps
+                                 .def Dig1=R23 ;
+                                 .def Dig2=R24 ;
+                                 .def Dig3=R25 ;
                                  
+                                 .MACRO LOAD_CONST  
+                                 	LDI @0, LOW(@2)
+                                 	LDI @1, HIGH(@2)
+                                 .ENDMACRO
+                                 
+                                 .MACRO SET_DIGIT 
+                                 	LDI R17, (2<<@0)
+                                 	RCALL DigitTo7segCode
+                                 	OUT Segments_P, R27
+                                 	OUT Digits_P, R17
+                                 	RCALL DelayInMs
+                                 	CLC
+                                 .ENDMACRO
+                                 
+                                 .equ Digits_P = PORTB  ; .equ is like #define in C:
+                                 .equ Segments_P = PORTD
+                                 
+                                 
+                                 	LDI R16, (1<<7)
+                                 	OUT SREG,  R16
+                                 
+                                 	 LDI R16, 0b1100
+                                 	OUT TCCR1B , R16 ;
+                                 
+                                 	LDI R16, HIGH(31250) //wpisaæ 100 dla ok25600 cykli
+                                 	OUT OCR1AH ,R16
+                                 	LDI R16, LOW(31250)
+                                 	OUT OCR1AL, R16 
+                                 
+                                 	LDI R16, (1<<6)
+                                 	OUT TIMSK , R16
+                                 	CLR R16 
+                                 
+                                 	LDI R16, $38;$df
+                                 	OUT GIMSK, R16
+                                 
+                                 	LDI R16, 0b1 ;pcint0 
+                                 	OUT PCMSK, R16
+                                 
+                                 	LDI R16, 0b1
+                                 	OUT MCUCR, R16
+                                 
+                                 
+                                 LDI R20, $35
+                                 LDI R21, $6
+                                 LDI R18, 1
+                                 MOV R4, R18
+                                 LDI R19, 0
+                                 CLR R3
+                                 LOAD_CONST R16,R17, 5
+                                 STS 0x60, R16
+                                 STS 0x61, R17
+                                 LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+                                 LDI R26, 0x1e ; otworzenie pinów 1-4
+                                 
+                                 OUT DDRD, R23
+                                 OUT DDRB, R26
+                                 CLR R29
+                                 CLR R28
+                                 CLR R27
+                                 CLR R24
+                                 CLR R23 
+                                 MainLoop: 
+                                 
+                                 	Start: 
+                                 	MOV R27, Dig3
+                                 	SET_DIGIT 3
+                                 
+                                 	MOV R27, Dig2
+                                 	SET_DIGIT 2
+                                 
+                                 	MOV R27, Dig1
+                                 	SET_DIGIT 1
+                                 
+                                 	MOV R27, Dig0
+                                 	SET_DIGIT 0
+                                 
+                                 
+                                 RJMP MainLoop
+                                 
+                                 
+                                 DelayInMs:
+                                 	LDS R16, 0x60
+                                 	LDS R17, 0x61
+                                 
+                                 	OneMs: RCALL DelayOneMs 
+                                 	
+                                 	Timer: CLN 
+                                 	CLC
+                                 	SBC R16,R4
+                                 	BRBS 1, OldTimer
+                                 	BRBS 0, OldTimer
+                                 	RJMP OneMs
+                                 
+                                 	OldTimer: CLN 
+                                 	SUB R17,R4
+                                 	BRBS 2, DelayEnd
+                                 	RJMP Timer
+                                 
+                                 
+                                 DelayEnd: RET
+                                 
+                                 		DelayOneMs:
+                                 			PUSH R21
+                                 			PUSH R20
+                                 
+                                 			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                                 			NOP
+                                 			BRBS 1, Loop2
+                                 			RJMP Loop1
+                                 
+                                 			Loop2: DEC R21
+                                 			BRBS 2, End 
+                                 			RJMP Loop1
+                                 
+                                 			End: 
+                                 			POP R20
+                                 			POP R21
+                                 			CLN
+                                 		RET
+                                 
+                                 DigitTo7segCode:
+                                 		CLR R3
+                                 		LDI R30, Low(Table<<1)
+                                 		LDI R31, High(Table<<1)
+                                 
+                                 		ADD R30, R27
+                                 		ADC R31, R3
+                                 		LPM R27, Z 
+                                 			
+                                 	RET
+                                 	Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
+                                 
+                                 
+                                 NumberToDigits:
+                                 	CLR R29
+                                 	LDI R18, LOW(1000)
+                                 	LDI R19, HIGH(1000)
+                                 
+                                 	Comp0:
+                                 	CP PulseEdgeCtrL, R18
+                                 	CPC PulseEdgeCtrH,R19
+                                 	BRLO Res0
+                                 	RJMP Subs0
+                                 
+                                 	Subs0:
+                                 	
+                                 	SUB PulseEdgeCtrL,R18
+                                 	SBC PulseEdgeCtrH,R19
+                                 	ADD R29, R4
+                                 	RJMP Comp0
+                                 
+                                 	Res0:
+                                 	MOV Dig0, R29 //wynik
+                                 	LDI R18, LOW(100)
+                                 	LDI R19, HIGH(100)
+                                 	CLR R29
+                                 
+                                 	Comp1:
+                                 	CP PulseEdgeCtrL, R18
+                                 	CPC PulseEdgeCtrH,R19
+                                 	BRLO Res1
+                                 	RJMP Subs1
+                                 
+                                 	Subs1:
+                                 	SUB PulseEdgeCtrL,R18
+                                 	SBC PulseEdgeCtrH,R19
+                                 	ADD R29, R4	
+                                 	RJMP Comp1
+                                 
+                                 	Res1:
+                                 	MOV Dig1, R29
+                                 	LDI R18, LOW(10)
+                                 	LDI R19, HIGH(10)
+                                 	CLR R29
+                                 
+                                 	Comp2:
+                                 	CP PulseEdgeCtrL, R18
+                                 	CPC PulseEdgeCtrH,R19
+                                 	BRLO Res2
+                                 	RJMP Subs2
+                                 
+                                 	Subs2:
+                                 	SUB PulseEdgeCtrL,R18
+                                 	SBC PulseEdgeCtrH,R19
+                                 	ADD R29, R4
+                                 	RJMP Comp2
+                                 
+                                 	Res2:
+                                 	MOV Dig2, R29 //wynik
+                                 	MOV Dig3, PulseEdgeCtrL
+                                 	LDS PulseEdgeCtrL, 0x62
+                                 	LDS PulseEdgeCtrH, 0x63
+                                 
+                                 	
+                                 RET
+                                 
+                                 	Divide:
+                                 		LDI R18, LOW(10000)
+                                 		LDI R19, HIGH(10000)
+                                 		Comp:
+                                 		CP PulseEdgeCtrL, R18
+                                 		CPC PulseEdgeCtrH,R19
+                                 		BRLO Res
+                                 		RJMP Subs
+                                 	
+                                 		Subs:
+                                 		SUB PulseEdgeCtrL,R18
+                                 		SBC PulseEdgeCtrH,R19
+                                 		RJMP Comp
+                                 
+                                 		Res:
+                                 		
+                                 	RET */
+                                 
+                                 
+                                 
+                                 ;cw45-46-47 
+                                 /*
+                                 .cseg ; segment pamiêci kodu programu;
+                                 .org 0 rjmp _main ; skok po resecie (do programu g³ównego)
+                                 .org 4 rjmp _timer_isr ; skok do obs³ugi przerwania timera, timer counter compare match A ;
+                                 _timer_isr: ; procedura obs³ugi przerwania timera;;
+                                 
+                                 
+                                 
+                                 CLC
+                                 	ADD PulseEdgeCtrL, R4
+                                 	ADC PulseEdgeCtrH, R3
+                                 	STS 0x62, PulseEdgeCtrL
+                                 	STS 0x63, PulseEdgeCtrH
+                                 
+                                 	RCALL Divide
+                                 	RCALL NumberToDigits
+                                 reti ; powrót z procedury obs³ugi przerwania (reti zamiast ret)
+                                 
+                                 _main:
+                                 
+                                 	
                                  
                                  
                                  .def PulseEdgeCtrL=R0
@@ -731,207 +1274,196 @@ AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\A
                                  .equ Digits_P = PORTB  ; .equ is like #define in C:
                                  .equ Segments_P = PORTD
                                  
-000011 e345                      LDI R20, $35
-000012 e056                      LDI R21, $6
-000013 e021                      LDI R18, 1
-000014 2e42                      MOV R4, R18
-000015 e030                      LDI R19, 0
-000016 2433                      CLR R3
-000017 e005
-000018 e010                      LOAD_CONST R16,R17, 5
-000019 9300 0060                 STS 0x60, R16
-00001b 9310 0061                 STS 0x61, R17
-00001d e77f                      LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
-00001e e1ae                      LDI R26, 0x1e ; otworzenie pinów 1-4
                                  
-00001f bb71                      OUT DDRD, R23
-000020 bba7                      OUT DDRB, R26
-000021 27dd                      CLR R29
-000022 27cc                      CLR R28
-000023 27bb                      CLR R27
-000024 2788                      CLR R24
+                                 	LDI R16, 0b10000000
+                                 	OUT SREG,  R16
+                                 
+                                 	LDI R16, 0b1100
+                                 	OUT TCCR1B , R16 ;
+                                 
+                                 	LDI R16, HIGH(31250) //wpisaæ 100 dla ok25600 cykli
+                                 	OUT OCR1AH ,R16
+                                 	LDI R16, LOW(31250)
+                                 	OUT OCR1AL, R16 
+                                 
+                                 	LDI R16, (1<<6)
+                                 	OUT TIMSK , R16
+                                 	CLR R16
+                                 
+                                 
+                                 LDI R20, $35
+                                 LDI R21, $6
+                                 LDI R18, 1
+                                 MOV R4, R18
+                                 LDI R19, 0
+                                 CLR R3
+                                 LOAD_CONST R16,R17, 5
+                                 STS 0x60, R16
+                                 STS 0x61, R17
+                                 LDI R23, 0x7f ;ustawienie 7 pinów jako wejœcie 0-6
+                                 LDI R26, 0x1e ; otworzenie pinów 1-4
+                                 
+                                 OUT DDRD, R23
+                                 OUT DDRB, R26
+                                 CLR R29
+                                 CLR R28
+                                 CLR R27
+                                 CLR R24
+                                 CLR R23
                                  
                                  MainLoop: 
-000025 9488                      	CLC
-000026 0c04                      	ADD PulseEdgeCtrL, R4
-000027 1c13                      	ADC PulseEdgeCtrH, R3
-000028 9200 0062                 	STS 0x62, PulseEdgeCtrL
-00002a 9210 0063                 	STS 0x63, PulseEdgeCtrH
-                                 
-00002c d06d                      	RCALL Divide
-00002d d042                      	RCALL NumberToDigits
                                  
                                  	Start: 
-00002e 2fb9                      	MOV R27, Dig3
-00002f e110
-000030 d033
-000031 bbb2
-000032 bb18
-000033 d013                      	SET_DIGIT 3
+                                 	MOV R27, Dig3
+                                 	SET_DIGIT 3
                                  
-000034 2fb8                      	MOV R27, Dig2
-000035 e018
-000036 d02d
-000037 bbb2
-000038 bb18
-000039 d00d                      	SET_DIGIT 2
+                                 	MOV R27, Dig2
+                                 	SET_DIGIT 2
                                  
-00003a 2fb7                      	MOV R27, Dig1
-00003b e014
-00003c d027
-00003d bbb2
-00003e bb18
-00003f d007                      	SET_DIGIT 1
+                                 	MOV R27, Dig1
+                                 	SET_DIGIT 1
                                  
-000040 2fb6                      	MOV R27, Dig0
-000041 e012
-000042 d021
-000043 bbb2
-000044 bb18
-000045 d001                      	SET_DIGIT 0
+                                 	MOV R27, Dig0
+                                 	SET_DIGIT 0
                                  
                                  
-000046 cfde                      RJMP MainLoop
+                                 RJMP MainLoop
                                  
                                  
                                  DelayInMs:
-000047 9100 0060                 	LDS R16, 0x60
-000049 9110 0061                 	LDS R17, 0x61
+                                 	LDS R16, 0x60
+                                 	LDS R17, 0x61
                                  
-00004b d00b                      	OneMs: RCALL DelayOneMs 
+                                 	OneMs: RCALL DelayOneMs 
                                  	
-00004c 94a8                      	Timer: CLN 
-00004d 9488                      	CLC
-00004e 0904                      	SBC R16,R4
-00004f f011                      	BRBS 1, OldTimer
-000050 f008                      	BRBS 0, OldTimer
-000051 cff9                      	RJMP OneMs
+                                 	Timer: CLN 
+                                 	CLC
+                                 	SBC R16,R4
+                                 	BRBS 1, OldTimer
+                                 	BRBS 0, OldTimer
+                                 	RJMP OneMs
                                  
-000052 94a8                      	OldTimer: CLN 
-000053 1914                      	SUB R17,R4
-000054 f00a                      	BRBS 2, DelayEnd
-000055 cff6                      	RJMP Timer
+                                 	OldTimer: CLN 
+                                 	SUB R17,R4
+                                 	BRBS 2, DelayEnd
+                                 	RJMP Timer
                                  
                                  
-000056 9508                      DelayEnd: RET
+                                 DelayEnd: RET
                                  
                                  		DelayOneMs:
-000057 935f                      			PUSH R21
-000058 934f                      			PUSH R20
+                                 			PUSH R21
+                                 			PUSH R20
                                  
-000059 954a                      			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
-00005a 0000                      			NOP
-00005b f009                      			BRBS 1, Loop2
-00005c cffc                      			RJMP Loop1
+                                 			Loop1: DEC R20 ;DEC nie wywo³uje flagi przeniesienia
+                                 			NOP
+                                 			BRBS 1, Loop2
+                                 			RJMP Loop1
                                  
-00005d 955a                      			Loop2: DEC R21
-00005e f00a                      			BRBS 2, End 
-00005f cff9                      			RJMP Loop1
+                                 			Loop2: DEC R21
+                                 			BRBS 2, End 
+                                 			RJMP Loop1
                                  
                                  			End: 
-000060 914f                      			POP R20
-000061 915f                      			POP R21
-000062 94a8                      			CLN
-000063 9508                      		RET
+                                 			POP R20
+                                 			POP R21
+                                 			CLN
+                                 		RET
                                  
                                  DigitTo7segCode:
-000064 2433                      		CLR R3
-000065 ede6                      		LDI R30, Low(Table<<1)
-000066 e0f0                      		LDI R31, High(Table<<1)
+                                 		CLR R3
+                                 		LDI R30, Low(Table<<1)
+                                 		LDI R31, High(Table<<1)
                                  
-000067 0feb                      		ADD R30, R27
-000068 1df3                      		ADC R31, R3
-000069 91b4                      		LPM R27, Z 
+                                 		ADD R30, R27
+                                 		ADC R31, R3
+                                 		LPM R27, Z 
                                  			
-00006a 9508                      	RET
-00006b 063f
-00006c 4f5b
-00006d 6d66
-00006e 077d
-00006f 6f7f                      	Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
+                                 	RET
+                                 	Table: .db 0x3f, 0x6, 0x5b, 0x4f, 0x66, 0x6d, 0x7d, 0x7, 0x7f, 0x6f
                                  
                                  
                                  NumberToDigits:
-000070 27dd                      	CLR R29
-000071 ee28                      	LDI R18, LOW(1000)
-000072 e033                      	LDI R19, HIGH(1000)
+                                 	CLR R29
+                                 	LDI R18, LOW(1000)
+                                 	LDI R19, HIGH(1000)
                                  
                                  	Comp0:
-000073 1602                      	CP PulseEdgeCtrL, R18
-000074 0613                      	CPC PulseEdgeCtrH,R19
-000075 f028                      	BRLO Res0
-000076 c000                      	RJMP Subs0
+                                 	CP PulseEdgeCtrL, R18
+                                 	CPC PulseEdgeCtrH,R19
+                                 	BRLO Res0
+                                 	RJMP Subs0
                                  
                                  	Subs0:
                                  	
-000077 1a02                      	SUB PulseEdgeCtrL,R18
-000078 0a13                      	SBC PulseEdgeCtrH,R19
-000079 0dd4                      	ADD R29, R4
-00007a cff8                      	RJMP Comp0
+                                 	SUB PulseEdgeCtrL,R18
+                                 	SBC PulseEdgeCtrH,R19
+                                 	ADD R29, R4
+                                 	RJMP Comp0
                                  
                                  	Res0:
-00007b 2f6d                      	MOV Dig0, R29 //wynik
-00007c e624                      	LDI R18, LOW(100)
-00007d e030                      	LDI R19, HIGH(100)
-00007e 27dd                      	CLR R29
+                                 	MOV Dig0, R29 //wynik
+                                 	LDI R18, LOW(100)
+                                 	LDI R19, HIGH(100)
+                                 	CLR R29
                                  
                                  	Comp1:
-00007f 1602                      	CP PulseEdgeCtrL, R18
-000080 0613                      	CPC PulseEdgeCtrH,R19
-000081 f028                      	BRLO Res1
-000082 c000                      	RJMP Subs1
+                                 	CP PulseEdgeCtrL, R18
+                                 	CPC PulseEdgeCtrH,R19
+                                 	BRLO Res1
+                                 	RJMP Subs1
                                  
                                  	Subs1:
-000083 1a02                      	SUB PulseEdgeCtrL,R18
-000084 0a13                      	SBC PulseEdgeCtrH,R19
-000085 0dd4                      	ADD R29, R4	
-000086 cff8                      	RJMP Comp1
+                                 	SUB PulseEdgeCtrL,R18
+                                 	SBC PulseEdgeCtrH,R19
+                                 	ADD R29, R4	
+                                 	RJMP Comp1
                                  
                                  	Res1:
-000087 2f7d                      	MOV Dig1, R29
-000088 e02a                      	LDI R18, LOW(10)
-000089 e030                      	LDI R19, HIGH(10)
-00008a 27dd                      	CLR R29
+                                 	MOV Dig1, R29
+                                 	LDI R18, LOW(10)
+                                 	LDI R19, HIGH(10)
+                                 	CLR R29
                                  
                                  	Comp2:
-00008b 1602                      	CP PulseEdgeCtrL, R18
-00008c 0613                      	CPC PulseEdgeCtrH,R19
-00008d f028                      	BRLO Res2
-00008e c000                      	RJMP Subs2
+                                 	CP PulseEdgeCtrL, R18
+                                 	CPC PulseEdgeCtrH,R19
+                                 	BRLO Res2
+                                 	RJMP Subs2
                                  
                                  	Subs2:
-00008f 1a02                      	SUB PulseEdgeCtrL,R18
-000090 0a13                      	SBC PulseEdgeCtrH,R19
-000091 0dd4                      	ADD R29, R4
-000092 cff8                      	RJMP Comp2
+                                 	SUB PulseEdgeCtrL,R18
+                                 	SBC PulseEdgeCtrH,R19
+                                 	ADD R29, R4
+                                 	RJMP Comp2
                                  
                                  	Res2:
-000093 2f8d                      	MOV Dig2, R29 //wynik
-000094 2d90                      	MOV Dig3, PulseEdgeCtrL
-000095 9000 0062                 	LDS PulseEdgeCtrL, 0x62
-000097 9010 0063                 	LDS PulseEdgeCtrH, 0x63
+                                 	MOV Dig2, R29 //wynik
+                                 	MOV Dig3, PulseEdgeCtrL
+                                 	LDS PulseEdgeCtrL, 0x62
+                                 	LDS PulseEdgeCtrH, 0x63
                                  
                                  	
-000099 9508                      RET
+                                 RET
                                  
                                  	Divide:
-00009a e120                      		LDI R18, LOW(10000)
-00009b e237                      		LDI R19, HIGH(10000)
+                                 		LDI R18, LOW(10000)
+                                 		LDI R19, HIGH(10000)
                                  		Comp:
-00009c 1602                      		CP PulseEdgeCtrL, R18
-00009d 0613                      		CPC PulseEdgeCtrH,R19
-00009e f020                      		BRLO Res
-00009f c000                      		RJMP Subs
+                                 		CP PulseEdgeCtrL, R18
+                                 		CPC PulseEdgeCtrH,R19
+                                 		BRLO Res
+                                 		RJMP Subs
                                  	
                                  		Subs:
-0000a0 1a02                      		SUB PulseEdgeCtrL,R18
-0000a1 0a13                      		SBC PulseEdgeCtrH,R19
-0000a2 cff9                      		RJMP Comp
+                                 		SUB PulseEdgeCtrL,R18
+                                 		SBC PulseEdgeCtrH,R19
+                                 		RJMP Comp
                                  
                                  		Res:
                                  		
-0000a3 9508                      	RET
-                                 
+                                 	RET */
+                                 	
                                  
                                  
                                  ;cw44
@@ -2994,11 +3526,11 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATtiny2313" register use summary:
-x  :   0 y  :   0 z  :   1 r0 :  12 r1 :  11 r2 :   0 r3 :   4 r4 :   7 
-r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   1 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  14 r17:  12 r18:  14 r19:  13 r20:   4 
-r21:   4 r22:   2 r23:   4 r24:   3 r25:   2 r26:   2 r27:  11 r28:   1 
-r29:  10 r30:   2 r31:   2 
+x  :   0 y  :   0 z  :   1 r0 :  13 r1 :  12 r2 :   0 r3 :   3 r4 :   7 
+r5 :   2 r6 :   2 r7 :   2 r8 :   2 r9 :   0 r10:   0 r11:   0 r12:   0 
+r13:   0 r14:   0 r15:   0 r16:  19 r17:   4 r18:  22 r19:  12 r20:   4 
+r21:   4 r22:   0 r23:   3 r24:   0 r25:   0 r26:   2 r27:  10 r28:   1 
+r29:   9 r30:   2 r31:   2 
 Registers used: 22 out of 35 (62.9%)
 
 "ATtiny2313" instruction use summary:
@@ -3007,25 +3539,25 @@ andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   5
 brcc  :   0 brcs  :   0 break :   0 breq  :   0 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   4 brlt  :   0 brmi  :   0 
 brne  :   0 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 cbi   :   0 cbr   :   0 clc   :   2 
+brvs  :   0 bset  :   0 bst   :   0 cbi   :   0 cbr   :   0 clc   :   6 
 clh   :   0 cli   :   0 cln   :   3 clr   :   9 cls   :   0 clt   :   0 
 clv   :   0 clz   :   0 com   :   0 cp    :   4 cpc   :   4 cpi   :   0 
 cpse  :   0 dec   :   2 eor   :   0 icall :   0 ijmp  :   0 in    :   0 
-inc   :   1 ld    :   0 ldd   :   0 ldi   :  27 lds   :   4 lpm   :   2 
+inc   :   0 ld    :   0 ldd   :   0 ldi   :  28 lds   :   0 lpm   :   2 
 lsl   :   0 lsr   :   0 mov   :   9 movw  :   0 neg   :   0 nop   :   1 
-or    :   0 ori   :   0 out   :  15 pop   :   2 push  :   2 rcall :  11 
-ret   :   5 reti  :   1 rjmp  :  15 rol   :   0 ror   :   0 sbc   :   5 
+or    :   0 ori   :   0 out   :  17 pop   :   6 push  :   6 rcall :  10 
+ret   :   5 reti  :   2 rjmp  :  16 rol   :   0 ror   :   0 sbc   :   5 
 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 sbiw  :   0 sbr   :   0 
 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 sei   :   0 sen   :   0 
 ser   :   0 ses   :   0 set   :   0 sev   :   0 sez   :   0 sleep :   0 
-spm   :   0 st    :   0 std   :   0 sts   :   4 sub   :   5 subi  :   0 
+spm   :   0 st    :   0 std   :   0 sts   :   0 sub   :   5 subi  :   0 
 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 26 out of 105 (24.8%)
+Instructions used: 23 out of 105 (21.9%)
 
 "ATtiny2313" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%
 ---------------------------------------------------------------
-[.cseg] 0x000000 0x000148    312     10    322    2048  15.7%
+[.cseg] 0x000000 0x000152    310     10    320    2048  15.6%
 [.dseg] 0x000060 0x000060      0      0      0     128   0.0%
 [.eseg] 0x000000 0x000000      0      0      0     128   0.0%
 

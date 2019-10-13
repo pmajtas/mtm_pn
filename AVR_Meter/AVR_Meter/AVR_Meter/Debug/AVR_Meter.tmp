@@ -22,34 +22,34 @@
   <FILE>AVR_Meter.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <_main><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>25</LINE></_main>
-  <_timer_isr><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>18</LINE></_timer_isr>
-  <MainLoop><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>86</LINE></MainLoop>
-  <Divide><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>229</LINE></Divide>
-  <NumberToDigits><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>166</LINE></NumberToDigits>
-  <Start><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>96</LINE></Start>
-  <DigitTo7segCode><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>153</LINE></DigitTo7segCode>
-  <DelayInMs><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>113</LINE></DelayInMs>
-  <OneMs><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>117</LINE></OneMs>
-  <DelayOneMs><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>134</LINE></DelayOneMs>
-  <Timer><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>119</LINE></Timer>
-  <OldTimer><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>126</LINE></OldTimer>
-  <DelayEnd><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>132</LINE></DelayEnd>
-  <Loop1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>138</LINE></Loop1>
-  <Loop2><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>143</LINE></Loop2>
-  <End><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>147</LINE></End>
-  <Table><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>163</LINE></Table>
-  <Comp0><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>171</LINE></Comp0>
-  <Res0><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>184</LINE></Res0>
-  <Subs0><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>177</LINE></Subs0>
-  <Comp1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>190</LINE></Comp1>
-  <Res1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>202</LINE></Res1>
-  <Subs1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>196</LINE></Subs1>
-  <Comp2><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>208</LINE></Comp2>
-  <Res2><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>220</LINE></Res2>
-  <Subs2><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>214</LINE></Subs2>
-  <Comp><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>232</LINE></Comp>
-  <Res><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>243</LINE></Res>
-  <Subs><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>238</LINE></Subs>
+  <_main><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>56</LINE></_main>
+  <_timer_isr><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>46</LINE></_timer_isr>
+  <_pin_isr><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>36</LINE></_pin_isr>
+  <NumberToDigits><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>184</LINE></NumberToDigits>
+  <MainLoop><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>110</LINE></MainLoop>
+  <DigitTo7segCode><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>171</LINE></DigitTo7segCode>
+  <DelayInMs><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>128</LINE></DelayInMs>
+  <OneMs><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>133</LINE></OneMs>
+  <DelayOneMs><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>152</LINE></DelayOneMs>
+  <Timer><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>135</LINE></Timer>
+  <OldTimer><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>142</LINE></OldTimer>
+  <DelayEnd><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>148</LINE></DelayEnd>
+  <Loop1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>156</LINE></Loop1>
+  <Loop2><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>161</LINE></Loop2>
+  <End><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>165</LINE></End>
+  <Table><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>181</LINE></Table>
+  <Comp0><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>192</LINE></Comp0>
+  <Res0><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>205</LINE></Res0>
+  <Subs0><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>198</LINE></Subs0>
+  <Comp1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>211</LINE></Comp1>
+  <Res1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>223</LINE></Res1>
+  <Subs1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>217</LINE></Subs1>
+  <Comp2><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>229</LINE></Comp2>
+  <Res2><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>241</LINE></Res2>
+  <Subs2><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>235</LINE></Subs2>
+  <Divide><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>250</LINE></Divide>
+  <Comp><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>253</LINE></Comp>
+  <Res><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>264</LINE></Res>
+  <Subs><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Meter\AVR_Meter\AVR_Meter\AVR_Meter.asm</FILE><LINE>259</LINE></Subs>
  </LABELS>
 </ASSEMBLER_INFO>
