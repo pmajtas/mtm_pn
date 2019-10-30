@@ -1,17 +1,18 @@
 <ASSEMBLER_INFO>
- <VERSION>2.1.57</VERSION>
+ <VERSION>2.2.7</VERSION>
  <DEVICE>"ATtiny2313A"</DEVICE>
- <WORKING_DIR>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\Debug</WORKING_DIR>
+ <WORKING_DIR>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\Debug</WORKING_DIR>
  <INCLUDE_PATH>
-  <DIR>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include</DIR>
+  <DIR>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\avrasm\inc</DIR>
+  <DIR>C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avrassembler\Include</DIR>
   <DIR></DIR>
  </INCLUDE_PATH>
- <SOURCE_FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</SOURCE_FILE>
+ <SOURCE_FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\examp.asm</SOURCE_FILE>
  <INCLUDED_FILES>
-  <FILE>C:\Program Files (x86)\Atmel\Atmel Toolchain\AVR Assembler\Native\2.1.1175\avrassembler\Include\tn2313Adef.inc</FILE>
+  <FILE>C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\avrasm\inc\tn2313adef.inc</FILE>
  </INCLUDED_FILES>
  <OBJECT_FILES>
-  <FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\Debug/examp.obj</FILE>
+  <FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\Debug\examp.obj</FILE>
  </OBJECT_FILES>
  <HEX_FILES>
   <FILE>examp.hex</FILE>
@@ -21,34 +22,19 @@
   <FILE>examp.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <_main><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>82</LINE></_main>
-  <_timer_isr><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>38</LINE></_timer_isr>
-  <_pcint_isr><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>44</LINE></_pcint_isr>
-  <NumberToDigits><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>104</LINE></NumberToDigits>
-  <_reg_init><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>50</LINE></_reg_init>
-  <OneMsLoop><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>175</LINE></OneMsLoop>
-  <MainLoop><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>90</LINE></MainLoop>
-  <DigitsTo7segCode><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>158</LINE></DigitsTo7segCode>
-  <DelayInMs><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>190</LINE></DelayInMs>
-  <Sub0><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>107</LINE></Sub0>
-  <Res0><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>117</LINE></Res0>
-  <Sub1><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>122</LINE></Sub1>
-  <Res1><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>132</LINE></Res1>
-  <Sub2><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>138</LINE></Sub2>
-  <Res2><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>148</LINE></Res2>
-  <Res3><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>152</LINE></Res3>
-  <Table><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>156</LINE></Table>
-  <Delay><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>171</LINE></Delay>
-  <Timer1><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>178</LINE></Timer1>
-  <Timer2><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>182</LINE></Timer2>
-  <Endl><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>187</LINE></Endl>
-  <OneMs><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>195</LINE></OneMs>
-  <DelayOneMs><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>214</LINE></DelayOneMs>
-  <Timer><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>197</LINE></Timer>
-  <OldTimer><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>204</LINE></OldTimer>
-  <DelayEnd><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>210</LINE></DelayEnd>
-  <Loop1><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>218</LINE></Loop1>
-  <Loop2><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>223</LINE></Loop2>
-  <End><FILE>C:\Users\student\Desktop\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>227</LINE></End>
+  <_main><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>81</LINE></_main>
+  <_Timer_ISR><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>62</LINE></_Timer_ISR>
+  <_ExtInt_ISR><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>46</LINE></_ExtInt_ISR>
+  <_NumberToDigits><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>135</LINE></_NumberToDigits>
+  <MainLoop><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>114</LINE></MainLoop>
+  <DigitTo7segCode><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>231</LINE></DigitTo7segCode>
+  <DelayInMs><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>252</LINE></DelayInMs>
+  <_Divide><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>205</LINE></_Divide>
+  <Sub0><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>209</LINE></Sub0>
+  <Res><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>219</LINE></Res>
+  <Table><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>229</LINE></Table>
+  <L0><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>256</LINE></L0>
+  <OneMsLoop><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>266</LINE></OneMsLoop>
+  <L1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\App2\examp\examp\examp.asm</FILE><LINE>272</LINE></L1>
  </LABELS>
 </ASSEMBLER_INFO>
