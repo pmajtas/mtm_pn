@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm Wed Nov 06 17:20:33 2019
+AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm Wed Nov 13 12:35:36 2019
 
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\avrasm\inc\tn2313adef.inc'
 [builtin](2): Including file 'C:/Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATtiny_DFP\1.3.229\avrasm\inc\tn2313adef.inc'
@@ -709,7 +709,266 @@ AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread
                                  ; Created: 2019-11-04 14:44:06
                                  ; Author : Moj
                                  ;
+                                 /*
+                                 .MACRO LOAD_CONST  
+                                  ldi  @0,low(@2)
+                                  ldi  @1,high(@2)
+                                 .ENDMACRO
                                  
+                                 .equ DigitsPort = PORTB
+                                 .equ SegmentsPort = PORTD
+                                 .def CurrentThread=R17
+                                 .def ThreadA_LSB = R18
+                                 .def ThreadA_MSB = R19
+                                 .def ThreadB_LSB = R20
+                                 .def ThreadB_MSB = R21
+                                 .def Sreg_A = R1
+                                 .def Sreg_B = R2
+                                 .def Sreg_Glob = R3
+                                 
+                                 .cseg
+                                 .org	 0      rjmp	_main
+                                 .org 4	rjmp  _Timer_ISR
+                                 
+                                 _Timer_ISR:
+                                 	IN Sreg_Glob, SREG
+                                 	PUSH R16
+                                 	LDI R16,1
+                                 	CP CurrentThread, R16
+                                 	POP R16
+                                 	BREQ Case_B
+                                 	Case_A:
+                                 		MOV Sreg_A, Sreg_Glob
+                                 		LDI R16, 0x01
+                                 		EOR CurrentThread, R16
+                                 		OUT SREG, Sreg_B
+                                 		
+                                 		POP R16
+                                 		MOV ThreadA_MSB, R16
+                                 		POP R16
+                                 		MOV ThreadA_LSB, R16
+                                 		PUSH ThreadB_LSB
+                                 		PUSH ThreadB_MSB
+                                 		RJMP Stop_Interrupt		
+                                 	Case_B:
+                                 		MOV Sreg_B, Sreg_Glob
+                                 		LDI R16, 0x01
+                                 		EOR CurrentThread, R16
+                                 		OUT SREG, Sreg_A
+                                 
+                                 		POP R16
+                                 		MOV ThreadB_MSB, R16
+                                 		POP R16
+                                 		MOV ThreadB_LSB, R16
+                                 		PUSH ThreadA_LSB
+                                 		PUSH ThreadA_MSB
+                                 	Stop_Interrupt:
+                                 		NOP
+                                   reti
+                                 
+                                 _main: 
+                                 	LDI ThreadA_LSB, LOW(ThreadA)
+                                 	LDI ThreadA_MSB, HIGH(ThreadA)
+                                 	LDI ThreadB_LSB, LOW(ThreadB)
+                                 	LDI ThreadB_MSB, HIGH(ThreadB)
+                                 	CLR CurrentThread
+                                     ; * Initialisations *
+                                 	;--- Timer1 --- CTC with 1 prescaller
+                                 	LDI R16, (1<<3)|(1<<0)
+                                 	OUT TCCR1B, R16
+                                 
+                                 	LDI R16, HIGH(100)
+                                 	OUT OCR1AH, R16
+                                 
+                                 	LDI R16, LOW(100)
+                                 	OUT OCR1AL, R16
+                                 
+                                 	LDI R16, 1<<OCIE1A
+                                 	OUT TIMSK, R16
+                                 	; --- enable global interrupts
+                                 	SEI
+                                 	;---  Display  --- 
+                                 	LDI R16, 0x06
+                                 	OUT DDRB, R16
+                                 	LDI R16, 0xFF
+                                 	OUT DDRD, R16
+                                 	LDI R16, 0x3f
+                                 	OUT SegmentsPort, R16
+                                 
+                                 ThreadA:
+                                 	IN R22, DigitsPort
+                                 	LDI R23, 0b010
+                                 	EOR R22, R23
+                                 	OUT DigitsPort, R22
+                                 			
+                                 	ldi r26, 6
+                                 	LOAD_CONST R28,R29,32000
+                                 	L1:
+                                 	L_A:			
+                                 		SBIW R29:R28,1 
+                                 		BRNE L_A
+                                 		clz
+                                 		dec r26
+                                 		cpi r26, 0
+                                 		brne L1
+                                 
+                                 RJMP ThreadA
+                                 
+                                 ThreadB:
+                                 	IN R22, DigitsPort
+                                 	LDI R23, 0b100
+                                 	EOR R22, R23
+                                 	;LDI R16, 0x06
+                                 	;OUT SegmentsPort, R16
+                                 	OUT DigitsPort, R22
+                                 	ldi r27, 4
+                                 
+                                 	LOAD_CONST R30,R31,32000
+                                 	L2:
+                                 	L_B:		
+                                 		SBIW R31:R30,1
+                                 		BRNE L_B
+                                 		clz
+                                 		dec r27
+                                 		cpi r27,0
+                                 		brne L2
+                                 
+                                 RJMP ThreadB
+                                 */
+                                 
+                                 .macro LOAD_CONST
+                                 ldi @0, low(@2)
+                                 ldi @1, high(@2)
+                                 .endmacro
+                                 
+                                 .def GlobSreg = r2
+                                 .def SregA = r0
+                                 .def SregB = r1
+                                 .def CurrentThread = r20
+                                 .def ThreadA_LSB = r21
+                                 .def ThreadA_MSB = r22
+                                 .def ThreadB_LSB = r23
+                                 .def ThreadB_MSB = r24
+                                 
+                                 .cseg
+000000 c018                      .org 0 rjmp _main
+000004 c000                      .org OC1Aaddr rjmp _ISR
+                                 
+                                 _ISR:
+000005 b62f                      	in r2, sreg
+000006 3041                      	cpi CurrentThread, 1
+000007 f041                      	breq ThrB
+                                 
+000008 2c02                      	mov r0,r2
+                                 
+000009 e041                      	ldi CurrentThread, 1 //powrót z A
+00000a 916f                      	pop ThreadA_MSB
+00000b 915f                      	pop ThreadA_LSB
+                                 
+00000c 937f                      	push ThreadB_LSB
+00000d 938f                      	push ThreadB_MSB
+                                 	
+00000e be1f                      	out sreg, r1
+                                 
+00000f c008                      	rjmp end
+                                 
+                                 	ThrB:
+000010 9498                      	clz
+000011 2c12                      	mov r1,r2
+                                 
+000012 918f                      	pop ThreadB_MSB
+000013 917f                      	pop ThreadB_LSB
+                                 
+000014 935f                      	push ThreadA_LSB
+000015 936f                      	push ThreadA_MSB
+                                 	
+000016 2744                      	clr CurrentThread
+                                 
+000017 be0f                      	out sreg, r0
+                                 	end:
+000018 9518                      reti
+                                 
+                                 _main:
+                                 	//Timer
+000019 ec00                      	ldi r16, ((1<<OCIE1A)|(1<<TOIE1))
+00001a bf09                      	out timsk, r16
+                                 
+00001b e009                      	ldi r16, 0b1001
+00001c bd0e                      	out tccr1b, r16
+                                 
+00001d e000                      	ldi r16, high(100)
+00001e bd0b                      	out ocr1ah, r16
+                                 
+00001f e604                      	ldi r16, low(100)
+000020 bd0a                      	out ocr1al, r16
+                                 
+000021 2744                      	clr CurrentThread
+                                 
+000022 e006                      	ldi r16, 0b110
+000023 bb07                      	out ddrb, r16
+                                 
+000024 e70f                      	ldi r16, 0x7f
+000025 bb01                      	out ddrd, r16
+                                 
+000026 e30f                      	ldi r16, 0x3f
+000027 bb02                      	out portd, r16
+                                 
+000028 9478                      	sei
+                                 
+000029 e25d                      	ldi ThreadA_LSB, low(ThreadA)
+00002a e060                      	ldi ThreadA_MSB, high(ThreadA)
+                                 
+00002b e37b                      	ldi ThreadB_LSB, low(ThreadB)
+00002c e080                      	ldi ThreadB_MSB, high(ThreadB)
+                                 
+                                 	ThreadA:
+                                 
+00002d b318                      		in r17, portb
+00002e e022                      		ldi r18, 0b10
+00002f 2712                      		eor r17,r18
+000030 bb18                      		out portb, r17
+                                 
+000031 e032                      		ldi r19, 2
+000032 e0c0
+000033 e7dd                      		LOAD_CONST r28,r29, 32000
+                                 
+                                 		L1:
+                                 		L11:
+000034 9721                      		sbiw r29:r28, 1
+000035 f7f1                      		brne L11
+000036 9498                      		clz
+000037 953a                      		dec r19
+000038 3030                      		cpi r19,0
+000039 f7d1                      		brne L1
+                                 
+00003a cff2                      	rjmp ThreadA
+                                 
+                                 	ThreadB:
+                                 
+00003b b3a8                      		in r26, portb
+00003c e024                      		ldi r18, 0b100
+00003d 27a2                      		eor r26,r18
+00003e bba8                      		out portb, r26
+                                 
+00003f e094                      		ldi r25, 4
+000040 e0e0
+000041 e7fd                      		LOAD_CONST r30,r31, 32000
+                                 
+                                 		L2:
+                                 		L22:
+000042 9731                      		sbiw r31:r30, 1
+000043 f7f1                      		brne L22
+000044 9498                      		clz
+000045 959a                      		dec r25
+000046 3090                      		cpi r25,0
+000047 f7d1                      		brne L2
+                                 
+000048 cff2                      	rjmp ThreadB
+                                 
+000049 9518                      reti
+                                 
+                                 
+                                 /*
                                  ;cw5
                                  
                                  .def CtrA = R0
@@ -722,140 +981,134 @@ AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread
                                  .def ThreadB_MSB = R24
                                  
                                  .cseg
-000000 c016                      .org 0 rjmp _main
-000004 c000                      .org OC1Aaddr rjmp _ISR
+                                 .org 0 rjmp _main
+                                 .org OC1Aaddr rjmp _ISR
                                  
                                  
                                  _ISR:
                                  	
                                  
-000005 3041                      	cpi CurrentThread , 1
-000006 f041                      	breq ThB
+                                 	cpi CurrentThread , 1
+                                 	breq ThB
                                  
-000007 b61f                      	in r1, sreg
+                                 	in r1, sreg
                                  	
                                  
-000008 916f                      	pop ThreadA_MSB ;push najpierw lsb adresu, potem msb
-000009 915f                      	pop ThreadA_LSB ;pop odwrotnie
+                                 	pop ThreadA_MSB ;push najpierw lsb adresu, potem msb
+                                 	pop ThreadA_LSB ;pop odwrotnie
                                  
                                  
-00000a 937f                      	push ThreadB_LSB
-00000b 938f                      	push ThreadB_MSB
+                                 	push ThreadB_LSB
+                                 	push ThreadB_MSB
                                  	
-00000c e041                      	ldi CurrentThread, 1
+                                 	ldi CurrentThread, 1
                                  
-00000d be2f                      	out sreg, r2
-00000e c007                      	rjmp end
+                                 	out sreg, r2
+                                 	rjmp end
                                  
                                  	ThB:
                                  
-00000f b62f                      	in r2,sreg
+                                 	in r2,sreg
                                  	
                                  
-000010 918f                      	pop ThreadB_MSB
-000011 917f                      	pop ThreadB_LSB
+                                 	pop ThreadB_MSB
+                                 	pop ThreadB_LSB
                                  
                                  
-000012 935f                      	push ThreadA_LSB
-000013 936f                      	push ThreadA_MSB
+                                 	push ThreadA_LSB
+                                 	push ThreadA_MSB
                                  
-000014 2744                      	clr CurrentThread
-000015 be1f                      	out sreg, r1
+                                 	clr CurrentThread
+                                 	out sreg, r1
                                  	end:
-000016 9518                      reti
+                                 reti
                                  
                                  
                                  _main:
                                  
-000017 e00c                      	ldi r16,  0b1100
-000018 bd0e                      	out tccr1b, r16
+                                 	ldi r16,  0b1100
+                                 	out tccr1b, r16
                                  
-000019 ec00                      	ldi r16, ((1<<OCIE1A)|(1<<TOIE1))
-00001a bf09                      	out timsk, r16
+                                 	ldi r16, ((1<<OCIE1A)|(1<<TOIE1))
+                                 	out timsk, r16
                                  	
-00001b e000                      	ldi r16, high(100)
-00001c bd0b                      	out ocr1ah, r16
+                                 	ldi r16, high(100)
+                                 	out ocr1ah, r16
                                  
-00001d e604                      	ldi r16, low(100)
-00001e bd0a                      	out ocr1al , r16
+                                 	ldi r16, low(100)
+                                 	out ocr1al , r16
                                  
-00001f 9478                      	sei
+                                 	sei
                                  	
-000020 e00a                      	ldi r16, 0b1010
-000021 bb07                      	out ddrb , r16
+                                 	ldi r16, 0b110
+                                 	out ddrb , r16
                                  
-000022 e70f                      	ldi r16, 0x7f
-000023 bb01                      	out ddrd, r16
+                                 	ldi r16, 0x7f
+                                 	out ddrd, r16
                                  
-000024 e31f                      	ldi r17, 0x3f
-000025 bb12                      	out portd, r17
+                                 	ldi r17, 0x3f
+                                 	out portd, r17
                                  
-000026 2744                      	clr CurrentThread
-000027 e001                      	ldi r16, 1
+                                 	clr CurrentThread
+                                 	ldi r16, 1
                                  
-000028 e25c                      	ldi ThreadA_LSB, low(ThreadA)
-000029 e060                      	ldi ThreadA_MSB, high(ThreadA)
+                                 	ldi ThreadA_LSB, low(ThreadA)
+                                 	ldi ThreadA_MSB, high(ThreadA)
                                  
-00002a e37b                      	ldi ThreadB_LSB, low(ThreadB)
-00002b e080                      	ldi ThreadB_MSB, high(ThreadB)
+                                 	ldi ThreadB_LSB, low(ThreadB)
+                                 	ldi ThreadB_MSB, high(ThreadB)
                                  
                                  ThreadA:
-                                 	
-                                 	
-                                 	
+                                 		
                                  
                                  MainLoopA:
-00002c e012                      	ldi r17, 2
-00002d b328                      	in r18, portb
-00002e 2721                      	eor r18,r17
-00002f bb28                      	out portb, r18
+                                 	ldi r17, 2
+                                 	in r18, portb
+                                 	eor r18,r17
+                                 	out portb, r18
                                  
-000030 e00a                      	ldi r16, 10
+                                 	ldi r16, 8
                                  
-000031 9403                      	inc CtrA
-000032 e0c0                      	ldi r28, low(32000)
-000033 e7dd                      	ldi r29, high(32000)
+                                 	ldi r28, low(32000)
+                                 	ldi r29, high(32000)
                                  
-000034 950a                      	L1:dec r16
+                                 	L1:dec r16
                                  	L11:
-000035 9721                      	sbiw r29:r28, 1
-000036 f7f1                      	brne L11
-000037 9498                      	clz
-000038 3000                      	cpi r16,0
-000039 f7d1                      	brne L1
+                                 	sbiw r29:r28, 1
+                                 	brne L11
+                                 	clz
+                                 	cpi r16,0
+                                 	brne L1
                                  	
                                  
-00003a cff1                          rjmp MainLoopA
+                                     rjmp MainLoopA
                                  
                                  
-                                 ThreadB:
-                                 
-                                 	
+                                 ThreadB:	
                                  
                                  MainLoopB:
                                  
-00003b e014                      	ldi r17, 4
-00003c b328                      	in r18, portb
-00003d 2721                      	eor r18,r17
-00003e bb28                      	out portb, r18
+                                 	ldi r17, 4
+                                 	in r18, portb
+                                 	eor r18,r17
+                                 	out portb, r18
                                  
-00003f e035                      	ldi r19, 5
+                                 	ldi r19, 13
                                  
-000040 9413                          inc CtrB
-000041 e0a0                      	ldi r26, low(32000)
-000042 e7bd                      	ldi r27, high(32000)
+                                 	ldi r26, low(32000)
+                                 	ldi r27, high(32000)
                                  
-000043 953a                      	L2: dec r19
+                                 	L2: dec r19
                                  	L21: 
-000044 9711                      	sbiw r27:r26, 1
-000045 f7f1                      	brne L21
-000046 9488                      	clc
-000047 3030                      	cpi r19,0
-000048 f7d1                      	brne L2
+                                 	sbiw r27:r26, 1
+                                 	brne L21
+                                 	clc
+                                 	cpi r19,0
+                                 	brne L2
                                  
                                  	
-000049 cff1                          rjmp MainLoopB
-                                 
+                                     rjmp MainLoopB
+                                 */
                                  
                                  /*
                                  ;cw4
@@ -1092,12 +1345,12 @@ counted separately from r26..r31 here.
 .dseg memory usage only counts static data declared with .byte
 
 "ATtiny2313A" register use summary:
-x  :   0 y  :   0 z  :   0 r0 :   1 r1 :   3 r2 :   2 r3 :   0 r4 :   0 
+x  :   0 y  :   0 z  :   0 r0 :   2 r1 :   2 r2 :   3 r3 :   0 r4 :   0 
 r5 :   0 r6 :   0 r7 :   0 r8 :   0 r9 :   0 r10:   0 r11:   0 r12:   0 
-r13:   0 r14:   0 r15:   0 r16:  16 r17:   6 r18:   6 r19:   3 r20:   4 
-r21:   3 r22:   3 r23:   3 r24:   3 r25:   0 r26:   2 r27:   2 r28:   2 
-r29:   2 r30:   0 r31:   0 
-Registers used: 16 out of 35 (45.7%)
+r13:   0 r14:   0 r15:   0 r16:  14 r17:   3 r18:   4 r19:   3 r20:   4 
+r21:   3 r22:   3 r23:   3 r24:   3 r25:   3 r26:   3 r27:   0 r28:   2 
+r29:   2 r30:   2 r31:   2 
+Registers used: 18 out of 35 (51.4%)
 
 "ATtiny2313A" instruction use summary:
 .lds  :   0 .sts  :   0 adc   :   0 add   :   0 adiw  :   0 and   :   0 
@@ -1105,20 +1358,20 @@ andi  :   0 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0
 brcc  :   0 brcs  :   0 break :   0 breq  :   1 brge  :   0 brhc  :   0 
 brhs  :   0 brid  :   0 brie  :   0 brlo  :   0 brlt  :   0 brmi  :   0 
 brne  :   4 brpl  :   0 brsh  :   0 brtc  :   0 brts  :   0 brvc  :   0 
-brvs  :   0 bset  :   0 bst   :   0 cbi   :   0 cbr   :   0 clc   :   1 
+brvs  :   0 bset  :   0 bst   :   0 cbi   :   0 cbr   :   0 clc   :   0 
 clh   :   0 cli   :   0 cln   :   0 clr   :   2 cls   :   0 clt   :   0 
-clv   :   0 clz   :   1 com   :   0 cp    :   0 cpc   :   0 cpi   :   3 
-cpse  :   0 dec   :   2 eor   :   2 icall :   0 ijmp  :   0 in    :   4 
-inc   :   2 ld    :   0 ldd   :   0 ldi   :  21 lds   :   0 lpm   :   0 
-lsl   :   0 lsr   :   0 mov   :   0 movw  :   0 neg   :   0 nop   :   0 
+clv   :   0 clz   :   3 com   :   0 cp    :   0 cpc   :   0 cpi   :   3 
+cpse  :   0 dec   :   2 eor   :   2 icall :   0 ijmp  :   0 in    :   3 
+inc   :   0 ld    :   0 ldd   :   0 ldi   :  20 lds   :   0 lpm   :   0 
+lsl   :   0 lsr   :   0 mov   :   2 movw  :   0 neg   :   0 nop   :   0 
 or    :   0 ori   :   0 out   :  11 pop   :   4 push  :   4 rcall :   0 
-ret   :   0 reti  :   1 rjmp  :   5 rol   :   0 ror   :   0 sbc   :   0 
+ret   :   0 reti  :   2 rjmp  :   5 rol   :   0 ror   :   0 sbc   :   0 
 sbci  :   0 sbi   :   0 sbic  :   0 sbis  :   0 sbiw  :   2 sbr   :   0 
 sbrc  :   0 sbrs  :   0 sec   :   0 seh   :   0 sei   :   1 sen   :   0 
 ser   :   0 ses   :   0 set   :   0 sev   :   0 sez   :   0 sleep :   0 
 spm   :   0 st    :   0 std   :   0 sts   :   0 sub   :   0 subi  :   0 
 swap  :   0 tst   :   0 wdr   :   0 
-Instructions used: 18 out of 105 (17.1%)
+Instructions used: 17 out of 105 (16.2%)
 
 "ATtiny2313A" memory use summary [bytes]:
 Segment   Begin    End      Code   Data   Used    Size   Use%

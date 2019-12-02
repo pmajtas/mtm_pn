@@ -1,5 +1,5 @@
 
-AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm Wed Nov 06 17:20:33 2019
+AVRASM ver. 2.2.7  C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm Wed Nov 13 12:35:36 2019
 
 
 EQU  SIGNATURE_000 0000001e
@@ -478,22 +478,21 @@ EQU  WDTaddr      00000012
 EQU  PCIAaddr     00000013
 EQU  PCIDaddr     00000014
 EQU  INT_VECTORS_SIZE 00000015
-DEF  CtrA         r0
-DEF  CtrB         r1
+DEF  GlobSreg     r2
+DEF  SregA        r0
+DEF  SregB        r1
 DEF  CurrentThread r20
 DEF  ThreadA_LSB  r21
 DEF  ThreadA_MSB  r22
 DEF  ThreadB_LSB  r23
 DEF  ThreadB_MSB  r24
-CSEG _main        00000017
+CSEG _main        00000019
 CSEG _ISR         00000005
-CSEG ThB          0000000f
-CSEG end          00000016
-CSEG ThreadA      0000002c
+CSEG ThrB         00000010
+CSEG end          00000018
+CSEG ThreadA      0000002d
 CSEG ThreadB      0000003b
-CSEG MainLoopA    0000002c
 CSEG L1           00000034
-CSEG L11          00000035
-CSEG MainLoopB    0000003b
-CSEG L2           00000043
-CSEG L21          00000044
+CSEG L11          00000034
+CSEG L2           00000042
+CSEG L22          00000042

@@ -22,17 +22,15 @@
   <FILE>AVR_Thread.lss</FILE>
  </OUTPUT_FILES>
  <LABELS>
-  <_main><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>63</LINE></_main>
-  <_ISR><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>24</LINE></_ISR>
-  <ThB><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>45</LINE></ThB>
-  <end><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>59</LINE></end>
-  <ThreadA><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>97</LINE></ThreadA>
-  <ThreadB><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>126</LINE></ThreadB>
-  <MainLoopA><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>102</LINE></MainLoopA>
-  <L1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>114</LINE></L1>
-  <L11><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>115</LINE></L11>
-  <MainLoopB><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>130</LINE></MainLoopB>
-  <L2><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>143</LINE></L2>
-  <L21><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>144</LINE></L21>
+  <_main><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>186</LINE></_main>
+  <_ISR><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>152</LINE></_ISR>
+  <ThrB><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>170</LINE></ThrB>
+  <end><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>183</LINE></end>
+  <ThreadA><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>219</LINE></ThreadA>
+  <ThreadB><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>240</LINE></ThreadB>
+  <L1><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>229</LINE></L1>
+  <L11><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>230</LINE></L11>
+  <L2><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>250</LINE></L2>
+  <L22><FILE>C:\Users\Moj\Desktop\PawelMajtas\mtm_pn\AVR_Thread\AVR_Thread\AVR_Thread\main.asm</FILE><LINE>251</LINE></L22>
  </LABELS>
 </ASSEMBLER_INFO>
